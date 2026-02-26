@@ -1,0 +1,467 @@
+
+> nextn@0.1.0 build
+> npm run build:embed && npm run check:structure && npm run check:types && next build
+
+
+> nextn@0.1.0 build:embed
+> tsup
+
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Building entry: {"chatbot":"src/embed/index.tsx","locator":"src/embed/locator.tsx"}
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsconfig: tsconfig.json
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m tsup v8.5.1
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsup config: C:\Users\marte\Baked for Brands\markitbot-for-brands\tsup.config.ts
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Target: es2020
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Cleaning output folder
+[2m[[22mCHATBOT[2m][22m [34mIIFE[39m Build start
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.css [22m[32m146.13 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.css [22m[32m146.13 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.js  [22m[32m779.03 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.js  [22m[32m599.71 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m GÜín+Å Build success in 10193ms
+
+> nextn@0.1.0 check:structure
+> node scripts/check-app-structure.mjs
+
+
+> nextn@0.1.0 check:types
+> tsc --noEmit
+
+   Gû¦ Next.js 16.0.7 (Turbopack)
+   - Environments: .env.local, .env
+
+node.exe :  GÜá The 
+"middleware" file 
+convention is 
+deprecated. Please 
+use "proxy" instead. 
+Learn more: https://n
+extjs.org/docs/messag
+es/middleware-to-prox
+y
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: ( GÜá Th   
+ e "middl...lewar    
+e-to-proxy:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+   Creating an optimized production build ...
+Turbopack build 
+encountered 2 
+warnings:
+./node_modules/@opent
+elemetry/sdk-node/nod
+e_modules/@openteleme
+try/instrumentation/b
+uild/esm/platform/nod
+e
+Package 
+import-in-the-middle 
+can't be external
+The request 
+import-in-the-middle 
+matches serverExterna
+lPackages (or the 
+default list).
+The package resolves 
+to a different 
+version when 
+requested from the 
+project directory 
+(2.0.0) compared to 
+the package 
+requested from the 
+importing module 
+(1.15.0).
+Make sure to install 
+the same version of 
+the package in both 
+locations.
+
+
+./node_modules/@opent
+elemetry/sdk-node/nod
+e_modules/@openteleme
+try/instrumentation/b
+uild/esm/platform/nod
+e
+Package require-in-th
+e-middle can't be 
+external
+The request require-i
+n-the-middle matches 
+serverExternalPackage
+s (or the default 
+list).
+The package resolves 
+to a different 
+version when 
+requested from the 
+project directory 
+(8.0.1) compared to 
+the package 
+requested from the 
+importing module 
+(7.5.2).
+Make sure to install 
+the same version of 
+the package in both 
+locations.
+
+
+ G£ô Compiled successfully in 2.4min
+   Running TypeScript ...
+   Collecting page data using 11 workers ...
+   Generating static pages using 11 workers (0/127) ...
+Initializing Firebase Admin. Key present: true
+Initializing Firebase Admin. Key present: true
+   Generating static pages using 11 workers (31/127) 
+Initializing Firebase Admin. Key present: true
+   Generating static pages using 11 workers (63/127) 
+Failed to read 
+treasury memory from 
+Firestore: Error: 
+Treasury memory 
+document not found 
+in Firestore
+    at h.read (C:\Use
+rs\marte\Baked for Br
+ands\markitbot-for-bra
+nds\.next\server\chun
+ks\ssr\[root-of-the-s
+erver]__9f699221._.js
+:2:2340)
+    at async h (C:\Us
+ers\marte\Baked for B
+rands\markitbot-for-br
+ands\.next\server\chu
+nks\ssr\[root-of-the-
+server]__9f699221._.j
+s:2:3600)
+    at async j (C:\Us
+ers\marte\Baked for B
+rands\markitbot-for-br
+ands\.next\server\chu
+nks\ssr\[root-of-the-
+server]__eb5e7a05._.j
+s:1:4816)
+Failed to fetch 
+treasury overview: 
+Error: Treasury 
+memory document not 
+found in Firestore
+    at h.read (C:\Use
+rs\marte\Baked for Br
+ands\markitbot-for-bra
+nds\.next\server\chun
+ks\ssr\[root-of-the-s
+erver]__9f699221._.js
+:2:2340)
+    at async h (C:\Us
+ers\marte\Baked for B
+rands\markitbot-for-br
+ands\.next\server\chu
+nks\ssr\[root-of-the-
+server]__9f699221._.j
+s:2:3600)
+    at async j (C:\Us
+ers\marte\Baked for B
+rands\markitbot-for-br
+ands\.next\server\chu
+nks\ssr\[root-of-the-
+server]__eb5e7a05._.j
+s:1:4816)
+   Generating static pages using 11 workers (95/127) 
+ G£ô Generating static pages using 11 workers (127/127) in 16.1s
+   Finalizing page optimization ...
+ GÜá Failed to copy 
+traced files for 
+C:\Users\marte\Baked 
+for Brands\markitbot-f
+or-brands\.next\serve
+r\app\_not-found\page
+.js Error: EINVAL: 
+invalid argument, 
+copyfile 'C:\Users\ma
+rte\Baked for Brands\
+markitbot-for-brands\.
+next\server\chunks\ss
+r\[externals]_node:in
+spector_7a4283c6._.js
+' -> 'C:\Users\marte\
+Baked for Brands\bake
+dbot-for-brands\.next
+\standalone\.next\ser
+ver\chunks\ssr\[exter
+nals]_node:inspector_
+7a4283c6._.js'
+    at ignore-listed 
+frames {
+  errno: -4071,
+  code: 'EINVAL',
+  syscall: 
+'copyfile',
+  path: 'C:\\Users\\m
+arte\\Baked for Brand
+s\\markitbot-for-brand
+s\\.next\\server\\chu
+nks\\ssr\\[externals]
+_node:inspector_7a428
+3c6._.js',
+  dest: 'C:\\Users\\m
+arte\\Baked for Brand
+s\\markitbot-for-brand
+s\\.next\\standalone\
+\.next\\server\\chunk
+s\\ssr\\[externals]_n
+ode:inspector_7a4283c
+6._.js'
+}
+ GÜá Failed to copy 
+traced files for 
+C:\Users\marte\Baked 
+for Brands\markitbot-f
+or-brands\.next\serve
+r\app\api\agents\crai
+g\dispatch\route.js 
+Error: EINVAL: 
+invalid argument, 
+copyfile 'C:\Users\ma
+rte\Baked for Brands\
+markitbot-for-brands\.
+next\server\chunks\[e
+xternals]_node:inspec
+tor_7a4283c6._.js' 
+-> 'C:\Users\marte\Ba
+ked for Brands\bakedb
+ot-for-brands\.next\s
+tandalone\.next\serve
+r\chunks\[externals]_
+node:inspector_7a4283
+c6._.js'
+    at ignore-listed 
+frames {
+  errno: -4071,
+  code: 'EINVAL',
+  syscall: 
+'copyfile',
+  path: 'C:\\Users\\m
+arte\\Baked for Brand
+s\\markitbot-for-brand
+s\\.next\\server\\chu
+nks\\[externals]_node
+:inspector_7a4283c6._
+.js',
+  dest: 'C:\\Users\\m
+arte\\Baked for Brand
+s\\markitbot-for-brand
+s\\.next\\standalone\
+\.next\\server\\chunk
+s\\[externals]_node:i
+nspector_7a4283c6._.j
+s'
+}
+
+Route (app)
+Göî ¦Æ /
+Gö£ ¦Æ /_not-found
+Gö£ ¦Æ /[brand]
+Gö£ ¦Æ /[brand]/collections/[slug]
+Gö£ ¦Æ /[brand]/products/[productId]
+Gö£ ¦Æ /account
+Gö£ ¦Æ /admin/claims
+Gö£ ¦Æ /admin/treasury
+Gö£ ¦Æ /api/admin/enrich
+Gö£ ¦Æ /api/agents/craig/dispatch
+Gö£ ¦Æ /api/agents/dispatch
+Gö£ ¦Æ /api/analytics/forecast
+Gö£ ¦Æ /api/auth/session
+Gö£ ¦Æ /api/billing/authorize-net
+Gö£ ¦Æ /api/brands/[brandId]/availability
+Gö£ ¦Æ /api/cannmenus/brands
+Gö£ ¦Æ /api/cannmenus/product-search
+Gö£ ¦Æ /api/cannmenus/products
+Gö£ ¦Æ /api/cannmenus/retailers
+Gö£ ¦Æ /api/cannmenus/semantic-search
+Gö£ ¦Æ /api/cannmenus/sync
+Gö£ ¦Æ /api/chat
+Gö£ ¦Æ /api/checkout/cannpay
+Gö£ ¦Æ /api/checkout/cannpay/authorize
+Gö£ ¦Æ /api/checkout/process-payment
+Gö£ ¦Æ /api/checkout/smokey-pay
+Gö£ ¦Æ /api/claim-status
+Gö£ ¦Æ /api/cron/evaluate-alerts
+Gö£ ¦Æ /api/csrf
+Gö£ ¦Æ /api/debug/auth
+Gö£ ¦Æ /api/dev/build-cannmenus-embeddings
+Gö£ ¦Æ /api/dev/crawl
+Gö£ ¦Æ /api/dev/delete-all-pages
+Gö£ ¦Æ /api/dev/normalize
+Gö£ ¦Æ /api/dev/run-pilot
+Gö£ ¦Æ /api/dev/seed-cannmenus-stub
+Gö£ ¦Æ /api/dev/seed-test-pages
+Gö£ ¦Æ /api/dev/verify-pilot
+Gö£ ¦Æ /api/dispensary/orders
+Gö£ ¦Æ /api/dispensary/orders/[orderId]/status
+Gö£ ¦Æ /api/drop-alerts
+Gö£ ¦Æ /api/experiments/[experimentId]/assign
+Gö£ ¦Æ /api/experiments/[experimentId]/track
+Gö£ ¦Æ /api/ezal/competitors
+Gö£ ¦Æ /api/ezal/insights
+Gö£ ¦Æ /api/ezal/scrape
+Gö£ ¦Æ /api/foot-traffic/checkout
+Gö£ ¦Æ /api/foot-traffic/discover
+Gö£ ¦Æ /api/foot-traffic/zones
+Gö£ ¦Æ /api/inventory/check
+Gö£ ¦Æ /api/inventory/forecast
+Gö£ ¦Æ /api/marketing/generate
+Gö£ ¦Æ /api/payments/create-intent
+Gö£ ¦Æ /api/payments/webhooks
+Gö£ ¦Æ /api/playbooks/execute
+Gö£ ¦Æ /api/pricing/recommendations
+Gö£ ¦Æ /api/reach/entry
+Gö£ ¦Æ /api/recommendations/feedback
+Gö£ ¦Æ /api/recommendations/personalized
+Gö£ ¦Æ /api/reviews
+Gö£ ¦Æ /api/route-request
+Gö£ ¦Æ /api/smokey/alert/create
+Gö£ ¦Æ /api/smokey/cart/prepare
+Gö£ ¦Æ /api/smokey/find
+Gö£ ¦Æ /api/subscriptions/coverage-pack
+Gö£ ¦Æ /api/tasks/[taskId]/execute
+Gö£ ¦Æ /api/tasks/create
+Gö£ ¦Æ /api/tickets
+Gö£ ¦Æ /api/webhooks/agent/[id]
+Gö£ ¦Æ /api/webhooks/cannpay
+Gö£ ¦Æ /brand-login
+Gö£ ¦Æ /brands/[brandSlug]
+Gö£ ¦Æ /brands/[brandSlug]/near/[zip]
+Gö£ ¦Æ /brands/claim
+Gö£ ¦Æ /case-studies
+Gö£ ¦Æ /checkout
+Gö£ ¦Æ /checkout/subscription
+Gö£ ¦Æ /cities/[citySlug]
+Gö£ ¦Æ /city/[citySlug]
+Gö£ ¦Æ /claim
+Gö£ ¦Æ /contact
+Gö£ ¦Æ /customer-login
+Gö£ ¦Æ /customer/forgot-password
+Gö£ ¦Æ /customer/login
+Gö£ ¦Æ /customer/profile
+Gö£ ¦Æ /customer/register
+Gö£ ¦Æ /customer/verify-email
+Gö£ ¦Æ /dashboard
+Gö£ ¦Æ /dashboard/agents
+Gö£ ¦Æ /dashboard/agents/[agentId]
+Gö£ ¦Æ /dashboard/agents/craig
+Gö£ ¦Æ /dashboard/agents/craig/campaigns/new
+Gö£ ¦Æ /dashboard/ambassador
+Gö£ ¦Æ /dashboard/analytics
+Gö£ ¦Æ /dashboard/apps
+Gö£ ¦Æ /dashboard/apps/[appId]
+Gö£ ¦Æ /dashboard/bundles
+Gö£ ¦Æ /dashboard/carousels
+Gö£ ¦Æ /dashboard/ceo
+Gö£ ¦Æ /dashboard/ceo/agents
+Gö£ ¦Æ /dashboard/ceo/playbooks
+Gö£ ¦Æ /dashboard/ceo/users
+Gö£ ¦Æ /dashboard/claims/analytics
+Gö£ ¦Æ /dashboard/competitive-intel
+Gö£ ¦Æ /dashboard/compliance
+Gö£ ¦Æ /dashboard/content
+Gö£ ¦Æ /dashboard/content/brand-page
+Gö£ ¦Æ /dashboard/customers
+Gö£ ¦Æ /dashboard/dispensaries
+Gö£ ¦Æ /dashboard/dispensary/orders
+Gö£ ¦Æ /dashboard/distribution
+Gö£ ¦Æ /dashboard/favorites
+Gö£ ¦Æ /dashboard/financials
+Gö£ ¦Æ /dashboard/integrations
+Gö£ ¦Æ /dashboard/intelligence
+Gö£ ¦Æ /dashboard/inventory
+Gö£ ¦Æ /dashboard/leads
+Gö£ ¦Æ /dashboard/loyalty
+Gö£ ¦Æ /dashboard/marketing
+Gö£ ¦Æ /dashboard/marketing/campaigns/new
+Gö£ ¦Æ /dashboard/marketing/lifecycle
+Gö£ ¦Æ /dashboard/menu
+Gö£ ¦Æ /dashboard/menu-sync
+Gö£ ¦Æ /dashboard/orders
+Gö£ ¦Æ /dashboard/playbooks
+Gö£ ¦Æ /dashboard/pricing
+Gö£ ¦Æ /dashboard/products
+Gö£ ¦Æ /dashboard/products/[id]/edit
+Gö£ ¦Æ /dashboard/products/import
+Gö£ ¦Æ /dashboard/products/new
+Gö£ ¦Æ /dashboard/promotions/bundles
+Gö£ ¦Æ /dashboard/promotions/carousel
+Gö£ ¦Æ /dashboard/promotions/recommendations
+Gö£ ¦Æ /dashboard/segments
+Gö£ ¦Æ /dashboard/settings
+Gö£ ¦Æ /dashboard/tasks
+Gö£ ¦Æ /dashboard/tasks/[taskId]
+Gö£ ¦Æ /dashboard/treasury
+Gö£ ¦Æ /dashboard/vision
+Gö£ ¦Æ /data
+Gö£ ¦Æ /data/brand-availability
+Gö£ ¦Æ /data/desert-index
+Gö£ ¦Æ /data/freshness-index
+Gö£ ¦Æ /debug/discovery
+Gö£ ¦Æ /debug/playbooks
+Gö£ ¦Æ /demo
+Gö£ ¦Æ /deserts/[state]
+Gö£ ¦Æ /dev/cannmenus
+Gö£ ¦Æ /dispensaries/[dispensarySlug]
+Gö£ ¦Æ /dispensary-login
+Gö£ ¦Æ /find/[productId]
+Gö£ ¦Æ /free-audit
+Gö£ ¦Æ /get-started
+Gö£ ¦Æ /health
+Gö£ ¦Æ /highroad-thailand
+Gö£ ¦Æ /join/[brandId]
+Gö£ ¦Æ /local
+Gö£ ¦Æ /local/[zipCode]
+Gö£ ¦Æ /local/[zipCode]/[category]
+Gö£ ¦Æ /local/[zipCode]/brand/[brandSlug]
+Gö£ ¦Æ /local/[zipCode]/rankings
+Gö£ ¦Æ /local/[zipCode]/search
+Gö£ ¦Æ /local/search
+Gö£ ¦Æ /menu
+Gö£ ¦Æ /menu/[brandId]
+Gö£ ¦Æ /onboarding
+Gö£ ¦Æ /onboarding/passport
+Gö£ ¦Æ /order-confirmation/[orderId]
+Gö£ ¦Æ /pricing
+Gö£ ¦Æ /privacy
+Gö£ ¦Æ /product-locator
+Gö£ ¦Æ /shop
+Gö£ ¦Æ /shop/[dispensaryId]
+Gö£ ¦Æ /shop/[dispensaryId]/deals
+Gö£ ¦Æ /shop/[slug]
+Gö£ ¦Æ /shop/demo
+Gö£ Gùï /sitemap.xml
+Gö£ ¦Æ /states/[stateSlug]
+Gö£ ¦Æ /super-admin
+Göö ¦Æ /terms
+
+
+¦Æ Proxy (Middleware)
+
+Gùï  (Static)   prerendered as static content
+¦Æ  (Dynamic)  server-rendered on demand
+
+

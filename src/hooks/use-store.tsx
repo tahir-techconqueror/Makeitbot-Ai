@@ -1,0 +1,168 @@
+
+'use client';
+
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import type { CartItem, Product, Retailer } from '@/types/domain';
+import type { Theme } from '@/lib/themes';
+
+type MenuStyle = 'grid' | 'alt';
+
+type PurchaseMode = 'pickup' | 'shipping';
+
+interface StoreState {
+  cartItems: CartItem[];
+  isCartSheetOpen: boolean;
+  selectedRetailerId: string | null;
+  selectedRetailer: Retailer | null;
+  favoriteRetailerId: string | null;
+  favoriteRetailerIds: string[];
+  theme: Theme;
+  menuStyle: MenuStyle;
+  isDemo: boolean;
+  isCeoMode: boolean;
+  chatExperience: 'default' | 'v1';
+  _hasHydrated: boolean;
+  // E-commerce shipping support
+  purchaseMode: PurchaseMode;
+  selectedBrandId: string | null;
+}
+
+interface StoreActions {
+  addToCart: (product: Product, retailerId: string) => void;
+  addToCartForShipping: (product: Product, brandId: string) => void;
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
+  clearCart: () => void;
+  setCartSheetOpen: (isOpen: boolean) => void;
+  getCartTotal: () => { subtotal: number; tax: number; taxes: number; total: number };
+  getItemCount: () => number;
+  setSelectedRetailerId: (id: string | null) => void;
+  setSelectedRetailer: (retailer: Retailer | null) => void;
+  setFavoriteRetailerId: (id: string | null) => void;
+  toggleFavoriteRetailer: (id: string) => void;
+  setTheme: (theme: Theme) => void;
+  setMenuStyle: (style: MenuStyle) => void;
+  setIsDemo: (isDemo: boolean) => void;
+  setChatExperience: (exp: 'default' | 'v1') => void;
+  setHasHydrated: (hydrated: boolean) => void;
+  setPurchaseMode: (mode: PurchaseMode) => void;
+  setSelectedBrandId: (id: string | null) => void;
+}
+
+export const useStore = create<StoreState & StoreActions>()(
+  persist(
+    (set, get) => ({
+      cartItems: [],
+      isCartSheetOpen: false,
+      selectedRetailerId: null,
+      selectedRetailer: null,
+      favoriteRetailerId: null,
+      favoriteRetailerIds: [],
+      theme: 'green',
+      menuStyle: 'alt',
+      isDemo: true,
+      isCeoMode: false,
+      chatExperience: 'default',
+      _hasHydrated: false,
+      purchaseMode: 'pickup',
+      selectedBrandId: null,
+
+      addToCart: (product, retailerId) => {
+        if (get().selectedRetailerId && get().selectedRetailerId !== retailerId) {
+          get().clearCart();
+        }
+        set((state) => {
+          const existingItem = state.cartItems.find(item => item.id === product.id);
+          if (existingItem) {
+            return {
+              cartItems: state.cartItems.map(item =>
+                item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+              ),
+              selectedRetailerId: retailerId,
+              purchaseMode: 'pickup',
+            };
+          }
+          return {
+            cartItems: [...state.cartItems, { ...product, quantity: 1 }],
+            selectedRetailerId: retailerId,
+            purchaseMode: 'pickup',
+          };
+        });
+      },
+      addToCartForShipping: (product, brandId) => {
+        // If switching brands, clear cart
+        if (get().selectedBrandId && get().selectedBrandId !== brandId) {
+          get().clearCart();
+        }
+        set((state) => {
+          const existingItem = state.cartItems.find(item => item.id === product.id);
+          if (existingItem) {
+            return {
+              cartItems: state.cartItems.map(item =>
+                item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+              ),
+              selectedBrandId: brandId,
+              selectedRetailerId: null,
+              purchaseMode: 'shipping',
+            };
+          }
+          return {
+            cartItems: [...state.cartItems, { ...product, quantity: 1 }],
+            selectedBrandId: brandId,
+            selectedRetailerId: null,
+            purchaseMode: 'shipping',
+          };
+        });
+      },
+      removeFromCart: (productId) =>
+        set((state) => ({
+          cartItems: state.cartItems.filter(item => item.id !== productId),
+        })),
+      updateQuantity: (productId, quantity) => {
+        if (quantity <= 0) {
+          get().removeFromCart(productId);
+        } else {
+          set((state) => ({
+            cartItems: state.cartItems.map(item =>
+              item.id === productId ? { ...item, quantity } : item
+            ),
+          }));
+        }
+      },
+      clearCart: () => set({ cartItems: [], selectedBrandId: null }),
+      setCartSheetOpen: (isOpen) => set({ isCartSheetOpen: isOpen }),
+      getCartTotal: () => {
+        const subtotal = get().cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+        const taxes = subtotal * 0.15; // Example tax rate
+        const tax = taxes; // Alias for consistency
+        const total = subtotal + taxes;
+        return { subtotal, tax, taxes, total };
+      },
+      getItemCount: () => get().cartItems.reduce((sum, i) => sum + i.quantity, 0),
+      setSelectedRetailerId: (id) => set({ selectedRetailerId: id }),
+      setSelectedRetailer: (retailer) => set({ selectedRetailer: retailer, selectedRetailerId: retailer?.id ?? null }),
+      setFavoriteRetailerId: (id) => set({ favoriteRetailerId: id }),
+      toggleFavoriteRetailer: (id) => set((state) => ({
+        favoriteRetailerIds: (state.favoriteRetailerIds || []).includes(id)
+          ? state.favoriteRetailerIds.filter(fId => fId !== id)
+          : [...(state.favoriteRetailerIds || []), id]
+      })),
+      setTheme: (theme) => set({ theme }),
+      setMenuStyle: (style) => set({ menuStyle: style }),
+      setIsDemo: (isDemo) => set({ isDemo }),
+      setChatExperience: (exp) => set({ chatExperience: exp }),
+      setHasHydrated: (hydrated) => set({ _hasHydrated: hydrated }),
+      setPurchaseMode: (mode) => set({ purchaseMode: mode }),
+      setSelectedBrandId: (id) => set({ selectedBrandId: id }),
+    }),
+    {
+      name: 'markitbot-store',
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) state.setHasHydrated(true);
+      },
+    }
+  )
+);
+

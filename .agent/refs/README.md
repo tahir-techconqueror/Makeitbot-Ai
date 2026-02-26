@@ -1,0 +1,113 @@
+# Agent Reference Files
+
+Detailed documentation for AI agents working in this codebase.
+
+**Rule:** Load refs on-demand. Don't load everything at once — conserve context.
+
+---
+
+## Quick Lookup: What to Read
+
+| If You're Working On... | Read This First |
+|-------------------------|-----------------|
+| Agent logic (any agent) | `agents.md` |
+| Ground truth, Ember grounding | `ground-truth.md` |
+| Memory/Letta integration | `markitbot-intelligence.md` |
+| Browser automation/RTRVR | `autonomous-browsing.md` |
+| Auth, login, sessions | `authentication.md` |
+| Roles, permissions, RBAC | `roles.md` |
+| API routes | `api.md` |
+| Server actions, services | `backend.md` |
+| React components, UI | `frontend.md` |
+| Tests, Jest, coverage | `testing.md` |
+| External APIs (Blackleaf, etc.) | `integrations.md` |
+| Playbooks, automation | `workflows.md` |
+| Past decisions | `work-archive.md` |
+
+---
+
+## Full Index
+
+### Core Systems
+| File | What's Inside |
+|------|---------------|
+| `agents.md` | All agents, their tools, architecture, Pulse/Interrupt model |
+| `backend.md` | Services, server actions, Firestore, custom domains |
+| `api.md` | API routes, patterns, authentication |
+| `frontend.md` | Components, layouts, ShadCN, menu embeds |
+
+### Intelligence & Memory
+| File | What's Inside |
+|------|---------------|
+| `ground-truth.md` | **v1.0** - QA grounding, recommendation strategies, Ember |
+| `markitbot-intelligence.md` | Letta memory service, Hive Mind, shared blocks |
+| `markitbot-discovery.md` | Web search, Firecrawl scraping |
+| `autonomous-browsing.md` | RTRVR browser automation, session management |
+| `context-os.md` | Decision lineage tracking |
+| `intuition-os.md` | System 1/2 routing, confidence scoring |
+| `intention-os.md` | Intent parsing, task decomposition |
+
+### Auth & Permissions
+| File | What's Inside |
+|------|---------------|
+| `authentication.md` | Firebase Auth, session management, login flow |
+| `roles.md` | Role hierarchy, permissions, RBAC |
+| `super-users.md` | Super User protocol, owner access |
+
+### Features & Pages
+| File | What's Inside |
+|------|---------------|
+| `demo-page.md` | Homepage demo chat implementation |
+| `onboarding.md` | Claim flow, brand/dispensary setup |
+| `pages-brand.md` | Brand dashboard structure |
+| `pages-dispensary.md` | Dispensary console structure |
+| `pages-location.md` | Location/discovery pages |
+| `pilot-setup.md` | Quick provisioning for pilots |
+
+### Lead Generation
+| File | What's Inside |
+|------|---------------|
+| `academy.md` | Cannabis Marketing AI Academy - curriculum, email automation, video tracking |
+| (see prime.md) | Vibe Studio lead magnet documentation |
+
+### Development
+| File | What's Inside |
+|------|---------------|
+| `agentic-coding.md` | Best practices for agents coding in this repo |
+| `testing.md` | Jest patterns, test strategies, coverage |
+| `tools.md` | Genkit tool definitions, executors |
+| `workflows.md` | Playbooks, automation recipes |
+
+### Operations
+| File | What's Inside |
+|------|---------------|
+| `work-archive.md` | Historical decisions, artifact storage |
+| `session-handoff.md` | Continuing work mid-session |
+| `integrations.md` | External APIs (Blackleaf, Mailjet, CannMenus, etc.) |
+
+---
+
+## Loading Strategy
+
+### Always Start With
+1. `CLAUDE.md` (auto-loaded)
+2. `.agent/prime.md` (read at session start)
+
+### Load On Demand
+Only load specific refs when you're about to work in that area.
+
+### Don't Load
+- Multiple refs at once (wastes context)
+- Refs for areas you won't touch this session
+- Everything "just in case"
+
+---
+
+## Keeping Refs Updated
+
+After significant changes to a subsystem:
+1. Update the relevant ref file
+2. Include: current state, key files, patterns
+3. Note any breaking changes or migrations
+4. Cross-reference related docs
+

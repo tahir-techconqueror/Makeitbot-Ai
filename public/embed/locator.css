@@ -1,0 +1,153 @@
+/* ────────────────────────────────────────────────
+   Dark Mode Base + Theme Variants
+───────────────────────────────────────────────── */
+
+.dark {
+  --background: 130 20% 5%;
+  --foreground: 0 0% 98%;
+  --card: 130 15% 10%;
+  --card-foreground: 0 0% 98%;
+  --popover: 130 15% 10%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 142 69% 58%;           /* baked green primary */
+  --primary-foreground: 144 70% 10%;
+  --secondary: 135 20% 18%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 130 10% 15%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 135 20% 18%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 135 15% 25%;
+  --input: 135 15% 25%;
+  --ring: 142 69% 58%;
+  --radius: .5rem;
+
+  --sidebar-background: 130 20% 6%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 142 69% 58%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 135 20% 18%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 135 15% 25%;
+  --sidebar-ring: 142 69% 58%;
+}
+
+/* Dark + Blue variant */
+.dark.blue {
+  --background: 142 80% 4%;
+  --foreground: 0 0% 98%;
+  --card: 142 80% 4%;
+  --card-foreground: 0 0% 98%;
+  --popover: 142 80% 4%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 142.1 76.2% 36.3%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 142 70% 10%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 142 70% 10%;
+  --muted-foreground: 142 20% 60%;
+  --accent: 142.1 70.2% 46.3%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 142 70% 10%;
+  --input: 142 70% 10%;
+  --ring: 142.1 76.2% 36.3%;
+
+  --chart-1: 142 76% 36%;
+  --chart-2: 142 66% 46%;
+  --chart-3: 142 56% 56%;
+  --chart-4: 142 46% 66%;
+  --chart-5: 142 36% 76%;
+
+  --sidebar-background: 142 70% 6%;
+  --sidebar-border: 142 70% 10%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 142.1 76.2% 36.3%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 142.1 70.2% 46.3%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 142.1 76.2% 36.3%;
+}
+
+/* Dark + Purple variant */
+.dark.purple {
+  --background: 240 5% 10%;
+  --foreground: 0 0% 98%;
+  --card: 240 5% 10%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 5% 10%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 262 70% 65%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 36 100% 50%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 262 70% 65%;
+
+  --chart-1: 262 70% 50%;
+  --chart-2: 262 60% 60%;
+  --chart-3: 262 50% 70%;
+  --chart-4: 262 40% 80%;
+  --chart-5: 262 30% 90%;
+
+  --sidebar-background: 240 4% 12%;
+  --sidebar-border: 240 4% 18%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 262 70% 65%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 36 100% 50%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 262 70% 65%;
+}
+
+/* Dark + Baked (custom green-heavy theme) */
+.dark.baked {
+  --background: 145 50% 4%;
+  --foreground: 0 0% 98%;
+  --card: 145 45% 6%;
+  --card-foreground: 0 0% 98%;
+  --popover: 145 45% 6%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 142 70% 45%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 145 40% 10%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 145 35% 12%;
+  --muted-foreground: 145 15% 60%;
+  --accent: 142 60% 40%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 145 35% 15%;
+  --input: 145 35% 15%;
+  --ring: 142 70% 45%;
+
+  --chart-1: 142 70% 40%;
+  --chart-2: 142 60% 50%;
+  --chart-3: 142 50% 60%;
+  --chart-4: 142 40% 70%;
+  --chart-5: 142 30% 80%;
+
+  --sidebar-background: 145 50% 3%;
+  --sidebar-border: 145 40% 10%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 142 70% 45%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 142 60% 40%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 142 70% 45%;
+
+  /* Extra baked-specific glass effect vars */
+  --glass-bg: 145 40% 8%;
+  --glass-border: 145 35% 18%;
+}

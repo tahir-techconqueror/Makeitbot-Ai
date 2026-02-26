@@ -1,0 +1,4475 @@
+--- PAGE GENERATOR ---
+Limit: All
+Dry Run: false
+
+[1/4] Loading discovered dispensaries...
+   Found 200 dispensaries
+
+[2/4] Loading discovered brands...
+   Found 1 brands
+
+[2/4] Loading ZIP codes...
+   Found 30001 ZIP codes
+   1383 verified ZIPs with dispensaries
+
+[3/4] Generating pages...
+   Filtered to 200 dispensaries in Illinois
+node.exe : {
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: ({:Strin   
+ g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+  "timestamp": "2025-
+12-18T18:11:28.721Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:28.724Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJg5VPiicRd4gR_Iz0W
+8z6C-A"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:28.848Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:28.849Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJu8ZostLXdogRNrCFW
+toCsVk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:29.732Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:29.732Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJvacZ7WQRd4gR0a6G1
+rGM0SQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:30.085Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:30.086Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJp7Xjoj65dogRk2gvX
+BQwzIU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:31.416Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:31.416Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJz7ya03cRd4gRmQqEu
+SKh0rc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:31.776Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:31.776Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJf1LeC9LJdogR8BSfY
+98bDPM"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:31.867Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:31.867Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJeRekdVwRd4gRey0mV
+8-fBO4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.287Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.287Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ5c1Mfmq3dogR4MBCO
+2sX1c0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.659Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.659Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJD4cyxeo7d4gRKodDI
+WNLa3k"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.754Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.755Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ82v4B7QDdogRhk5kC
+qkvoTQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.858Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:32.858Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJMdCKPSfDcIgR1Hb4N
+ExFiUQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.105Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.106Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJF5Rf8sABdogRnfm2i
+GZycps"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.178Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.179Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ6b-vzFwDeogREHPIu
+jwNEBE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.245Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.245Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJr21OFMXTeYgR_ROVc
+_JKbvc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.355Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.355Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJc9O55rEFeogRRzaLE
+HhtRCY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.486Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.486Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJpQ7B434FeogRpeeti
+6F6QXM"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.568Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.568Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJA2xFtIpvd4gRIb4d5
+KWcrB8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.619Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.619Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJsabA-cTJdogRsGnyW
+jiHnZQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.702Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.702Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJp-3OJxWZdogRNwRlh
+Ta_3dY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.748Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.748Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJkW5Y2Hopd4gRblwqM
+38Ucf0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.896Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.896Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJhZiBpJgad4gR56oJK
+XvA7GQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.971Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:33.971Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJuUgwdHGZdogRqLZIe
+iLsa_s"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.021Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.021Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJYV9jRUY7d4gRMzJcY
+_GezGE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.076Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.076Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJwXtUdYk7d4gRknSDA
+eU-Dus"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.135Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.135Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJs_JPIT23dogR5md4N
+Ww5Slk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.214Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.215Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJN7rKfRERd4gRit4fp
+mUda4c"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.523Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.523Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJu4mV6HwTd4gRrw2pg
+hICjSY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.575Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.575Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJR4YjJTPXdogRBZOXP
+oPsupg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.626Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.626Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ_1jtsIM4dogRxdu3x
+wxsqhk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.719Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.719Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJDX_5QKopdogRN_bPi
+NEfUzI"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.809Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:34.809Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJW4neSTQjdogRSyIPX
+HTUqWo"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.013Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.013Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJUem46UfDcIgRNGUZB
+48kbl8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.067Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.068Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJwZCE7uqZdogRfnO0z
+BuwCis"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.354Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.354Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJD0Y_qIJtcYgRgM0nP
+ubf-Sc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.399Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.400Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJIY5FZnLDcIgRysJBQ
+RaZhLk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.520Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.520Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ_W_kGZOKdogRtWX3j
+lO7BXI"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.616Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.616Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ1TfzSK0DdogRatU-z
+2D-3_Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.683Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.683Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJF4GijNokd4gRgQ-mf
+d6Ufhk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.989Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:35.989Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJzXhmBP6YdogRxA5ua
+IPzusk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.433Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.433Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJO2u1aMa92IcRZ5USy
+3x8tzg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.743Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.744Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJfZmCtLcDdogRkReCU
+EA4h8k"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.851Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.851Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJt9XnNoTjdogRYDMNM
+m3qTl0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.904Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:36.904Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJQz8iSi8Qd4gRKRz5X
+9lJE-Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.177Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.177Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJeY42j_XHdogRdIFF_
+Q1zEAg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.253Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.253Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJs9EEYI23dogRqXbZ2
+5kEvJQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.366Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.367Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ17jtCADIdogRBo-GY
+ciITsQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.441Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.442Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJqwk9-5TXdogRW-cfO
+Pw80h0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.495Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.495Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJI7cpy8fNd4gRh2ncX
+cjOuL4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.545Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.545Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJHxusTEE6d4gRwNFuI
+O1Vw2I"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.867Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:37.867Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJP2wt-BU7d4gRswR4Y
+ANoxq0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.172Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.172Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJTwgsHEgTd4gRC88eb
+Y75F4c"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.248Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.248Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ3fQUc6o-d4gRCZyVv
+qBIIPo"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.358Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.358Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ4cHb36TDcIgRxSyrn
+C8Hwis"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.415Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.415Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJy7Mz40w6d4gRPHr2z
+2O3RYY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.463Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.463Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJjQ4OKqM8d4gRL6oJK
+2hTXBw"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.511Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.511Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJUSo0Iww6d4gRHl9nQ
+mGrQjU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.602Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.602Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJk0F8kAYpd4gR_lL5O
+Ahxqig"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.733Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.733Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJE6RjZt8Rd4gRsgTiH
+OuWcSk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.784Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.784Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJydimzQGZdogRBidtI
+OHVBek"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.941Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:38.942Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJs9KO2XsRd4gRFjcRU
+CPh9cU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.005Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.005Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJVf4w-mnddogRdr_SG
+V5TfPM"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.300Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.300Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJtaCCrkdZDYgR8_L8A
+waffIo"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.462Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.462Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJcRd-D3lRDYgRbWPio
+DnBZK4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.517Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.517Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJNwogMR7nDYgR2xyqD
+SoCkao"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.767Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.767Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJd2IibKLnDYgRzYQcN
+yyA6kY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.832Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.832Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJzb-vvS_1cogRKC32O
+KJEAUo"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.884Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:39.884Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJyfvwdePnDYgRLUuvU
+HZNNMA"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.033Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.033Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJe21_w84FcogRHd1HB
+yHikeQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.083Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.083Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJJfLKZivXDIgRzc7BF
+0fGC-Q"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.283Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.283Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ9RRL2ogxDogRqjWZp
+eul2FM"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.632Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.632Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJz06jCZ7XDIgRvcf5E
+cuj2L8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.699Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.699Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJQW9tT-zbDIgR592MG
+1nvVrg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.954Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:40.954Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJqfOxsHvRDIgRgytTO
+yIsXNA"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.294Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.294Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJUc_c2zEdc4gRRF9E8
+DiFYOY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.559Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.560Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJTdtUtfLRDIgRgzEeY
+B0TPts"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.649Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.649Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJN8gpmGDXDIgRtsaXg
+cb_ztY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.742Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.742Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJjzMMhsHXDIgRc12ML
+ztXOXk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.861Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:41.861Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJL0-_YWQRc4gR3vBUy
+Lw0mjs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.065Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.066Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJV6VT-oCDdIgRUng9k
+fFpY5Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.372Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.372Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJQyygAFTXDIgRb3yaL
+wnPBE8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.506Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.506Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJjzk6d8P3cogRRagVF
+JH-07k"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.767Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:42.767Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ-SBVNCC3dIgROqfI9
+jYrBek"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.026Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.026Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ63urBgCzdIgRWU8Z4
+tJXUsI"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.100Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.100Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJr0kotjJFC4gRmmdqt
+ESm6_c"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.362Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.363Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJi6nFRDdFC4gRfPmDg
+sJFu24"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.571Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.571Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJeZF491SXc4gRHqCYe
+AltWgE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.705Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.705Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJo9q_DiLx4IcRZpCe-
+yoGxks"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.811Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.811Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJX8rRqgq_4YcRd29-_
+m2Lvbg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.923Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.923Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ28TeNbEsDogR28Hq1
+kkHU_Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.977Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:43.977Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJJ1b8uuO94YcRYhYnv
+zXmI-8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.091Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.091Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJidqJbOtb4IcR7eT-f
+Sh4WQc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.210Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.210Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJU4JjC_hdCogRsa7xV
+BhntqE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.448Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.448Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJa2gbHYFdCogRecL8p
+j_22uE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.563Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.563Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJO33gRwBbCogRAK3XN
+FTfTzU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.683Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.683Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ49wjiFtZCogRO4KRQ
+9cCsCk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.801Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.801Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ52n3Q0dZCogR5T7-e
+aRQiG4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.852Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:44.852Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJXeoMjMJdCogRHIxAk
+xqJ88I"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.189Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.189Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJLeVgX2fxCogRtpavE
+Voqje4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.402Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.402Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJbaQNx65ZCogRE4e9c
+gXaG64"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.462Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.462Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJoQQoZypxC4gRXQYvk
+-3kaWE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.527Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.527Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJgXRtz9MnC4gRMZSJU
+3VPU90"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.590Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.591Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJWyeece9bCogRESPyA
+sKqVLU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.678Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.678Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJbdMDjy3r34cRQQn28
+A3MXVY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.748Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:45.748Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJt3AnOVT33YcR01Lm4
+60Z7Sw"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.111Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.111Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJKWoWClhxC4gRQjfis
+WrkHaY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.406Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.407Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJwcW40f9bCogRo-LGN
+rCoS0Q"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.472Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.472Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJkVjW08D1CogRciSfb
+nStsZg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.762Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.763Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJvZI_1kRZCogRQAZ9G
+VtUFkg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.889Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.889Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJP446LCrvcYgRLiKLY
+Wy852Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.995Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:46.995Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJYfiwxlG9cYgR-0eDo
+WxrMYs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.180Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.180Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJg1mUBAipcYgRSf34-
+oH1p70"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.289Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.289Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ7yo81969cYgRu7hKL
+B2NYWQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.397Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.397Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJb9QxFpLucYgR309JV
+7qV9Hw"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.499Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.499Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJl4PiJpLucYgR3X6j1
+svG3jY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.593Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.593Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJUVsyzXsHcYgRODCA_
+O4i3R4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.749Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.749Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJqR-uMGj3cIgRHZnDO
+OlTGjY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.908Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:47.908Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJIR5ucAn6cIgRyDoCB
+IDhXts"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.083Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.083Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJEVRHy47ucYgRYqidg
+24_KMU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.254Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.254Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJb4uHuBP33YcRqsZT5
+Sfzy6c"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.560Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.560Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJT9M9VUr43YcR4Hqi7
+m-NCG8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.735Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.735Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJkfxes4j53YcRXrYaU
+k5PPs4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.896Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:48.896Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ2YDFTID53YcRgbQ23
+2gjxaQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:49.215Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:49.215Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJcfb-bKj33YcR9T-W7
+8fm6Kw"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:49.425Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:49.426Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJB2S-pqb4YEwRqumlx
+EOmVbQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:49.725Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:49.725Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJgV9187D33YcRL6-3x
+ScEhec"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.403Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.403Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJO0a5VDBH3ocRKLJS_
+fdeO6s"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.508Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.508Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ58_eQpBH3ocROuKbp
+IE_o2o"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.596Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.596Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ9XQJ53JF34cR66Rmv
+wLViF8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.777Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.777Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ_8H-Cnc5dYgRA34gX
+IpBmFE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.884Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:50.884Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ3wN8gJT33YcRoznVz
+oLx5Ps"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.530Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.530Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJbbCbEzql34cRGUQo_
+JKzG2U"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.704Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.704Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJkYgb-XUT3ocRcDNM0
+Ztm8Ns"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.820Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.820Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJARJUZABtcogRBP7Od
+FPRI-Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.936Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:51.936Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJkfoYVkMBcogReqd4q
+tGSJ6g"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.102Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.102Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJt8073attcogRBejKO
+HZGxW4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.229Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.229Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJQ-CRKf0vcogR_jcTz
+f7VuxE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.401Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.401Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJOecWw3RYcogRnZpgY
+tyC31o"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.495Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.495Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJc-MSrDkz4ocRnRPRX
+gDtMR0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.543Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.543Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ-ShFu9DP4ocRDMCnH
+2oovNs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.596Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.596Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJG0uIMuYx4ocRkpE5H
+g3NIW0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.914Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.914Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJs0t2OnMx4ocRcSLdy
+qiuTLQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.967Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:52.967Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJmWM9sosr44cRmCIHd
+W3Tsx4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.019Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.019Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJVT66Ncp84ocR-nEji
+mO9Jok"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.295Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.295Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJKyXNDQQz4ocRPJt30
+B5nsNs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.528Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.528Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJtbRGAAsy4ocRvSfSV
+IgHTtk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.636Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.636Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJAwP9bnIx4YcRRkr_x
+mztmPI"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.755Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.755Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJwUyH-K4x4ocRTo89R
+Itl544"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.918Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:53.918Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJL9ZUG_Iw4ocRYM_SH
+SmuFmM"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.043Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.043Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJLbbd12Mx4ocRXXFZy
+vKMJUI"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.409Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.409Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJfxTc-OIx4ocRhsjAM
+_IbwS4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.455Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.455Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJs9Ho8YHS44cRPPRif
+W0x6xg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.525Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.526Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ110pCGY64ocRX7Dbm
+9FfSXM"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.590Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.591Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJw8G4Otwz4ocRNc_d1
+33xzEA"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.659Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.659Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJFXCO5Es74ocR0xPk6
+sW7L34"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.781Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:54.781Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ337j484x4ocR1om5c
+gzVg4g"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.028Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.028Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJIciS6Yw04ocR0BY76
+zt9bXY"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.415Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.415Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJAfKAKB0x4ocR7cuOd
+oVMHgs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.481Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.481Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJk5YCKQEz4ocRtP6iE
+6Rp8fk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.552Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.553Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJG9exdfox4ocRVfDlw
+I7xpiE"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.636Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.636Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJF6jxmEEx4ocR6Lz-k
+7bfhb4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.791Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.791Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJpf4IoqMz4ocR0Hpr3
+Pxd3eU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.845Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.845Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJF-Zz_6Iz4ocRHegR_
+NJ5px8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.895Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.895Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJw2gzpusz4ocRZ_VPm
+DiAYRI"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.986Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:55.987Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJeTjaWxAx4ocRFG_OT
+MVDvJs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:56.878Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:56.878Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJU7ifm3oz4ocRkaWoz
+bWIykc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:56.927Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:56.927Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJefgdfCIz4ocRn4Ewx
+GAbH4M"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:56.986Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:56.986Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJC4HuyFq3CYgRBgLck
+CcQb2Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.036Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.036Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJaYoJANIrD4gRG-sCZ
+zYZuSA"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.093Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.093Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJfY4j3JeYDogReIm6x
+ZxyS7Y"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.161Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.161Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJXVEkVe_vDogRMhiD-
+aduT3E"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.428Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.428Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ_9gK3sXxDogRhFknD
+S7Dil0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.476Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.476Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJqWukOs3kDogRG4c1W
+FFUPkk"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.541Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.541Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJlYCXu0P7DogRtjolv
+LOUE4E"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.593Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.593Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJe9j6iND5DogRgMUMk
+3gS3Uc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.880Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.880Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ4w3UOi73DogRCJwCE
+JmJCWA"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.933Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:57.933Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJv3SMeKNTCYgRGfNDY
+YeZvb8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.192Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.192Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJPzQ5-Fg_DogRw9AhK
+CkqsRc"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.603Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.604Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJl5iQxbxhCYgRF-75_
+o2ZphQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.696Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.696Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ8SInkwCvCYgRm8x1R
+ZxtxV0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.775Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.776Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJmVKuQWKZDogRumUiP
+Mrt7qw"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.967Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:58.967Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJBecq2V_BD4gRXbd1T
+LcYJmg"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.026Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.026Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJIc4SgSjSD4gReLAK6
+g1h1S4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.367Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.367Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJJX7qbswtDogRreWQD
+bVGXU4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.418Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.419Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJb5WAyTjJD4gRAr5My
+MNyHg8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.466Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.466Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ00QUZxfMD4gRwnT3a
+Nx2T18"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.543Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.543Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJNYTp5KUtDogRv9BKT
+oeRjTo"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.608Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.608Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJf6X49-vHD4gRW_sg7
+6A1jIU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.674Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:11:59.674Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJL6YsMl71D4gRNHJQY
+Cc2j3Q"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.579Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.579Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJlTVj4ALTD4gR0Y6yl
+jGL8A4"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.639Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.640Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJm3wCfzvND4gRATD19
+S1_VuQ"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.715Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.715Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJF076WYTTD4gR4-JNn
+0gpLAs"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.828Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:00.828Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJOa2_HJotDogRhwmUd
+-6NpY0"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.059Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.059Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ5egWCYYtDogReoN_B
+DkdC3k"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.470Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.470Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJTQEdIBLND4gRZ9GxA
+_QxehU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.532Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.532Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJcUzhc0vSD4gRzFqRy
+M3AHAo"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.662Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.662Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJwXT7ers1DogRTPupY
+U9oz64"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.927Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:01.927Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJYztioXctDogR7iqxE
+ZHQqS8"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:02.037Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:02.037Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ4aTgF_41DogRHrNKX
+nu1u58"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:02.238Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:02.238Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJ3TpT3sXRD4gRD7s4j
+rS8mQU"
+  }
+}
+{
+  "timestamp": "2025-
+12-18T18:12:02.300Z",
+  "level": "warn",
+  "message": "Google 
+Places API key not 
+configured"
+}
+{
+  "timestamp": "2025-
+12-18T18:12:02.300Z",
+  "level": "warn",
+  "message": "Could 
+not resolve place ID 
+with sufficient 
+confidence",
+  "data": {
+    "dispensaryId": "
+ChIJyb7GWr27D4gRl2uAF
+p2eViI"
+  }
+}
+   Generated 200 dispensary pages
+   Generated 1383 ZIP pages
+   Generated 1248 City pages
+   Generated 1 Brand pages
+
+[4/4] Writing to Firestore...
+   Committed batch of 500 documents
+   G¥î Firestore 
+write error: Error: 
+Cannot modify a 
+WriteBatch that has 
+been committed.
+    at WriteBatch.ver
+ifyNotCommitted (C:\U
+sers\marte\Baked for 
+Brands\markitbot-for-b
+rands\node_modules\@g
+oogle-cloud\firestore
+\build\src\write-batc
+h.js:126:19)
+    at 
+WriteBatch.set (C:\Us
+ers\marte\Baked for B
+rands\markitbot-for-br
+ands\node_modules\@go
+ogle-cloud\firestore\
+build\src\write-batch
+.js:265:14)
+    at main (C:\Users
+\marte\Baked for Bran
+ds\markitbot-for-brand
+s\dev\generate-pages.
+ts:388:23)
+
+=ƒôä Log saved to C:\Users\marte\Baked for Brands\markitbot-for-brands\dev\page_generation_log.json
+
+--- GENERATION COMPLETE ---
+Dispensary Pages: 200
+ZIP Pages: 1383
+

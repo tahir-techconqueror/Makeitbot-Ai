@@ -1,0 +1,288 @@
+/* src/app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Almost unused light mode – kept only as fallback */
+    --background: 0 0% 98%;
+    --foreground: 240 10% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 8%;
+
+    --primary: 262 78% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 92%;
+    --secondary-foreground: 240 10% 12%;
+
+    --muted: 220 15% 92%;
+    --muted-foreground: 220 9% 48%;
+
+    --accent: 262 70% 68%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 348 80% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 12% 85%;
+    --input: 220 12% 85%;
+    --ring: 262 78% 60%;
+
+    --radius: 0.75rem;
+
+    /* Charts – purple/blue tones */
+    --chart-1: 262 75% 62%;
+    --chart-2: 270 70% 58%;
+    --chart-3: 225 75% 62%;
+    --chart-4: 280 80% 68%;
+    --chart-5: 200 85% 60%;
+
+    /* Sidebar light fallback */
+    --sidebar-background: 220 18% 96%;
+    --sidebar-border: 220 12% 88%;
+    --sidebar-foreground: 220 15% 12%;
+    --sidebar-primary: 262 78% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    /* ────────────────────────────────────────────────
+       True deep black + purple/dark-blue dark theme
+       ──────────────────────────────────────────────── */
+    --background: 0 0% 2%;               /* almost pure black – OLED friendly */
+    --foreground: 220 12% 94%;           /* soft high-contrast off-white */
+
+    --card: 0 0% 6%;                     /* very dark cards */
+    --card-foreground: 220 12% 94%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 220 12% 94%;
+
+    --primary: 262 80% 64%;              /* vivid elegant purple */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 8% 10%;             /* deep subtle surface */
+    --secondary-foreground: 220 10% 88%;
+
+    --muted: 240 8% 11%;
+    --muted-foreground: 220 8% 62%;
+
+    --accent: 262 70% 70%;               /* brighter purple accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 348 78% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 10%;                  /* very dark subtle borders */
+    --input: 0 0% 10%;
+    --ring: 262 80% 64%;                 /* purple focus ring */
+
+    --radius: 0.78rem;                   /* modern rounded feel */
+
+    /* Chart colors – cohesive purple/blue family */
+    --chart-1: 262 80% 64%;
+    --chart-2: 270 75% 60%;
+    --chart-3: 225 80% 64%;
+    --chart-4: 280 82% 70%;
+    --chart-5: 200 88% 62%;
+
+    /* Sidebar – deeper black-purple variant */
+    --sidebar-background: 0 0% 4%;
+    --sidebar-border: 0 0% 9%;
+    --sidebar-foreground: 220 10% 92%;
+    --sidebar-primary: 262 82% 66%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 262 72% 74%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-ring: 262 82% 66%;
+  }
+
+  /* Optional stronger purple sidebar look */
+  .dark.purple-sidebar {
+    --sidebar-background: 262 14% 6%;
+    --sidebar-border: 262 12% 16%;
+    --sidebar-primary: 262 85% 70%;
+    --sidebar-accent: 262 75% 78%;
+  }
+
+  /* Optional neon-blue variant */
+  .dark.neon-blue {
+    --primary: 210 90% 64%;
+    --accent: 210 85% 70%;
+    --ring: 210 90% 64%;
+    --sidebar-primary: 210 90% 68%;
+    --sidebar-accent: 210 82% 76%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  /* Privacy mode blur effect */
+  .privacy-mode [data-info="pii"] {
+    filter: blur(6px);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .privacy-mode [data-info="pii"]:hover {
+    filter: blur(3px);
+  }
+
+  /* Radix UI popovers/dropdowns above grid elements */
+  [data-radix-popper-content-wrapper] {
+    z-index: 9999 !important;
+  }
+
+  .react-grid-item,
+  .react-grid-layout {
+    overflow: visible !important;
+  }
+}
+
+@layer utilities {
+  /* Thin dark scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.38) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/45 rounded-full;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/75;
+  }
+
+  /* Glassmorphism – works great on deep black bg */
+  .glass-card {
+    background: hsl(var(--card) / 0.48);
+    backdrop-filter: blur(14px);
+    border: 1px solid hsl(var(--border) / 0.38);
+    box-shadow: 0 6px 32px hsl(0 0% 0% / 0.28);
+  }
+
+  .glass-card-hover:hover {
+    background: hsl(var(--card) / 0.70);
+    border-color: hsl(var(--border) / 0.60);
+    box-shadow: 0 12px 44px hsl(262 80% 25% / 0.28);
+    transform: translateY(-1.5px);
+    transition: all 0.22s ease;
+  }
+
+  /* Gradient text utility */
+  .gradient-text {
+    background: linear-gradient(90deg, hsl(262 82% 68%), hsl(225 80% 68%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+/* =========================================
+   🔥 MODERN PREMIUM CARD SYSTEM
+========================================= */
+
+/* Automatic breathing glow */
+@keyframes premiumGlow {
+  0%, 100% {
+    box-shadow: 0 0 0px rgba(99,102,241,0.0);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(99,102,241,0.18);
+  }
+}
+
+/* Subtle floating motion */
+@keyframes floatSoft {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Shine sweep */
+@keyframes glassSweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+.animated-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  transition: all 0.5s cubic-bezier(.4,0,.2,1);
+  animation: premiumGlow 3s ease-in-out infinite,
+             floatSoft 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Hover depth */
+.animated-card:hover {
+  transform: translateY(-10px) scale(1.025);
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.6),
+    0 0 80px rgba(99,102,241,0.35);
+}
+
+/* Automatic glass sweep every 3s */
+.animated-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+  );
+  animation: glassSweep 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Mouse radial glow */
+.animated-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(99,102,241,0.25),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.animated-card:hover::after {
+  opacity: 1;
+}

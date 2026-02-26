@@ -1,0 +1,30 @@
+
+> nextn@0.1.0 build
+> npm run build:embed && npm run check:structure && npm run check:types && next build
+
+
+> nextn@0.1.0 build:embed
+> tsup
+
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Building entry: {"chatbot":"src/embed/index.tsx","locator":"src/embed/locator.tsx"}
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsconfig: tsconfig.json
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m tsup v8.5.1
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsup config: C:\Users\marte\Baked for Brands\markitbot-for-brands\tsup.config.ts
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Target: es2020
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Cleaning output folder
+[2m[[22mCHATBOT[2m][22m [34mIIFE[39m Build start
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.css [22m[32m146.03 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.css [22m[32m146.03 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.js  [22m[32m599.71 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.js  [22m[32m779.03 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m GÜín+Å Build success in 10368ms
+
+> nextn@0.1.0 check:structure
+> node scripts/check-app-structure.mjs
+
+
+> nextn@0.1.0 check:types
+> tsc --noEmit
+
+.next/types/validator.ts(1034,39): error TS2307: Cannot find module '../../src/app/shop/[slug]/page.js' or its corresponding type declarations.
+

@@ -1,0 +1,93 @@
+{
+  "build": {
+    "images": [
+      "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+    ],
+    "options": {
+      "logging": "CLOUD_LOGGING_ONLY",
+      "substitutionOption": "ALLOW_LOOSE"
+    },
+    "steps": [
+      {
+        "args": [
+          "build",
+          "--no-cache",
+          "-t",
+          "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA",
+          "cloud-run",
+          "-f",
+          "cloud-run/openclaw-service"
+        ],
+        "id": "Build",
+        "name": "gcr.io/cloud-builders/docker"
+      },
+      {
+        "args": [
+          "push",
+          "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+        ],
+        "id": "Push",
+        "name": "gcr.io/cloud-builders/docker"
+      },
+      {
+        "args": [
+          "run",
+          "services",
+          "update",
+          "$_SERVICE_NAME",
+          "--platform=managed",
+          "--image=$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA",
+          "--labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID",
+          "--region=$_DEPLOY_REGION",
+          "--quiet"
+        ],
+        "entrypoint": "gcloud",
+        "id": "Deploy",
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+      }
+    ],
+    "substitutions": {
+      "_AR_HOSTNAME": "us-central1-docker.pkg.dev",
+      "_AR_PROJECT_ID": "markitbot-agents",
+      "_AR_REPOSITORY": "cloud-run-source-deploy",
+      "_DEPLOY_REGION": "us-central1",
+      "_PLATFORM": "managed",
+      "_SERVICE_NAME": "markitbot-for-brands",
+      "_TRIGGER_ID": "bd713c94-b701-4e38-842a-593b1d602ede"
+    },
+    "tags": [
+      "gcp-cloud-build-deploy-cloud-run",
+      "gcp-cloud-build-deploy-cloud-run-managed",
+      "markitbot-for-brands"
+    ]
+  },
+  "createTime": "2026-02-06T19:34:02.813982148Z",
+  "description": "Build and deploy to Cloud Run service markitbot-for-brands on push to \"^main$\"",
+  "github": {
+    "name": "markitbot-for-brands",
+    "owner": "admin-baked",
+    "push": {
+      "branch": "^main$"
+    }
+  },
+  "id": "bd713c94-b701-4e38-842a-593b1d602ede",
+  "includeBuildLogs": "INCLUDE_BUILD_LOGS_WITH_STATUS",
+  "name": "rmgpgab-markitbot-for-brands-us-central1-admin-baked-bakedbotgih",
+  "resourceName": "projects/markitbot-agents/locations/global/triggers/bd713c94-b701-4e38-842a-593b1d602ede",
+  "serviceAccount": "projects/markitbot-agents/serviceAccounts/561517685610-compute@developer.gserviceaccount.com",
+  "substitutions": {
+    "_AR_HOSTNAME": "us-central1-docker.pkg.dev",
+    "_AR_PROJECT_ID": "markitbot-agents",
+    "_AR_REPOSITORY": "cloud-run-source-deploy",
+    "_DEPLOY_REGION": "us-central1",
+    "_PLATFORM": "managed",
+    "_SERVICE_NAME": "markitbot-for-brands",
+    "_TRIGGER_ID": "bd713c94-b701-4e38-842a-593b1d602ede"
+  },
+  "tags": [
+    "gcp-cloud-build-deploy-cloud-run",
+    "gcp-cloud-build-deploy-cloud-run-managed",
+    "markitbot-for-brands"
+  ]
+}
+

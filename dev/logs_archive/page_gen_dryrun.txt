@@ -1,0 +1,33 @@
+--- PAGE GENERATOR ---
+Limit: All
+Dry Run: true
+
+[1/4] Loading discovered dispensaries...
+   Found 200 dispensaries
+
+[2/4] Loading discovered brands...
+   Found 1 brands
+
+[2/4] Loading ZIP codes...
+   Found 30001 ZIP codes
+   1383 verified ZIPs with dispensaries
+
+[3/4] Generating pages...
+   Filtered to 200 dispensaries in Illinois
+   Generated 200 dispensary pages
+   Generated 1383 ZIP pages
+   Generated 1248 City pages
+   Generated 1 Brand pages
+
+[4/4] Writing to Firestore...
+   DRY RUN - Skipping Firestore writes
+   Would create 200 dispensary pages
+   Would create 1383 ZIP pages
+   Would create 1 brand pages
+
+=ƒôä Log saved to C:\Users\marte\Baked for Brands\markitbot-for-brands\dev\page_generation_log.json
+
+--- GENERATION COMPLETE ---
+Dispensary Pages: 200
+ZIP Pages: 1383
+

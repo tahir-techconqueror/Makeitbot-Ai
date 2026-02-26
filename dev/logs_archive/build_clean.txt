@@ -1,0 +1,122 @@
+
+> nextn@0.1.0 build
+> npm run build:embed && npm run check:structure && npm run check:types && next build
+
+
+> nextn@0.1.0 build:embed
+> tsup
+
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Building entry: {"chatbot":"src/embed/index.tsx","locator":"src/embed/locator.tsx"}
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsconfig: tsconfig.json
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m tsup v8.5.1
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsup config: C:\Users\marte\Baked for Brands\markitbot-for-brands\tsup.config.ts
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Target: es2020
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Cleaning output folder
+[2m[[22mCHATBOT[2m][22m [34mIIFE[39m Build start
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.css [22m[32m146.13 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.css [22m[32m146.13 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.js  [22m[32m599.71 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.js  [22m[32m779.03 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m GÜín+Å Build success in 8326ms
+
+> nextn@0.1.0 check:structure
+> node scripts/check-app-structure.mjs
+
+
+> nextn@0.1.0 check:types
+> tsc --noEmit
+
+   Gû¦ Next.js 16.0.7 (Turbopack)
+node.exe :  GÜá The 
+"middleware" file 
+convention is deprecated. 
+Please use "proxy" 
+instead. Learn more: https
+://nextjs.org/docs/message
+s/middleware-to-proxy
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (   
+  GÜá The "middl...lewa   
+ re-to-proxy:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+Turbopack build 
+encountered 2 warnings:
+./node_modules/@openteleme
+try/sdk-node/node_modules/
+@opentelemetry/instrumenta
+tion/build/esm/platform/no
+de
+Package 
+import-in-the-middle 
+can't be external
+The request 
+import-in-the-middle 
+matches 
+serverExternalPackages 
+(or the default list).
+The package resolves to a 
+different version when 
+requested from the 
+project directory (2.0.0) 
+compared to the package 
+requested from the 
+importing module (1.15.0).
+Make sure to install the 
+same version of the 
+package in both locations.
+
+
+./node_modules/@openteleme
+try/sdk-node/node_modules/
+@opentelemetry/instrumenta
+tion/build/esm/platform/no
+de
+Package 
+require-in-the-middle 
+can't be external
+The request 
+require-in-the-middle 
+matches 
+serverExternalPackages 
+(or the default list).
+The package resolves to a 
+different version when 
+requested from the 
+project directory (8.0.1) 
+compared to the package 
+requested from the 
+importing module (7.5.2).
+Make sure to install the 
+same version of the 
+package in both locations.
+
+
+
+> Build error occurred
+Error: Turbopack build 
+failed with 1 errors:
+./src/app/shop
+You cannot have two 
+parallel pages that 
+resolve to the same path. 
+Please check /(customer-me
+nu)/shop/[slug] and /shop.
+
+    at ignore-listed 
+frames
+

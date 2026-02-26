@@ -1,0 +1,375 @@
+
+import { AgentImplementation } from './harness';
+import { ExecutiveMemory } from './schemas';
+export type { ExecutiveMemory } from './schemas';
+import { logger } from '@/lib/logger';
+import { ai } from '@/ai/genkit';
+import { z } from 'zod';
+import { contextOsToolDefs, lettaToolDefs, intuitionOsToolDefs, AllSharedTools } from './shared-tools';
+import {
+    buildSquadRoster,
+    getDelegatableAgentIds,
+    buildIntegrationStatusSummary,
+    AgentId
+} from './agent-definitions';
+
+export interface ExecutiveTools extends Partial<AllSharedTools> {
+  // Common tools for the executive floor
+  generateSnapshot?(query: string, context: any): Promise<string>;
+  delegateTask?(personaId: string, task: string, context?: any): Promise<any>;
+  broadcast?(message: string, channels: string[], recipients: string[]): Promise<any>;
+
+  // RTRvr Advanced Web Tools
+  rtrvrAgent?(prompt: string, options?: any): Promise<any>;
+  rtrvrScrape?(url: string): Promise<any>;
+  rtrvrMcp?(serverName: string, args: any): Promise<any>;
+
+  // Digital Worker / Playbooks
+  createPlaybook?(name: string, description: string, steps: any[], schedule?: string): Promise<any>;
+  use_mcp_tool?(serverName: string, toolName: string, args: any): Promise<any>;
+
+  // CRM & Data Tools
+  crmListUsers?(search?: string, lifecycleStage?: string, limit?: number): Promise<any>;
+  crmGetStats?(): Promise<any>;
+
+  // Executive Productivity Suite
+  driveUploadFile?(name: string, content: string, mimeType: string): Promise<any>;
+  sendEmail?(to: string, subject: string, content: string): Promise<any>;
+  bashExecute?(command: string, cwd?: string, timeout?: number): Promise<any>;
+
+  // Brain Upgrades (Hive Mind & Learning)
+  sleepAndReflect?(): Promise<any>;
+  agentMountSkill?(skillName: string): Promise<any>;
+
+  // markitbot AI in Chrome - Browser Automation
+  'browserSession.create'?(options?: { taskDescription?: string; initialUrl?: string }): Promise<any>;
+  'browserSession.navigate'?(url: string): Promise<any>;
+  'browserSession.interact'?(action: 'click' | 'type' | 'scroll', selector: string, value?: string): Promise<any>;
+  'browserSession.screenshot'?(): Promise<any>;
+  'browserSession.runWorkflow'?(workflowId: string, variables?: Record<string, string>): Promise<any>;
+  'browserSession.scheduleTask'?(name: string, workflowId: string | undefined, scheduleType: string, time: string): Promise<any>;
+}
+
+/**
+ * Generic Executive Agent Implementation
+ * Reusable for Leo, Jack, Linus, Glenda, Mike
+ */
+export const executiveAgent: AgentImplementation<ExecutiveMemory, ExecutiveTools> = {
+  agentName: 'executive_base',
+
+  async initialize(brandMemory, agentMemory) {
+    logger.info(`[Executive] Initializing for ${brandMemory.brand_profile.name}...`);
+    
+    // Ensure objectives tracking is initialized from brand memory if empty
+    if (!agentMemory.objectives || agentMemory.objectives.length === 0) {
+        agentMemory.objectives = [...brandMemory.priority_objectives];
+    }
+
+    // Build dynamic squad roster from agent-definitions (source of truth)
+    const squadRoster = buildSquadRoster();
+    const integrationStatus = buildIntegrationStatusSummary();
+
+    agentMemory.system_instructions = `
+        You are an Executive Boardroom Member for ${brandMemory.brand_profile.name}.
+        Your role is to act as a high-level strategic operator.
+
+        CAPABILITIES:
+        1. **Plan & Delegate**: Break down complex goals into tasks for other agents.
+        2. **RTRvr Access**: You have exclusive access to a "Browser Agent" (RTRvr) that can login, download files, and browse the web autonomously.
+        3. **Live CRM Access**: You have READ access to the real user database. Use 'crmListUsers' to inspect signups.
+        4. **Strategic Oversight**: Always tie actions back to the Brand Objectives.
+
+        === AGENT SQUAD (Available for Delegation) ===
+        ${squadRoster}
+
+        === INTEGRATION STATUS ===
+        ${integrationStatus}
+
+        === GROUNDING RULES (CRITICAL) ===
+        You MUST follow these rules to avoid hallucination:
+
+        1. **ONLY report data you can actually query.** Use tools to get real data.
+           - DO NOT fabricate metrics, user counts, or system statuses.
+           - If a tool returns no data, say "No data available" — don't make up values.
+
+        2. **ONLY delegate to agents that exist in the AGENT SQUAD list above.**
+           - DO NOT invent agents or give agents incorrect roles.
+
+        3. **For integrations NOT YET ACTIVE, be honest about limitations.**
+           - Check the INTEGRATION STATUS section above.
+           - Offer to help set up missing integrations rather than claiming they work.
+
+        4. **When uncertain, ASK rather than assume.**
+           - "I don't have visibility into X. Would you like me to investigate?"
+
+        5. **Use REAL timestamps, not placeholders.**
+           - Use actual Date.now() values, not "[Current Date/Time]".
+
+        OUTPUT RULES:
+        - Use standard markdown headers (###) to separate strategic sections like "Strategic Snapshot", "Operational Directives", and "Resource Allocation".
+        - This ensures your response renders correctly as rich cards in the dashboard.
+        - Always cite the source of your data (tool call or database query).
+    `;
+
+    // === HIVE MIND INIT ===
+    try {
+        const { lettaBlockManager } = await import('@/server/services/letta/block-manager');
+        const brandId = (brandMemory.brand_profile as any)?.id || 'unknown';
+        await lettaBlockManager.attachBlocksForRole(brandId, agentMemory.agent_id as string, 'executive');
+        logger.info(`[Executive:HiveMind] Connected ${agentMemory.agent_id} to shared executive blocks.`);
+    } catch (e) {
+        logger.warn(`[Executive:HiveMind] Failed to connect to Hive Mind: ${e}`);
+    }
+    
+    return agentMemory;
+  },
+
+  async orient(brandMemory, agentMemory, stimulus) {
+    if (stimulus && typeof stimulus === 'string') return 'user_request';
+
+    // Strategy: Check if the $100k MRR objective needs an update
+    const mrrObjective = agentMemory.objectives.find(o => o.description.includes('MRR') || o.id === 'mrr_goal');
+    if (mrrObjective && mrrObjective.status === 'active') {
+        return 'mrr_check';
+    }
+
+    return null;
+  },
+
+  async act(brandMemory, agentMemory, targetId, tools: ExecutiveTools, stimulus?: string) {
+    // === SCENARIO A: User Request (The "Planner" Flow) ===
+    if (targetId === 'user_request' && stimulus) {
+        const userQuery = stimulus;
+        
+        // Get delegatable agent IDs dynamically from registry
+        const delegatableAgents = getDelegatableAgentIds();
+
+        // Executive-specific tools for high-level operations
+        const executiveSpecificTools = [
+            {
+                name: "generateSnapshot",
+                description: "Get a quick strategic overview of a topic.",
+                schema: z.object({ query: z.string(), context: z.any().optional() })
+            },
+            {
+                name: "delegateTask",
+                description: "Assign a task to a specialized agent in the squad. Route to the right specialist based on their expertise.",
+                schema: z.object({
+                    personaId: z.enum(delegatableAgents as [AgentId, ...AgentId[]]),
+                    task: z.string().describe("Clear description of the task to delegate"),
+                    context: z.any().optional().describe("Additional context for the task")
+                })
+            },
+            {
+                name: "rtrvrAgent",
+                description: "Launch an autonomous browser agent to perform complex web tasks (login, download, post).",
+                schema: z.object({ prompt: z.string().describe("Instructions for the browser agent") })
+            },
+            {
+                name: "rtrvrScrape",
+                description: "Scrape a specific URL for its content or accessibility tree.",
+                schema: z.object({ url: z.string() })
+            },
+            {
+                name: "createPlaybook",
+                description: "Spawn a Digital Worker (recurring playbook) to handle a task daily/weekly.",
+                schema: z.object({
+                    name: z.string(),
+                    description: z.string(),
+                    steps: z.array(z.any()),
+                    schedule: z.string().optional().describe("CRON string e.g. '0 9 * * *'")
+                })
+            },
+            {
+                name: "use_mcp_tool",
+                description: "Call an external tool provided by a connected Model Context Protocol (MCP) server.",
+                schema: z.object({
+                    serverName: z.string().describe("ID of the MCP server (e.g., 'filesystem', 'github')"),
+                    toolName: z.string(),
+                    args: z.record(z.any())
+                })
+            },
+            {
+                name: "bashExecute",
+                description: "Execute a shell command for development tasks. Security restrictions apply.",
+                schema: z.object({
+                    command: z.string().describe("The shell command to execute"),
+                    cwd: z.string().optional().describe("Working directory"),
+                    timeout: z.number().optional().describe("Timeout in milliseconds")
+                })
+            },
+            {
+                name: "firecrawlScrapeMenu",
+                description: "Scrape a dispensary menu with automatic age gate bypass. Use for cannabis websites.",
+                schema: z.object({
+                    url: z.string().describe("URL of the dispensary menu page"),
+                    waitMs: z.number().optional().describe("Wait time for content to load after age gate")
+                })
+            },
+            {
+                name: "crmListUsers",
+                description: "List real platform users (signups) from the database.",
+                schema: z.object({
+                    search: z.string().optional(),
+                    lifecycleStage: z.enum(['prospect', 'contacted', 'demo_scheduled', 'trial', 'customer', 'vip', 'churned', 'winback']).optional(),
+                    limit: z.number().optional()
+                })
+            },
+            {
+                name: "crmGetStats",
+                description: "Get high-level CRM stats (MRR, Total Users).",
+                schema: z.object({})
+            },
+            {
+                name: "drive.uploadFile",
+                description: "Upload a strategic document or report to Google Drive.",
+                schema: z.object({
+                    name: z.string(),
+                    content: z.string(),
+                    mimeType: z.string().optional()
+                })
+            },
+            {
+                name: "communications.sendEmail",
+                description: "Send an email from your executive account.",
+                schema: z.object({
+                    to: z.string(),
+                    subject: z.string(),
+                    content: z.string()
+                })
+            },
+            {
+                name: "browse_web",
+                description: "Advanced web browsing capability to read pages, take screenshots, click elements, and type text. Useful for verification and deep research.",
+                schema: z.object({
+                    url: z.string(),
+                    action: z.enum(['read', 'screenshot', 'click', 'type', 'search']).optional().describe('Action to perform (default: read)'),
+                    selector: z.string().optional().describe('CSS selector for click/type actions'),
+                    inputValue: z.string().optional().describe('Text to type')
+                })
+            },
+            // === markitbot AI in Chrome Tools ===
+            {
+                name: "browserSession.create",
+                description: "Create a new browser automation session for running multi-step tasks on Chrome.",
+                schema: z.object({
+                    taskDescription: z.string().optional().describe("Description of what this session will accomplish"),
+                    initialUrl: z.string().optional().describe("URL to navigate to when session starts")
+                })
+            },
+            {
+                name: "browserSession.navigate",
+                description: "Navigate to a URL in the active browser session.",
+                schema: z.object({
+                    url: z.string().url().describe("URL to navigate to")
+                })
+            },
+            {
+                name: "browserSession.interact",
+                description: "Click, type, or interact with elements in the browser session.",
+                schema: z.object({
+                    action: z.enum(['click', 'type', 'scroll']).describe("Action type"),
+                    selector: z.string().describe("CSS selector for the target element"),
+                    value: z.string().optional().describe("Value to type (for type action)")
+                })
+            },
+            {
+                name: "browserSession.screenshot",
+                description: "Take a screenshot of the current page in the browser session.",
+                schema: z.object({})
+            },
+            {
+                name: "browserSession.runWorkflow",
+                description: "Run a saved browser automation workflow by ID.",
+                schema: z.object({
+                    workflowId: z.string().describe("ID of the workflow to run"),
+                    variables: z.record(z.string()).optional().describe("Variable substitutions")
+                })
+            },
+            {
+                name: "browserSession.scheduleTask",
+                description: "Schedule a browser automation task to run on a recurring schedule.",
+                schema: z.object({
+                    name: z.string().describe("Name of the scheduled task"),
+                    workflowId: z.string().optional().describe("Workflow to run"),
+                    scheduleType: z.enum(['daily', 'weekly', 'monthly']).describe("Schedule frequency"),
+                    time: z.string().describe("Time to run (HH:mm format)")
+                })
+            }
+        ];
+
+        // Combine Executive-specific tools with shared Context OS, Letta Memory, and Intuition OS tools
+        const toolsDef = [
+            ...executiveSpecificTools,
+            ...contextOsToolDefs,
+            ...lettaToolDefs,
+            ...intuitionOsToolDefs
+        ];
+
+        try {
+            // === MULTI-STEP PLANNING ===
+            // Import the helper
+            const { runMultiStepTask } = await import('./harness');
+            
+            const result = await runMultiStepTask({
+                userQuery,
+                systemInstructions: (agentMemory.system_instructions as string) || '',
+                toolsDef,
+                tools,
+                model: 'claude', // Triggers harness routing to Claude 4.5 Opus
+                maxIterations: 5,
+                onStepComplete: async (step, toolName, result) => {
+                    // Persist each step to Letta
+                    if ((tools as any).lettaSaveFact) {
+                        try {
+                            await (tools as any).lettaSaveFact(
+                                `Executive Step ${step}: ${toolName} -> ${JSON.stringify(result).slice(0, 200)}`,
+                                'task_log'
+                            );
+                        } catch (err) {
+                            console.warn('Failed to save step to Letta:', err);
+                        }
+                    }
+                }
+            });
+
+            return {
+                updatedMemory: agentMemory,
+                logEntry: {
+                    action: 'multi_step_execution',
+                    result: result.finalResult,
+                    metadata: { steps: result.steps.length, tools_used: result.steps.map(s => s.tool) }
+                }
+            };
+
+        } catch (e: any) {
+             return {
+                updatedMemory: agentMemory,
+                logEntry: { action: 'error', result: `Planning failed: ${e.message}`, metadata: { error: e.message } }
+            };
+        }
+    }
+
+    if (targetId === 'mrr_check') {
+        return {
+            updatedMemory: agentMemory,
+            logEntry: {
+                action: 'monitor_growth',
+                result: "Currently monitoring the path to $100k MRR. Aligning Jack (CRO) and Glenda (CMO) on the National Discovery Layer push.",
+                next_step: 'await_data',
+                metadata: { objective: '100k_mrr' }
+            }
+        };
+    }
+
+    return {
+        updatedMemory: agentMemory,
+        logEntry: {
+            action: 'idle',
+            result: 'Awaiting instructions or strategic signals.',
+            next_step: 'wait',
+            metadata: {}
+        }
+    };
+  }
+};

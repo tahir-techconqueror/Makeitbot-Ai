@@ -1,0 +1,155 @@
+{
+    "tests": [
+        {
+            "id": "test_brand_memory_create_read_update",
+            "command": "npm test -- brandMemory.test.ts",
+            "files": [
+                "src/server/agents/schemas.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_craig_selects_failing_campaign",
+            "command": "npm test -- craig-agent.test.ts",
+            "files": [
+                "src/server/agents/craig.ts",
+                "tests/server/agents/craig-agent.test.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "check_types_passing",
+            "command": "npm run check:types",
+            "files": [
+                "src/**/*.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_smokey_logic",
+            "command": "npm test -- smokey.test.ts",
+            "files": [
+                "src/server/agents/smokey.ts",
+                "tests/server/smokey.test.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_executive_agent",
+            "command": "npm test -- executive-agent.test.ts",
+            "files": [
+                "src/server/agents/executive.ts",
+                "tests/server/agents/executive-agent.test.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_ezal_agent",
+            "command": "npm test -- ezal-agent.test.ts",
+            "files": [
+                "src/server/agents/ezal.ts",
+                "tests/server/agents/ezal-agent.test.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_pops_agent",
+            "command": "npm test -- pops-agent.test.ts",
+            "files": [
+                "src/server/agents/pops.ts",
+                "tests/server/agents/pops-agent.test.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_loyalty_points_calculation",
+            "command": "npm test -- loyalty.test.ts",
+            "files": [
+                "src/server/agents/mrsParker.ts",
+                "src/server/services/loyalty.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_iheart_service_mock",
+            "command": "npm test -- iheart.test.ts",
+            "files": [
+                "src/server/services/iheart.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_service_geo",
+            "command": "npm test -- geo-discovery.test.ts",
+            "files": [
+                "src/server/services/geo-discovery.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_service_cannmenus",
+            "command": "npm test -- cannmenus.test.ts",
+            "files": [
+                "src/server/services/cannmenus.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_service_availability",
+            "command": "npm test -- availability.test.ts",
+            "files": [
+                "src/server/services/availability-orchestrator.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_component_checkout",
+            "command": "npm test -- checkout-form.test.tsx",
+            "files": [
+                "src/components/checkout/checkout-form.tsx"
+            ],
+            "area": "frontend"
+        },
+        {
+            "id": "test_component_compliance",
+            "command": "npm test -- compliance.test.tsx",
+            "files": [
+                "src/components/compliance"
+            ],
+            "area": "frontend"
+        },
+        {
+            "id": "test_lib_retry",
+            "command": "npm test -- retry.test.ts",
+            "files": [
+                "src/lib/retry-utility.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_lib_cannmenus_api",
+            "command": "npm test -- cannmenus-api.test.ts",
+            "files": [
+                "src/lib/cannmenus-api.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_lib_payments",
+            "command": "npm test -- payments.test.ts",
+            "files": [
+                "src/lib/smokey-pay.ts",
+                "src/lib/authorize-net.ts"
+            ],
+            "area": "backend"
+        },
+        {
+            "id": "test_puff_chat_logic",
+            "command": "npx jest src/app/dashboard/ceo/hooks/__tests__/use-puff-chat-logic.test.tsx",
+            "files": [
+                "src/app/dashboard/ceo/hooks/use-puff-chat-logic.ts"
+            ],
+            "area": "frontend"
+        }
+    ]
+}

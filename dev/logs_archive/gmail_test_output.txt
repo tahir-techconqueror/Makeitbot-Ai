@@ -1,0 +1,77 @@
+
+> nextn@0.1.0 test
+> jest --testPathPattern=gmail.test --verbose
+
+  console.error
+    [gmailAction] Error: Error: Gmail API error: Unauthorized
+        at gmailAction (C:\Users\marte\Baked for Brands\markitbot-for-brands\src\server\tools\gmail.ts:64:40)
+        at Object.<anonymous> (C:\Users\marte\Baked for Brands\markitbot-for-brands\tests\server\tools\gmail.test.ts:198:28)
+
+    [0m [90m 141 |[39m         }
+     [90m 142 |[39m     } [36mcatch[39m (error[33m:[39m any) {
+    [31m[1m>[22m[39m[90m 143 |[39m         console[33m.[39merror([32m'[gmailAction] Error:'[39m[33m,[39m error)[33m;[39m
+     [90m     |[39m                 [31m[1m^[22m[39m
+     [90m 144 |[39m         [36mreturn[39m { success[33m:[39m [36mfalse[39m[33m,[39m error[33m:[39m error[33m.[39mmessage }[33m;[39m
+     [90m 145 |[39m     }
+     [90m 146 |[39m }[0m
+
+      at error (src/server/tools/gmail.ts:143:17)
+      at Object.<anonymous> (tests/server/tools/gmail.test.ts:198:28)
+
+node.exe : PASS tests/serve
+r/tools/gmail.test.ts
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (PAS  
+  S tests/server/tools/g   
+ mail.test.ts:String) [    
+], RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  Gmail Tool (gmailAction)
+    Authentication
+      GêÜ should return 
+error if no access token 
+is stored (3 ms)
+    list action
+      GêÜ should list 
+messages with query (4 ms)
+      GêÜ should handle 
+empty message list (1 ms)
+    read action
+      GêÜ should return 
+error if messageId is 
+missing (1 ms)
+      GêÜ should read 
+message and decode body (6 
+ms)
+    send action
+      GêÜ should return 
+error if to, subject, or 
+body is missing (1 ms)
+      GêÜ should send 
+email successfully (1 ms)
+    Error handling
+      GêÜ should handle 
+unknown action
+      GêÜ should handle 
+API errors (39 ms)
+
+Test Suites: 1 passed, 1 
+total
+Tests:       9 passed, 9 
+total
+Snapshots:   0 total
+Time:        1.766 s, 
+estimated 2 s
+Ran all test suites 
+matching /gmail.test/i.
+

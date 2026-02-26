@@ -1,0 +1,260 @@
+/**
+ * markitbot AI Chrome Extension - Content Script Styles (Dark Theme)
+ *
+ * Styles for recording overlay, highlights, notifications and confirmation modal.
+ */
+
+:root {
+  /* Core palette - aligned with popup dark theme */
+  --bg-overlay:      hsl(220 20% 9%);
+  --bg-indicator:    linear-gradient(135deg, hsl(220 18% 13%) 0%, hsl(220 16% 17%) 100%);
+  --text-overlay:    hsl(0 0% 98%);
+  --text-muted:      hsl(215 20% 72%);
+  --border-overlay:  hsl(220 18% 24%);
+  --accent-green:    hsl(142 70% 58%);
+  --accent-green-dark:hsl(142 70% 48%);
+  --accent-red:      hsl(0 84% 62%);
+  --accent-yellow:   hsl(45 93% 58%);
+  --accent-blue:     hsl(210 80% 60%);
+
+  --shadow-overlay:  0 6px 20px rgba(0,0,0,0.55);
+  --shadow-modal:    0 12px 40px rgba(0,0,0,0.65);
+  --radius-sm:       8px;
+  --radius-pill:     9999px;
+  --radius-modal:    14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Recording Overlay */
+#markitbot-recording-overlay {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  pointer-events: none;
+}
+
+.markitbot-recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: var(--bg-indicator);
+  border: 1px solid var(--accent-green);
+  border-radius: var(--radius-pill);
+  color: var(--text-overlay);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-overlay);
+  backdrop-filter: blur(8px);
+}
+
+.markitbot-recording-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-red);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+  animation: markitbot-pulse 1.5s ease-in-out infinite;
+}
+
+/* Element Highlight */
+#markitbot-highlight,
+#markitbot-picker-highlight {
+  position: fixed;
+  border: 2px solid var(--accent-green);
+  background: rgba(34, 197, 94, 0.12);
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 2147483646;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.35);
+}
+
+#markitbot-picker-highlight {
+  border-style: dashed;
+  background: rgba(34, 197, 94, 0.08);
+}
+
+/* Click Feedback */
+.markitbot-click-ripple {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  background: rgba(34, 197, 94, 0.45);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: markitbot-ripple 0.45s ease-out forwards;
+  pointer-events: none;
+  z-index: 2147483647;
+}
+
+/* Toast Notifications */
+.markitbot-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  padding: 14px 28px;
+  background: var(--bg-indicator);
+  color: var(--text-overlay);
+  border-radius: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow-overlay);
+  z-index: 2147483647;
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-left: 5px solid var(--accent-blue);
+  max-width: 420px;
+  backdrop-filter: blur(10px);
+}
+
+.markitbot-toast-visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.markitbot-toast-success {
+  border-left-color: var(--accent-green);
+}
+
+.markitbot-toast-error {
+  border-left-color: var(--accent-red);
+}
+
+.markitbot-toast-warning {
+  border-left-color: var(--accent-yellow);
+}
+
+.markitbot-toast-info {
+  border-left-color: var(--accent-blue);
+}
+
+/* Animations */
+@keyframes markitbot-ripple {
+  to {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes markitbot-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.9);
+  }
+}
+
+@keyframes markitbot-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* High Risk Warning Modal */
+#markitbot-confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.markitbot-confirm-dialog {
+  background: var(--bg-indicator);
+  border-radius: var(--radius-modal);
+  padding: 28px;
+  max-width: 420px;
+  width: 90%;
+  color: var(--text-overlay);
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--border-overlay);
+  animation: markitbot-fade-in 0.22s ease;
+  backdrop-filter: blur(12px);
+}
+
+.markitbot-confirm-title {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.markitbot-confirm-title svg {
+  color: var(--accent-yellow);
+}
+
+.markitbot-confirm-message {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  line-height: 1.55;
+}
+
+.markitbot-confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.markitbot-btn {
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.16s ease;
+}
+
+.markitbot-btn-cancel {
+  background: hsl(220 18% 22%);
+  color: white;
+}
+
+.markitbot-btn-cancel:hover {
+  background: hsl(220 18% 28%);
+}
+
+.markitbot-btn-confirm {
+  background: var(--accent-green);
+  color: white;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.35);
+}
+
+.markitbot-btn-confirm:hover {
+  background: var(--accent-green-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
+}
+
+.markitbot-btn-danger {
+  background: var(--accent-red);
+  color: white;
+}
+
+.markitbot-btn-danger:hover {
+  background: hsl(0 84% 54%);
+  transform: translateY(-1px);
+}

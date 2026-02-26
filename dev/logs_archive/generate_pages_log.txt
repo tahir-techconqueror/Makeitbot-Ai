@@ -1,0 +1,87 @@
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (:String   
+ ) [], RemoteExce    
+ption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+node:internal/modules
+/run_main:107
+    triggerUncaughtEx
+ception(
+    ^
+Error: Transform 
+failed with 1 error:
+C:\Users\marte\Baked 
+for Brands\markitbot-f
+or-brands\dev\generat
+e-pages.ts:83:0: 
+ERROR: Unexpected "}"
+    at 
+failureErrorWithLog (
+C:\Users\marte\Baked 
+for Brands\markitbot-f
+or-brands\node_module
+s\esbuild\lib\main.js
+:1467:15)
+    at 
+C:\Users\marte\Baked 
+for Brands\markitbot-f
+or-brands\node_module
+s\esbuild\lib\main.js
+:736:50
+    at responseCallba
+cks.<computed> (C:\Us
+ers\marte\Baked for B
+rands\markitbot-for-br
+ands\node_modules\esb
+uild\lib\main.js:603:
+9)
+    at 
+handleIncomingPacket 
+(C:\Users\marte\Baked
+ for Brands\markitbot-
+for-brands\node_modul
+es\esbuild\lib\main.j
+s:658:12)
+    at Socket.readFro
+mStdout (C:\Users\mar
+te\Baked for Brands\b
+akedbot-for-brands\no
+de_modules\esbuild\li
+b\main.js:581:7)
+    at Socket.emit 
+(node:events:508:28)
+    at addChunk (node
+:internal/streams/rea
+dable:559:12)
+    at readableAddChu
+nkPushByteMode (node:
+internal/streams/read
+able:510:3)
+    at Readable.push 
+(node:internal/stream
+s/readable:390:5)
+    at 
+Pipe.onStreamRead (no
+de:internal/stream_ba
+se_commons:189:23) {
+  name: 
+'TransformError'
+}
+
+Node.js v24.11.1
+

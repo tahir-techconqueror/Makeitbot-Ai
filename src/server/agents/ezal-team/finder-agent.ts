@@ -1,0 +1,291 @@
+/**
+ * Radar Finder Agent
+ *
+ * Step 1 of the competitive intelligence pipeline.
+ * Discovers competitor URLs using Exa, Perplexity, or web search.
+ */
+
+import { logger } from '@/lib/logger';
+import { runMultiStepTask } from '../harness';
+import {
+  FinderTools,
+  FinderResult,
+  DiscoveredUrl,
+  EzalPipelineState,
+} from './types';
+import { z } from 'zod';
+import { filterUrls, extractDisplayDomain } from './url-filter';
+
+// ============================================================================
+// FINDER AGENT SYSTEM INSTRUCTIONS
+// ============================================================================
+
+const FINDER_SYSTEM_INSTRUCTIONS = `
+You are the FINDER - the first step in the Radar Competitive Intelligence pipeline.
+
+YOUR MISSION: Discover REAL DISPENSARY MENU URLs for competitive intelligence.
+
+=== CRITICAL: ONLY RETURN DISPENSARY MENUS ===
+We need ACTUAL DISPENSARY WEBSITES with live product menus and pricing.
+DO NOT return:
+- Reddit threads or forum posts
+- News articles or blog posts
+- Generic chain landing pages (e.g., medmen.com instead of medmen.com/stores/los-angeles)
+- Social media pages
+- Yelp reviews or Google Maps
+- Any URL without actual product/pricing data
+
+=== VALID URL PATTERNS ===
+✅ Dutchie stores: dutchie.com/stores/[store-name]
+✅ iHeartJane stores: [store-name].iheartjane.com/menu
+✅ Weedmaps dispensaries: weedmaps.com/dispensaries/[name]
+✅ Individual dispensary websites with /menu or /shop pages
+✅ Leafly dispensary pages: leafly.com/dispensary-info/[name]
+
+=== SEARCH STRATEGY ===
+1. Search for "[city] cannabis dispensary menu" or "[city] dispensary online ordering"
+2. Focus on dispensary names + "menu" or "order online"
+3. Look for specific store URLs, not chain homepages
+4. Prioritize URLs from known platforms (Dutchie, iHeartJane, Weedmaps)
+
+=== OUTPUT ===
+Return 5-10 high-quality dispensary menu URLs.
+Quality over quantity - 5 real menus beats 10 mixed results.
+`;
+
+// ============================================================================
+// FINDER AGENT IMPLEMENTATION
+// ============================================================================
+
+/**
+ * Run the Finder agent to discover competitor URLs.
+ */
+export async function runFinderAgent(
+  pipelineState: EzalPipelineState,
+  tools: FinderTools
+): Promise<FinderResult> {
+  const startTime = Date.now();
+  const { query, tenantId } = pipelineState;
+
+  logger.info(`[Radar:Finder] Starting URL discovery for: "${query}"`);
+
+  const urls: DiscoveredUrl[] = [];
+  const searchQueries: string[] = [];
+
+  // Build tool definitions based on available tools
+  const toolsDef = [];
+  const toolsImpl: Record<string, (...args: unknown[]) => Promise<unknown>> = {};
+
+  if (tools.searchExa) {
+    toolsDef.push({
+      name: 'searchExa',
+      description: 'Search using Exa AI for semantic/neural search of cannabis menus and dispensaries',
+      schema: z.object({
+        query: z.string().describe('Search query'),
+        numResults: z.number().optional().describe('Number of results (default 5)'),
+      }),
+    });
+    toolsImpl.searchExa = async (q: unknown, opts: unknown) => {
+      const query = q as string;
+      const options = opts as { numResults?: number } | undefined;
+      return tools.searchExa!(query, options);
+    };
+  }
+
+  if (tools.searchPerplexity) {
+    toolsDef.push({
+      name: 'searchPerplexity',
+      description: 'Search using Perplexity for real-time market data and competitor info',
+      schema: z.object({
+        query: z.string().describe('Search query'),
+      }),
+    });
+    toolsImpl.searchPerplexity = async (q: unknown) => tools.searchPerplexity!(q as string);
+  }
+
+  if (tools.searchWeb) {
+    toolsDef.push({
+      name: 'searchWeb',
+      description: 'General web search for competitor information',
+      schema: z.object({
+        query: z.string().describe('Search query'),
+      }),
+    });
+    toolsImpl.searchWeb = async (q: unknown) => tools.searchWeb!(q as string);
+  }
+
+  toolsDef.push({
+    name: 'validateUrl',
+    description: 'Check if a URL is accessible and valid',
+    schema: z.object({
+      url: z.string().url().describe('URL to validate'),
+    }),
+  });
+  toolsImpl.validateUrl = async (url: unknown) => tools.validateUrl(url as string);
+
+  // Run multi-step task to discover URLs
+  const result = await runMultiStepTask({
+    userQuery: `Find competitor dispensary menu URLs for: ${query}
+
+Focus on:
+- Cannabis dispensary menus with pricing
+- Competitor websites in the same market
+- Menu aggregators (Weedmaps, Leafly, Dutchie stores)
+
+Return up to 10 relevant URLs.`,
+    systemInstructions: FINDER_SYSTEM_INSTRUCTIONS,
+    toolsDef,
+    tools: toolsImpl,
+    model: 'hybrid',
+    maxIterations: 5,
+    agentId: 'ezal_finder',
+  });
+
+  // Extract URLs from the result
+  // Parse the final result and tool outputs to collect URLs
+  for (const step of result.steps) {
+    if (step.tool === 'searchExa' && step.result) {
+      const exaResult = step.result as { results?: Array<{ url: string; title?: string; score?: number }> };
+      if (exaResult.results) {
+        for (const r of exaResult.results) {
+          if (!urls.some((u) => u.url === r.url)) {
+            urls.push({
+              url: r.url,
+              title: r.title,
+              relevanceScore: r.score || 0.7,
+              source: 'exa',
+            });
+          }
+        }
+      }
+      searchQueries.push(step.args?.query as string || query);
+    }
+
+    if (step.tool === 'searchPerplexity' && step.result) {
+      const perplexityResult = step.result as { sources?: Array<{ url: string; title?: string }> };
+      if (perplexityResult.sources) {
+        for (const s of perplexityResult.sources) {
+          if (!urls.some((u) => u.url === s.url)) {
+            urls.push({
+              url: s.url,
+              title: s.title,
+              relevanceScore: 0.6,
+              source: 'perplexity',
+            });
+          }
+        }
+      }
+      searchQueries.push(step.args?.query as string || query);
+    }
+
+    if (step.tool === 'searchWeb' && step.result) {
+      // Try to extract URLs from web search result text
+      const text = step.result as string;
+      const urlRegex = /https?:\/\/[^\s"<>]+/g;
+      const foundUrls = text.match(urlRegex) || [];
+      for (const url of foundUrls.slice(0, 5)) {
+        if (!urls.some((u) => u.url === url)) {
+          urls.push({
+            url,
+            relevanceScore: 0.5,
+            source: 'google',
+          });
+        }
+      }
+      searchQueries.push(step.args?.query as string || query);
+    }
+  }
+
+  // =========================================================================
+  // FILTER URLs - Remove non-dispensary sites (blogs, Reddit, news, etc.)
+  // =========================================================================
+  const rawUrls = urls.map(u => u.url);
+  const filterResult = filterUrls(rawUrls, {
+    allowChainPages: false,
+    minConfidence: 0.4,
+  });
+
+  if (filterResult.blocked.length > 0) {
+    logger.info(
+      `[Radar:Finder] Blocked ${filterResult.blocked.length} non-dispensary URLs: ` +
+      filterResult.blocked.slice(0, 5).map(b => extractDisplayDomain(b.url)).join(', ') +
+      (filterResult.blocked.length > 5 ? '...' : '')
+    );
+  }
+
+  // Map filtered URLs back to DiscoveredUrl objects with updated confidence
+  const filteredUrls: DiscoveredUrl[] = filterResult.allowed.map(filtered => {
+    const original = urls.find(u => u.url === filtered.url);
+    return {
+      url: filtered.normalizedUrl,
+      title: original?.title,
+      // Use the higher of original relevance or filter confidence
+      relevanceScore: Math.max(original?.relevanceScore || 0, filtered.confidence),
+      source: original?.source || 'manual',
+    };
+  });
+
+  // =========================================================================
+  // VALIDATE URLs - Check accessibility (limit to 10)
+  // =========================================================================
+  const validatedUrls: DiscoveredUrl[] = [];
+  for (const urlEntry of filteredUrls.slice(0, 15)) {
+    try {
+      const validation = await tools.validateUrl(urlEntry.url);
+      if (validation.valid) {
+        validatedUrls.push(urlEntry);
+        if (validatedUrls.length >= 10) break;
+      }
+    } catch (e) {
+      logger.debug(`[Radar:Finder] URL validation failed for ${urlEntry.url}: ${e}`);
+    }
+  }
+
+  const durationMs = Date.now() - startTime;
+
+  logger.info(
+    `[Radar:Finder] Complete. Found ${validatedUrls.length} valid URLs in ${durationMs}ms`
+  );
+
+  return {
+    urls: validatedUrls,
+    searchQueries: Array.from(new Set(searchQueries)),
+    totalFound: urls.length,
+    durationMs,
+  };
+}
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Create a simple URL validator using fetch HEAD request.
+ */
+export function createDefaultUrlValidator(): FinderTools['validateUrl'] {
+  return async (url: string) => {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(url, {
+        method: 'HEAD',
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Markitbot/1.0 (Competitive Intelligence)',
+        },
+      });
+
+      clearTimeout(timeout);
+
+      if (response.ok) {
+        return { valid: true };
+      }
+
+      return { valid: false, reason: `HTTP ${response.status}` };
+    } catch (e) {
+      return { valid: false, reason: (e as Error).message };
+    }
+  };
+}
+

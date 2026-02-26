@@ -1,0 +1,114 @@
+{
+  "version": "3.0",
+  "updated_at": null,
+  "skills": {
+    "fix-failing-test": {
+      "total_runs": 0,
+      "successes": 0,
+      "failures": 0,
+      "success_rate": 0,
+      "avg_attempts": 0,
+      "avg_time_seconds": 0,
+      "common_patterns": []
+    },
+    "optimize-workflow": {
+      "total_runs": 0,
+      "optimizations_applied": 0,
+      "rollbacks": 0
+    },
+    "generate-skill": {
+      "total_runs": 0,
+      "skills_created": 0,
+      "skills_validated": 0
+    },
+    "manage-backlog": {
+      "tasks_created": 0,
+      "tasks_prioritized": 0,
+      "tasks_completed": 0
+    }
+  },
+  "workflows": {
+    "fix-test": {
+      "total_runs": 0,
+      "completed": 0,
+      "escalated": 0,
+      "avg_duration_seconds": 0
+    },
+    "review": {
+      "total_runs": 0,
+      "completed": 0,
+      "escalated": 0,
+      "avg_duration_seconds": 0
+    },
+    "deploy": {
+      "total_runs": 0,
+      "completed": 0,
+      "rollbacks": 0,
+      "avg_duration_seconds": 0
+    }
+  },
+  "self_healing": {
+    "total_detections": 0,
+    "successful_heals": 0,
+    "failed_heals": 0,
+    "escalations": 0,
+    "heal_success_rate": 0,
+    "patterns": {
+      "test_failure": { "count": 0, "healed": 0 },
+      "type_error": { "count": 0, "healed": 0 },
+      "build_failure": { "count": 0, "healed": 0 }
+    }
+  },
+  "autonomy": {
+    "level": 1,
+    "level_name": "assisted",
+    "trust_score": 50,
+    "tasks_completed_by_agent": 0,
+    "tasks_completed_by_human": 0,
+    "autonomy_rate": 0,
+    "human_interventions": 0,
+    "consecutive_successes": 0,
+    "consecutive_failures": 0,
+    "last_escalation": null
+  },
+  "health": {
+    "last_check": null,
+    "score": 100,
+    "types_pass": true,
+    "failing_tests": 0,
+    "git_clean": true
+  },
+  "agents": {
+    "lite": {
+      "tasks_completed": 0,
+      "best_at": ["simple_formatting", "quick_checks"],
+      "success_rate": 0
+    },
+    "standard": {
+      "tasks_completed": 0,
+      "best_at": ["balanced_tasks", "test_execution"],
+      "success_rate": 0
+    },
+    "advanced": {
+      "tasks_completed": 0,
+      "best_at": ["bug_fixes", "refactoring"],
+      "success_rate": 0
+    },
+    "expert": {
+      "tasks_completed": 0,
+      "best_at": ["complex_debugging", "investigation"],
+      "success_rate": 0
+    },
+    "genius": {
+      "tasks_completed": 0,
+      "best_at": ["architecture", "deep_reasoning"],
+      "success_rate": 0
+    },
+    "deep_research": {
+      "tasks_completed": 0,
+      "best_at": ["market_research", "comprehensive_analysis"],
+      "success_rate": 0
+    }
+  }
+}
+

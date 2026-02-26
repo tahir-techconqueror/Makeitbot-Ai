@@ -1,0 +1,151 @@
+
+import { createServerClient } from '@/firebase/server-client';
+import { cookies } from 'next/headers';
+import { makeProductRepo } from '@/server/repos/productRepo';
+import type { Product } from '@/types/domain';
+import { demoProducts } from '@/lib/demo/demo-data';
+import { ProductsDataTable } from './components/products-data-table';
+import { columns } from './components/products-table-columns';
+import { PlusCircle, Import } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { requireUser } from '@/server/auth/auth';
+import { redirect } from 'next/navigation';
+import { DEMO_BRAND_ID } from '@/lib/config';
+
+import { logger } from '@/lib/logger';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal, AlertCircle } from "lucide-react";
+export const dynamic = 'force-dynamic';
+
+// Serialize Firestore Timestamp objects to plain objects for Client Components
+function serializeProducts(products: Product[]): Product[] {
+    return products.map(product => {
+        const serialized: any = { ...product };
+
+        // Serialize all Firestore Timestamp fields (defensive check for any timestamp-like objects)
+        Object.keys(serialized).forEach(key => {
+            const value = serialized[key];
+            if (value && typeof value === 'object' && '_seconds' in value && '_nanoseconds' in value) {
+                // Convert Firestore Timestamp to ISO string
+                serialized[key] = new Date(value._seconds * 1000).toISOString();
+            }
+        });
+
+        return serialized;
+    }) as Product[];
+}
+
+
+export default async function DashboardProductsPage() {
+    const isDemo = (await cookies()).get('isUsingDemoData')?.value === 'true';
+
+    let products: Product[] = [];
+    let showPosAlert = false;
+    let showNoBrandAlert = false;
+    let user: any = null;
+
+    if (isDemo) {
+        products = demoProducts;
+        user = { role: 'brand', brandId: DEMO_BRAND_ID };
+    } else {
+        user = await requireUser(['brand', 'brand_admin', 'brand_member', 'super_user', 'dispensary', 'dispensary_admin', 'dispensary_staff', 'budtender']);
+            // For brand users, use brandId from claims, fallback to uid
+            const brandId = user.brandId || (user.role === 'brand' ? user.uid : null);
+            const role = (user as any).role || '';
+
+            const { firestore } = await createServerClient();
+            const productRepo = makeProductRepo(firestore);
+
+            // Check if dispensary role
+            const isDispensaryRole = ['dispensary', 'dispensary_admin', 'dispensary_staff', 'budtender'].includes(role);
+
+            if (isDispensaryRole) {
+                // Dispensary Logic - resolve locationId/orgId
+                const orgId = (user as any).orgId || (user as any).currentOrgId || user.locationId || user.uid;
+
+                // Find location by orgId
+                let locationId = user.locationId;
+                if (!locationId && orgId) {
+                    let locSnap = await firestore.collection('locations').where('orgId', '==', orgId).limit(1).get();
+                    if (locSnap.empty) {
+                        locSnap = await firestore.collection('locations').where('brandId', '==', orgId).limit(1).get();
+                    }
+                    if (!locSnap.empty) {
+                        locationId = locSnap.docs[0].id;
+                        const locData = locSnap.docs[0].data();
+                        // Check POS config
+                        if (!locData?.posConfig?.provider) {
+                            showPosAlert = true;
+                        }
+                    }
+                }
+
+                // Fetch products by locationId (dispensaryId field)
+                if (locationId) {
+                    products = await productRepo.getAllByLocation(locationId);
+                }
+                // Fallback to orgId
+                if (products.length === 0 && orgId) {
+                    products = await productRepo.getAllByLocation(orgId);
+                }
+                // Final fallback to getAllByBrand
+                if (products.length === 0 && orgId) {
+                    products = await productRepo.getAllByBrand(orgId);
+                }
+            } else if (user.role === 'super_user') {
+                // Owner sees all products
+                products = await productRepo.getAll();
+            } else if (brandId) {
+                products = await productRepo.getAllByBrand(brandId);
+            } else {
+                // Brand user without a brandId - show helpful alert
+                showNoBrandAlert = true;
+                products = [];
+            }
+    }
+
+    return (
+        <div className="flex flex-col gap-6">
+            {showNoBrandAlert && (
+                <Alert className="bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Brand Setup Required</AlertTitle>
+                    <AlertDescription>
+                        Your account is not yet linked to a brand. Please complete your{' '}
+                        <Link href="/dashboard/content/brand-page" className="underline font-medium hover:text-red-700">
+                            Brand Page setup
+                        </Link>{' '}
+                        to manage products. If you believe this is an error, please contact support.
+                    </AlertDescription>
+                </Alert>
+            )}
+            {showPosAlert && (
+                <Alert className="bg-yellow-500/10 border-yellow-500/50 text-yellow-600 dark:text-yellow-400">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle>Connect Point of Sale</AlertTitle>
+                    <AlertDescription>
+                        Connect your POS (Dutchie, Jane, etc.) for real-time inventory synchronization.
+                        Currently using manual or backup data which may be delayed.
+                    </AlertDescription>
+                </Alert>
+            )}
+            <div className="flex items-center justify-between">
+                {/* The header is now handled by the layout */}
+                <div className="flex gap-2">
+                    <Link href="/dashboard/products/import" passHref>
+                        <Button variant="outline">
+                            <Import className="mr-2 h-4 w-4" /> Import from CannMenus
+                        </Button>
+                    </Link>
+                    <Link href="/dashboard/products/new" passHref>
+                        <Button>
+                            <PlusCircle className="mr-2 h-4 w-4" /> Add Product
+                        </Button>
+                    </Link>
+                </div>
+            </div>
+            <ProductsDataTable columns={columns} data={serializeProducts(products)} />
+        </div>
+    );
+}

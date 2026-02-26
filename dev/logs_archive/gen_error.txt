@@ -1,0 +1,89 @@
+--- PAGE GENERATOR ---
+Limit: All
+Dry Run: true
+
+[1/4] Loading discovered dispensaries...
+   Found 1 dispensaries
+
+[2/4] Loading discovered brands...
+   Found 1 brands
+
+[2/4] Loading ZIP codes...
+   Found 30001 ZIP codes
+   15771 verified ZIPs with dispensaries
+
+[3/4] Generating pages...
+   Filtered to 1 dispensaries in Illinois
+node.exe : Fatal 
+error: Error: Cannot 
+find package 
+'@/server' imported 
+from 
+C:\Users\marte\Baked 
+for Brands\markitbot-f
+or-brands\dev\generat
+e-pages.ts
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Fatal e   
+ rror: Er...nerat    
+e-pages.ts:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+    at Object.getPack
+ageJSONURL (node:inte
+rnal/modules/package_
+json_reader:316:9)
+    at 
+packageResolve (node:
+internal/modules/esm/
+resolve:768:81)
+    at moduleResolve 
+(node:internal/module
+s/esm/resolve:858:18)
+    at 
+defaultResolve (node:
+internal/modules/esm/
+resolve:990:11)
+    at ModuleLoader.#
+cachedDefaultResolve 
+(node:internal/module
+s/esm/loader:737:20)
+    at 
+ModuleLoader.resolve 
+(node:internal/module
+s/esm/loader:714:38)
+    at ModuleLoader.g
+etModuleJobForImport 
+(node:internal/module
+s/esm/loader:293:38)
+    at onImport.trace
+Promise.__proto__ (no
+de:internal/modules/e
+sm/loader:665:36)
+    at TracingChannel
+.tracePromise (node:d
+iagnostics_channel:35
+0:14)
+    at 
+ModuleLoader.import (
+node:internal/modules
+/esm/loader:664:21) {
+  code: 'ERR_MODULE_N
+OT_FOUND'
+}
+

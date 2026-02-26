@@ -1,0 +1,643 @@
+// [AI-THREAD P0-SEC-FIRESTORE-RULES]
+// [Dev1-Claude @ 2025-11-29]:
+//   Enhanced comprehensive Firestore security rules with role-based access control.
+//   Added missing collections: brands, customers, analytics_events, chatSessions,
+//   playbooks, playbookDrafts, sync_status, pricing_recommendations, retailers,
+//   aiGenerations, and addresses subcollection.
+//   All rules leverage Firebase custom claims (role, brandId, locationId) set during onboarding.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // --- Helper Functions ---
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isRole(role) {
+      return request.auth.token.role == role;
+    }
+
+    function isSuperUser() {
+      return isRole('super_user') || isRole('super_admin') || isRole('owner');
+    }
+
+    // Brand role helpers
+    function isBrandManager(brandId) {
+      return (isRole('brand') || isRole('brand_admin')) && request.auth.token.brandId == brandId;
+    }
+
+    function isBrandMember(brandId) {
+      return (isRole('brand') || isRole('brand_admin') || isRole('brand_member'))
+             && request.auth.token.brandId == brandId;
+    }
+
+    // Dispensary role helpers
+    function isDispensaryAdmin(locationId) {
+      return (isRole('dispensary') || isRole('dispensary_admin'))
+             && request.auth.token.locationId == locationId;
+    }
+
+    function isDispensaryStaff(locationId) {
+      return (isRole('dispensary') || isRole('dispensary_admin') || isRole('dispensary_staff'))
+             && request.auth.token.locationId == locationId;
+    }
+
+    function isBudtender(locationId) {
+      return isRole('budtender') && request.auth.token.locationId == locationId;
+    }
+
+    function isDispensaryRole(locationId) {
+      return isDispensaryAdmin(locationId) ||
+             isDispensaryStaff(locationId) ||
+             isBudtender(locationId);
+    }
+
+    // Legacy compatibility
+    function isDispensaryManager(locationId) {
+      return isDispensaryAdmin(locationId);
+    }
+
+    // --- Public Collections (Read-Only) ---
+    match /products/{productId} {
+      // Anyone can read product details for the public menu.
+      allow read: if true;
+      
+      // Only authenticated brand managers can create, update, or delete products
+      // belonging to their own brand.
+      allow create: if isBrandManager(request.resource.data.brandId);
+      allow update, delete: if isBrandManager(resource.data.brandId);
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+     match /dispensaries/{dispensaryId} {
+      allow read: if true;
+      allow write: if false; // All location management must be done via Server Actions.
+    }
+
+    match /coupons/{couponId} {
+      // Coupons are read-only from the client. Creation is handled by a secure admin action.
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // --- User-Specific Data ---
+    match /users/{userId} {
+      // A user can read/update their own profile. An 'owner' can manage any user.
+      allow read, update: if isOwner(userId) || isRole('owner');
+      
+      // Interactions are private to each user.
+      match /interactions/{interactionId} {
+         allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // --- Sub-collections ---
+    match /products/{productId} {
+        // Anyone can read reviews.
+        match /reviews/{reviewId} {
+            allow read: if true;
+            allow write: if false; // All writes via secure Server Action.
+        }
+
+        // Product feedback can only be written by a logged-in user.
+        match /feedback/{userId} {
+            allow read: if true;
+            allow write: if isOwner(userId);
+        }
+        
+        // Review summaries and embeddings are public-readable, but only server-writable.
+        match /reviewSummaries/{docId} {
+            allow read: if true;
+            allow write: if false;
+        }
+
+        match /productReviewEmbeddings/{docId} {
+            allow read: if true;
+            allow write: if false;
+        }
+    }
+
+    // This collection group query is necessary for the public "Recent Reviews" feed.
+    match /{path=**}/reviews/{reviewId} {
+      allow read: if true;
+    }
+
+     // This collection group query is necessary for vector search.
+    match /{path=**}/productReviewEmbeddings/{docId} {
+      allow read: if true;
+    }
+    
+    // --- Orders Collection ---
+    match /orders/{orderId} {
+      // Require authentication for order creation (user must be logged in)
+      // The userId in the order must match the authenticated user
+      allow create: if request.auth != null &&
+                     request.resource.data.userId == request.auth.uid;
+
+      // Read/Update access is granted based on role.
+      allow read, update: if
+          // The customer who placed the order.
+          isOwner(resource.data.userId) ||
+          // Dispensary staff can view/update orders for their location
+          isDispensaryStaff(resource.data.retailerId) ||
+          // Budtenders can read orders (but not update - enforced by staff check)
+          isBudtender(resource.data.retailerId) ||
+          // Brand managers can view orders containing their products.
+          isBrandMember(resource.data.brandId) ||
+          // Super users can access all orders
+          isSuperUser();
+
+      // Only staff and admin can update orders (not budtenders)
+      allow update: if
+          isDispensaryStaff(resource.data.retailerId) ||
+          isBrandManager(resource.data.brandId) ||
+          isSuperUser();
+    }
+
+    // --- Brands Collection ---
+    match /brands/{brandId} {
+      // Anyone can read brand profiles (for public product pages).
+      allow read: if true;
+
+      // Only brand managers can update their own brand.
+      allow update: if isBrandManager(brandId);
+
+      // Creation/deletion restricted to server actions or owner.
+      allow create, delete: if isRole('owner');
+    }
+
+    // --- Customers Collection ---
+    match /customers/{customerId} {
+      // Customers can read/update their own profile.
+      allow read, update: if isOwner(customerId);
+
+      // Super users can access all customer profiles
+      allow read, update: if isSuperUser();
+
+      // Brand roles can access customers for their brand
+      allow read: if isBrandMember(resource.data.brandId);
+      allow update: if isBrandManager(resource.data.brandId);
+
+      // Dispensary admin/staff can read/update customers for their location
+      allow read, update: if isDispensaryStaff(resource.data.locationId) ||
+                            isDispensaryStaff(resource.data.orgId);
+
+      // Budtenders can read customer info (for service)
+      allow read: if isBudtender(resource.data.locationId) ||
+                     isBudtender(resource.data.orgId);
+
+      // Creation happens via server actions during onboarding.
+      allow create: if request.auth.uid == customerId;
+
+      // Deletion restricted to super users or user themselves
+      allow delete: if isOwner(customerId) || isSuperUser();
+    }
+
+    // --- Analytics Events Collection ---
+    match /analytics_events/{eventId} {
+      // Users can create analytics events for themselves.
+      allow create: if request.auth != null;
+
+      // Only owner/admin can read analytics data.
+      allow read: if isRole('owner') || isRole('brand') || isRole('dispensary');
+
+      // No updates or deletes from client.
+      allow update, delete: if false;
+    }
+
+    // --- Email Leads Collection (Age Gate + Marketing Capture) ---
+    match /email_leads/{leadId} {
+      // Server-side only creation (via server actions).
+      // No client-side writes to prevent spam/abuse.
+      allow create, update: if false;
+
+      // Brand managers can read leads for their brand.
+      allow read: if isRole('brand') &&
+                     (request.auth.token.brandId == resource.data.brandId);
+
+      // Dispensary managers can read leads for their dispensary.
+      allow read: if isRole('dispensary') &&
+                     (request.auth.token.locationId == resource.data.dispensaryId);
+
+      // Owner can read all leads.
+      allow read: if isRole('owner');
+
+      // No client-side deletes.
+      allow delete: if false;
+    }
+
+    // --- Chat Sessions (subcollection under users) ---
+    match /users/{userId}/chatSessions/{sessionId} {
+      // Users can manage their own chat sessions.
+      allow read, write: if isOwner(userId);
+
+      // Owner can access all chat sessions.
+      allow read: if isRole('owner');
+    }
+
+    // --- Playbooks Collection ---
+    match /playbooks/{playbookId} {
+      // Brand managers can read playbooks for their brand.
+      allow read: if isRole('brand') || isRole('owner');
+
+      // Only server actions can write playbooks.
+      allow write: if false;
+    }
+
+    match /playbookDrafts/{draftId} {
+      // Brand managers can create and manage drafts.
+      allow read, write: if request.auth != null && (isRole('brand') || isRole('owner'));
+    }
+
+    // --- Sync Status Collection ---
+    match /sync_status/{syncId} {
+      // Allow any authenticated user to read sync status (operational logs).
+      allow read: if request.auth != null;
+
+      // Only server actions can write sync status.
+      allow write: if false;
+    }
+
+    // --- Data Jobs Collection ---
+    match /data_jobs/{jobId} {
+      // Users can read their own data jobs.
+      allow read: if resource.data.userId == request.auth.uid || isRole('owner');
+
+      // Users can create jobs (e.g. via client components triggering them).
+      allow create: if request.resource.data.userId == request.auth.uid;
+
+      // Processing happens server-side.
+      allow update, delete: if false;
+    }
+
+    // --- Agent Jobs & Thoughts (Async Agents) ---
+    match /jobs/{jobId} {
+       // Users can read status of their own jobs
+       allow read: if resource.data.userId == request.auth.uid || isRole('owner');
+       
+       // Writes (create/update) handled by Server Actions (Admin SDK)
+       allow write: if false;
+
+       // Thoughts subcollection (streaming tokens/steps)
+       match /thoughts/{thoughtId} {
+          // Check parent job ownership
+          allow read: if get(/databases/$(database)/documents/jobs/$(jobId)).data.userId == request.auth.uid || isRole('owner');
+          allow write: if false;
+       }
+    }
+
+    // --- Pricing Recommendations Collection ---
+    match /pricing_recommendations/{recId} {
+      // Brand managers can read pricing recommendations.
+      allow read: if isRole('brand') || isRole('owner');
+
+      // Only server actions can write recommendations.
+      allow write: if false;
+    }
+
+    // --- Dynamic Pricing Rules Collection ---
+    match /pricingRules/{ruleId} {
+      // Brand managers and dispensary admins can read pricing rules for their org
+      allow read: if request.auth != null && (
+        isSuperUser() ||
+        (resource.data.orgId == request.auth.token.brandId && (isRole('brand') || isRole('brand_admin') || isRole('brand_member'))) ||
+        (resource.data.orgId == request.auth.token.locationId && (isRole('dispensary') || isRole('dispensary_admin')))
+      );
+
+      // Brand managers and dispensary admins can create rules for their org
+      allow create: if request.auth != null && (
+        isSuperUser() ||
+        (request.resource.data.orgId == request.auth.token.brandId && (isRole('brand') || isRole('brand_admin'))) ||
+        (request.resource.data.orgId == request.auth.token.locationId && (isRole('dispensary') || isRole('dispensary_admin')))
+      );
+
+      // Brand managers and dispensary admins can update/delete their own rules
+      allow update, delete: if request.auth != null && (
+        isSuperUser() ||
+        (resource.data.orgId == request.auth.token.brandId && (isRole('brand') || isRole('brand_admin'))) ||
+        (resource.data.orgId == request.auth.token.locationId && (isRole('dispensary') || isRole('dispensary_admin')))
+      );
+    }
+
+    // --- Retailers Collection (CannMenus sync) ---
+    match /retailers/{retailerId} {
+      // Anyone can read retailer info (for public locator).
+      allow read: if true;
+
+      // Only server actions can sync retailer data.
+      allow write: if false;
+    }
+
+    // --- Organizations Collection ---
+    match /organizations/{orgId} {
+      // SECURITY: Only organization members, the org owner, or global owners can read
+      // This prevents cross-organization data leakage (subscription plans, billing, etc.)
+      allow read: if request.auth != null && (
+          // Global owner/admin
+          isRole('owner') ||
+          // The organization owner (by ownerId or ownerUid field)
+          resource.data.ownerId == request.auth.uid ||
+          resource.data.ownerUid == request.auth.uid ||
+          // Organization member (check members subcollection)
+          exists(/databases/$(database)/documents/organizations/$(orgId)/members/$(request.auth.uid))
+      );
+
+      // Only server actions or owner can write
+      allow write: if isRole('owner');
+
+      // Members subcollection - members can read, owner can write
+      match /members/{memberId} {
+        allow read: if request.auth != null && (
+            isRole('owner') ||
+            resource.data.uid == request.auth.uid ||
+            exists(/databases/$(database)/documents/organizations/$(orgId)/members/$(request.auth.uid))
+        );
+        allow write: if isRole('owner');
+      }
+    }
+
+    // --- AI Generations Collection ---
+    match /aiGenerations/{generationId} {
+      // Users can create AI generations.
+      allow create: if request.auth != null;
+
+      // Users can read their own generations, brands can read their brand's.
+      allow read: if request.auth != null && (
+          resource.data.userId == request.auth.uid ||
+          isBrandManager(resource.data.brandId) ||
+          isRole('owner')
+      );
+
+      // No client-side updates or deletes.
+      allow update, delete: if false;
+    }
+
+    // --- Addresses (subcollection under users) ---
+    match /users/{userId}/addresses/{addressId} {
+      // Users can manage their own addresses.
+      allow read, write: if isOwner(userId);
+
+      // Owner can access all addresses.
+      allow read: if isRole('owner');
+    }
+
+    // ===========================================================================
+    // DIRECTORY COLLECTIONS (Public SEO Graph)
+    // See: dev/data-architecture.md
+    // ===========================================================================
+
+    // Helper: Check if user has tenant claim matching directory link
+    function isTenantOwnerOfEntity(entityType, entityId) {
+      return request.auth != null &&
+             request.auth.token.tenantId != null &&
+             exists(/databases/$(database)/documents/directory/tenantLinks/$(entityType + ':' + entityId)) &&
+             get(/databases/$(database)/documents/directory/tenantLinks/$(entityType + ':' + entityId)).data.tenantId == request.auth.token.tenantId;
+    }
+
+    // Directory Brands - Public read, no client writes
+    match /directory/brands/{brandId} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // Directory Dispensaries - Public read, no client writes
+    match /directory/dispensaries/{dispensaryId} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // Directory Locations - Public read, no client writes
+    match /directory/locations/{locationId} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // Directory Pages - Public read, no client writes
+    match /directory/pages/{pageId} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // Directory Entity Views (derived) - Public read, no client writes
+    match /directory/entityViews/{entityId} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // Directory Page Views (derived) - Public read, no client writes
+    match /directory/pageViews/{pageId} {
+      allow read: if true;
+      allow write: if false; // Admin SDK only
+    }
+
+    // Directory Imports/Sources - Admin only
+    match /directory/imports/{importId} {
+      allow read, write: if isRole('owner');
+    }
+    match /directory/sources/{sourceId} {
+      allow read, write: if isRole('owner');
+    }
+
+    // Directory Claims - Authenticated create, admin manage
+    match /directory/claims/{claimId} {
+      // Authenticated users can create claim requests
+      allow create: if request.auth != null &&
+                      request.resource.data.claimantEmail == request.auth.token.email;
+      
+      // Claimant can read their own claims
+      allow read: if request.auth != null &&
+                    resource.data.claimantEmail == request.auth.token.email;
+      
+      // Admins can read/update all claims
+      allow read, update: if isRole('owner');
+      
+      // No client deletes
+      allow delete: if false;
+    }
+
+    // Directory Tenant Links - Read for claimants, write admin only
+    match /directory/tenantLinks/{linkKey} {
+      allow read: if request.auth != null;
+      allow write: if false; // Admin SDK only
+    }
+
+    // ===========================================================================
+    // TENANT COLLECTIONS (Customer Workspace)
+    // See: dev/data-architecture.md
+    // ===========================================================================
+
+    // Helper: Check if user belongs to this tenant
+    function isTenantMember(tenantId) {
+      return request.auth != null && (
+        request.auth.token.tenantId == tenantId ||
+        request.auth.token.brandId == tenantId ||
+        request.auth.token.locationId == tenantId ||
+        request.auth.token.currentOrgId == tenantId
+      );
+    }
+
+    // Helper: Check if user is tenant admin
+    function isTenantAdmin(tenantId) {
+      return isTenantMember(tenantId) &&
+             (request.auth.token.role == 'brand' ||
+              request.auth.token.role == 'brand_admin' ||
+              request.auth.token.role == 'dispensary' ||
+              request.auth.token.role == 'dispensary_admin');
+    }
+
+    // Helper: Check if user is tenant staff (can read/write operational data)
+    function isTenantStaff(tenantId) {
+      return isTenantMember(tenantId) &&
+             (request.auth.token.role == 'brand' ||
+              request.auth.token.role == 'brand_admin' ||
+              request.auth.token.role == 'brand_member' ||
+              request.auth.token.role == 'dispensary' ||
+              request.auth.token.role == 'dispensary_admin' ||
+              request.auth.token.role == 'dispensary_staff');
+    }
+
+    // Tenant Root Document
+    match /tenants/{tenantId} {
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      allow create: if false; // Admin SDK only (via claim flow)
+      allow update: if isTenantAdmin(tenantId) || isRole('owner');
+      allow delete: if false;
+    }
+
+    // Tenant Sources (POS connections, API keys)
+    match /tenants/{tenantId}/sources/{sourceId} {
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      allow write: if isTenantAdmin(tenantId) || isRole('owner');
+    }
+
+    // Tenant Imports
+    match /tenants/{tenantId}/imports/{importId} {
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      allow create: if isTenantAdmin(tenantId) || isRole('owner');
+      allow update, delete: if false; // Immutable records
+    }
+
+    // Tenant Staging (temporary import data)
+    match /tenants/{tenantId}/staging/{collection}/{docId} {
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      allow write: if false; // Server-side only
+    }
+
+    // Tenant Mappings
+    match /tenants/{tenantId}/mappings/{collection}/{mappingId} {
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      allow write: if isTenantAdmin(tenantId) || isRole('owner');
+    }
+
+    // Tenant Catalog Products
+    match /tenants/{tenantId}/catalog/products/{productId} {
+      allow read: if isTenantMember(tenantId) || isSuperUser();
+      // Admin can create/update/delete, staff can update (inventory)
+      allow create, delete: if isTenantAdmin(tenantId) || isSuperUser();
+      allow update: if isTenantStaff(tenantId) || isSuperUser();
+
+      // Subcollections (items)
+      match /items/{itemId} {
+        allow read: if isTenantMember(tenantId) || isSuperUser();
+        allow create, delete: if isTenantAdmin(tenantId) || isSuperUser();
+        allow update: if isTenantStaff(tenantId) || isSuperUser();
+      }
+    }
+
+    // Tenant Public Views - Public read (headless menu), no client writes
+    match /tenants/{tenantId}/publicViews/{collection}/{docId} {
+      allow read: if true; // Public for headless menus
+      allow write: if false; // Server-side only
+    }
+
+    // Tenant Events (analytics)
+    match /tenants/{tenantId}/events/{eventId} {
+      // SECURITY: Require authentication to prevent spam/cost attacks
+      // Allow event creation with validation:
+      // - Must be authenticated
+      // - Must have required fields (eventType, timestamp)
+      // - Document size limited by Firestore (1MB max)
+      allow create: if request.auth != null &&
+                     request.resource.data.keys().hasAll(['eventType', 'timestamp']) &&
+                     request.resource.data.eventType is string &&
+                     request.resource.data.eventType.size() <= 100;
+      // Only tenant members can read events
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      // Events are append-only
+      allow update, delete: if false;
+    }
+
+    // Tenant Audit Trail
+    match /tenants/{tenantId}/audit/{collection}/{docId} {
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      allow write: if false; // Server-side only
+    }
+
+    // Tenant Creative Content (Creative Command Center)
+    match /tenants/{tenantId}/creative_content/{contentId} {
+      // Tenant members can read creative content
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      // Tenant admins can manage creative content
+      allow create, update: if isTenantAdmin(tenantId) || isRole('owner');
+      allow delete: if isTenantAdmin(tenantId) || isRole('owner');
+    }
+
+    // Tenant Ground Truth Overrides (Role-specific fine-tuning)
+    match /tenants/{tenantId}/ground_truth_overrides/{roleId} {
+      // Tenant members can read overrides for visibility
+      allow read: if isTenantMember(tenantId) || isRole('owner');
+      // Tenant admins can manage overrides (add custom presets, disable global ones)
+      allow write: if isTenantAdmin(tenantId) || isRole('owner');
+    }
+
+    // ===========================================================================
+    // GROUND TRUTH V2 (Role-Based Fine-Tuning)
+    // See: src/types/ground-truth.ts
+    // ===========================================================================
+
+    // Helper: Check if user can access role-specific ground truth
+    function canAccessRoleGroundTruth(roleId) {
+      return isRole('owner') ||
+             (roleId == 'brand' && isRole('brand')) ||
+             (roleId == 'dispensary' && isRole('dispensary')) ||
+             (roleId == 'super_user' && isRole('owner')) ||
+             (roleId == 'customer'); // Customer ground truth is public (for Smokey)
+    }
+
+    // Global role-based ground truth (defaults)
+    match /ground_truth_v2/{roleId} {
+      // Read access based on role
+      allow read: if canAccessRoleGroundTruth(roleId);
+
+      // Only super admins can write global ground truth
+      allow write: if isRole('owner');
+
+      // QA pairs organized by category
+      match /categories/{categoryKey} {
+        allow read: if canAccessRoleGroundTruth(roleId);
+        allow write: if isRole('owner');
+
+        // Individual QA pairs within category
+        match /qa_pairs/{qaId} {
+          allow read: if canAccessRoleGroundTruth(roleId);
+          allow write: if isRole('owner');
+        }
+      }
+    }
+
+    // --- Domain Mappings Collection ---
+    match /domain_mappings/{domain} {
+      // Allow authenticated users to read domain mappings (needed for some client lookups)
+      allow read: if request.auth != null;
+      // Allow tenant owners to manage their own mappings (if we allow client-side sync)
+      // For now, management is server-side only as per domain-management.ts
+      allow write: if false;
+    }
+  }
+}

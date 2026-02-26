@@ -1,0 +1,353 @@
+'use client';
+
+/**
+ * Inbox Empty State
+ *
+ * Shown when no thread is selected in the inbox.
+ * Features contextual preset suggestions and custom text input.
+ */
+
+import React, { useState, useRef, KeyboardEvent } from 'react';
+import {
+    Inbox,
+    Images,
+    PackagePlus,
+    Palette,
+    Megaphone,
+    Loader2,
+    Sparkles,
+    Send,
+    RefreshCw,
+    Plus,
+    TrendingUp,
+    Search,
+    Calendar,
+    HelpCircle,
+    Video,
+    ImagePlus,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { useInboxStore } from '@/lib/store/inbox-store';
+import { useContextualPresets } from '@/hooks/use-contextual-presets';
+import { useUserRole } from '@/hooks/use-user-role';
+import type { InboxQuickAction } from '@/types/inbox';
+import { createInboxThread } from '@/server/actions/inbox';
+import { useToast } from '@/hooks/use-toast';
+import { InsightCardsGrid } from './insight-cards-grid';
+
+// ============ Props ============
+
+interface InboxEmptyStateProps {
+    isLoading?: boolean;
+    className?: string;
+}
+
+// ============ Icon Mapping ============
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+    Images,
+    ImagePlus,
+    PackagePlus,
+    Palette,
+    Megaphone,
+    TrendingUp,
+    Search,
+    Calendar,
+    HelpCircle,
+    Video,
+    Send,
+    Inbox,
+};
+
+function getIcon(iconName: string) {
+    return ICON_MAP[iconName] || Inbox;
+}
+
+// ============ Preset Chip ============
+
+interface PresetChipProps {
+    action: InboxQuickAction;
+    hasCustomText: boolean;
+    onSelect: () => void;
+    isCreating: boolean;
+}
+
+function PresetChip({ action, hasCustomText, onSelect, isCreating }: PresetChipProps) {
+    const Icon = getIcon(action.icon);
+
+    return (
+        <button
+            onClick={onSelect}
+            disabled={isCreating}
+            className={cn(
+                'group flex items-center gap-2 px-4 py-2 rounded-full border transition-all',
+                'bg-zinc-900 border-zinc-700 text-zinc-100 hover:bg-zinc-800 hover:border-emerald-500/40',
+                hasCustomText && 'ring-2 ring-primary/20 border-primary/30',
+                isCreating && 'opacity-70 cursor-not-allowed'
+            )}
+        >
+            {isCreating ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+                <Icon className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
+            )}
+            <span className="text-sm font-medium">{action.label}</span>
+            {hasCustomText && <Plus className="h-3 w-3 text-muted-foreground" />}
+        </button>
+    );
+}
+
+// ============ Main Component ============
+
+export function InboxEmptyState({ isLoading, className }: InboxEmptyStateProps) {
+    const { role } = useUserRole();
+    const {
+        createThread,
+        deleteThread,
+        markThreadPending,
+        markThreadPersisted,
+        currentOrgId,
+    } = useInboxStore();
+    const { presets, greeting, suggestion, refresh, isLoading: presetsLoading } = useContextualPresets({
+        role,
+        orgId: currentOrgId,
+    });
+    const { toast } = useToast();
+
+    const [customText, setCustomText] = useState('');
+    const [isCreating, setIsCreating] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const hasCustomText = customText.trim().length > 0;
+
+    // Handle preset selection (with optional custom text)
+    const handlePresetSelect = async (action: InboxQuickAction) => {
+        if (isCreating) return;
+        setIsCreating(true);
+
+        let localThread = null;
+        try {
+            // Create title - include custom text if present
+            const threadTitle = hasCustomText
+                ? `${action.label}: ${customText.slice(0, 30)}${customText.length > 30 ? '...' : ''}`
+                : action.label;
+
+            // Create thread locally first for instant UI feedback
+            localThread = createThread(action.threadType, {
+                title: threadTitle,
+                primaryAgent: action.defaultAgent,
+            });
+
+            // Mark thread as pending (not yet persisted to Firestore)
+            markThreadPending(localThread.id);
+
+            // Persist to Firestore
+            const result = await createInboxThread({
+                id: localThread.id,
+                type: action.threadType,
+                title: threadTitle,
+                primaryAgent: action.defaultAgent,
+                brandId: currentOrgId || undefined,
+                dispensaryId: currentOrgId || undefined,
+            });
+
+            if (!result.success) {
+                console.error('[InboxEmptyState] Failed to persist thread:', result.error);
+                deleteThread(localThread.id);
+                toast({
+                    title: 'Failed to create conversation',
+                    description: result.error || 'Please try again',
+                    variant: 'destructive',
+                });
+                return;
+            }
+
+            // Mark thread as persisted (safe to use now)
+            markThreadPersisted(localThread.id);
+            setCustomText(''); // Clear input on success
+        } catch (error) {
+            console.error('[InboxEmptyState] Error:', error);
+            if (localThread) deleteThread(localThread.id);
+            toast({
+                title: 'Failed to create conversation',
+                description: 'An unexpected error occurred.',
+                variant: 'destructive',
+            });
+        } finally {
+            setIsCreating(false);
+        }
+    };
+
+    // Handle custom-only submit (Enter key or button)
+    const handleCustomSubmit = async () => {
+        if (!customText.trim() || isCreating) return;
+
+        setIsCreating(true);
+        let localThread = null;
+
+        try {
+            const title =
+                customText.slice(0, 40) + (customText.length > 40 ? '...' : '');
+
+            // Create a general thread with custom text
+            localThread = createThread('general', {
+                title,
+                primaryAgent: 'auto',
+            });
+
+            markThreadPending(localThread.id);
+
+            const result = await createInboxThread({
+                id: localThread.id,
+                type: 'general',
+                title,
+                primaryAgent: 'auto',
+                brandId: currentOrgId || undefined,
+            });
+
+            if (!result.success) {
+                deleteThread(localThread.id);
+                toast({
+                    title: 'Failed to create conversation',
+                    description: result.error || 'Please try again',
+                    variant: 'destructive',
+                });
+                return;
+            }
+
+            markThreadPersisted(localThread.id);
+            setCustomText('');
+        } catch (error) {
+            if (localThread) deleteThread(localThread.id);
+            toast({
+                title: 'Failed to create conversation',
+                description: 'An unexpected error occurred.',
+                variant: 'destructive',
+            });
+        } finally {
+            setIsCreating(false);
+        }
+    };
+
+    // Handle keyboard shortcuts
+    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleCustomSubmit();
+        }
+    };
+
+    if (isLoading || presetsLoading) {
+        return (
+            <div className={cn('flex items-center justify-center h-full', className)}>
+                <div className="text-center">
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+                    <p className="text-muted-foreground">Loading your inbox...</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className={cn('flex items-center justify-center h-full p-8 bg-zinc-950 text-zinc-100', className)}>
+            <div className="max-w-4xl w-full space-y-8">
+                {/* Daily Briefing - Insight Cards */}
+                <InsightCardsGrid maxCards={5} />
+
+                {/* Welcome Header with Contextual Greeting */}
+                <div className="text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+                        <Sparkles className="h-8 w-8 text-primary" />
+                    </div>
+                    <h1 className="text-2xl font-bold mb-2 text-zinc-100">{greeting}!</h1>
+                    <p className="text-zinc-400 max-w-md mx-auto">
+                        {suggestion}
+                    </p>
+                </div>
+
+                {/* Custom Text Input */}
+                <div className="relative">
+                    <Textarea
+                        ref={textareaRef}
+                        value={customText}
+                        onChange={(e) => setCustomText(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder="What would you like to work on? Type here or pick a suggestion below..."
+                        className={cn(
+                            'min-h-[100px] pr-12 resize-none',
+                            'bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500/50'
+                        )}
+                        disabled={isCreating}
+                    />
+                    {hasCustomText && (
+                        <Button
+                            size="icon"
+                            className="absolute bottom-3 right-3"
+                            onClick={handleCustomSubmit}
+                            disabled={isCreating}
+                        >
+                            {isCreating ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                                <Send className="h-4 w-4" />
+                            )}
+                        </Button>
+                    )}
+                </div>
+
+                {/* Contextual hint */}
+                {hasCustomText && (
+                    <p className="text-xs text-center text-zinc-500 -mt-4">
+                        Press Enter to send, or click a suggestion below to combine
+                        it with your message
+                    </p>
+                )}
+
+                {/* Preset Suggestions */}
+                {presets.length > 0 && (
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-center gap-2">
+                            <h2 className="text-sm font-medium text-zinc-400">
+                                Quick Suggestions
+                            </h2>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6"
+                                onClick={refresh}
+                                disabled={isCreating}
+                                title="Refresh suggestions"
+                            >
+                                <RefreshCw className="h-3 w-3" />
+                            </Button>
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-2">
+                            {presets.map((action) => (
+                                <PresetChip
+                                    key={action.id}
+                                    action={action}
+                                    hasCustomText={hasCustomText}
+                                    onSelect={() => handlePresetSelect(action)}
+                                    isCreating={isCreating}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Tips */}
+                <div className="text-center">
+                    <p className="text-xs text-zinc-500">
+                        {hasCustomText
+                            ? 'Click a suggestion to combine it with your message'
+                            : 'Type a specific request or click a suggestion to get started'}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default InboxEmptyState;

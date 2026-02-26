@@ -1,0 +1,184 @@
+
+'use client';
+
+import { useEffect, useRef, useState, useActionState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { saveProduct, type ProductFormState } from '../actions';
+import type { Product, Brand } from '@/types/domain';
+import { SubmitButton } from '@/app/dashboard/ceo/components/submit-button';
+import Link from 'next/link';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ProductImageUpload } from './product-image-upload';
+import { ChevronLeft } from 'lucide-react';
+
+const initialState: ProductFormState = { message: '', error: false };
+
+interface ProductFormProps {
+  product?: Product | null;
+  userRole?: string | null;
+  brands?: Brand[];
+  showBackButton?: boolean;
+}
+
+export function ProductForm({ product, userRole, brands = [], showBackButton = false }: ProductFormProps) {
+  const [state, formAction] = useActionState(saveProduct, initialState);
+  const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [images, setImages] = useState<string[]>(
+    product?.images && product.images.length > 0
+      ? product.images
+      : product?.imageUrl
+        ? [product.imageUrl]
+        : []
+  );
+
+  useEffect(() => {
+    // Only show toast for general (non-field) errors.
+    // Field errors are displayed inline by the form.
+    if (state.message && state.error && !state.fieldErrors) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: state.message,
+      });
+    }
+  }, [state, toast]);
+
+  return (
+      <>
+        {showBackButton && (
+          <div className="mb-6">
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/dashboard/products" className="flex items-center gap-2">
+                <ChevronLeft className="h-4 w-4" />
+                Back to Products
+              </Link>
+            </Button>
+          </div>
+        )}
+        <form ref={formRef} action={formAction}>
+          {product && <input type="hidden" name="id" value={product.id} />}
+          <Card>
+          <CardHeader>
+            <CardTitle>{product ? 'Edit Product' : 'Add New Product'}</CardTitle>
+            <CardDescription>
+              Fill out the details below to {product ? 'update the' : 'create a new'} product in your catalog.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-6">
+            {userRole === 'super_user' && (
+                 <div className="space-y-2">
+                    <Label htmlFor="brandId">Brand</Label>
+                     <Select name="brandId" required defaultValue={product?.brandId}>
+                        <SelectTrigger id="brandId">
+                            <SelectValue placeholder="Select a brand for this product" />
+                        </SelectTrigger>
+                        <SelectContent>
+                           {brands.map((brand) => (
+                                <SelectItem key={brand.id} value={brand.id}>{brand.name}</SelectItem>
+                           ))}
+                        </SelectContent>
+                    </Select>
+                 </div>
+            )}
+            <div className="space-y-2">
+                <Label htmlFor="name">Product Name</Label>
+                <Input id="name" name="name" placeholder="e.g., Cosmic Caramels" defaultValue={product?.name || ''} />
+                {state.fieldErrors?.name && <p className="text-sm text-destructive">{state.fieldErrors.name[0]}</p>}
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea id="description" name="description" placeholder="Describe the product..." defaultValue={product?.description || ''} rows={4} />
+                 {state.fieldErrors?.description && <p className="text-sm text-destructive">{state.fieldErrors.description[0]}</p>}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                    <Label htmlFor="category">Category</Label>
+                    <Input id="category" name="category" placeholder="e.g., Edibles" defaultValue={product?.category || ''} />
+                    {state.fieldErrors?.category && <p className="text-sm text-destructive">{state.fieldErrors.category[0]}</p>}
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="price">Base Price</Label>
+                    <Input id="price" name="price" type="number" step="0.01" placeholder="25.00" defaultValue={product?.price || ''} />
+                    {state.fieldErrors?.price && <p className="text-sm text-destructive">{state.fieldErrors.price[0]}</p>}
+                </div>
+            </div>
+            {/* Product Images - Upload or URL */}
+            <ProductImageUpload
+                currentImages={images}
+                onImageChange={() => {}} // Backward compat (not used in multiple mode)
+                onImagesChange={setImages}
+                brandId={product?.brandId}
+                productId={product?.id}
+                fieldError={state.fieldErrors?.imageUrl?.[0]}
+            />
+
+            <div className="space-y-2">
+                <Label htmlFor="imageHint">Image Hint (for AI)</Label>
+                <Input id="imageHint" name="imageHint" placeholder="e.g., cannabis edible" defaultValue={product?.imageHint || ''} />
+                <p className="text-xs text-muted-foreground">
+                    Describe the image for AI-generated placeholders if no image is provided
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id="featured"
+                        name="featured"
+                        defaultChecked={product?.featured || false}
+                        className="h-4 w-4 rounded border-gray-300"
+                    />
+                    <Label htmlFor="featured" className="font-normal">Featured Product</Label>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="sortOrder">Sort Order</Label>
+                    <Input id="sortOrder" name="sortOrder" type="number" placeholder="0" defaultValue={product?.sortOrder || ''} />
+                </div>
+            </div>
+
+            {/* Hemp E-Commerce Section */}
+            <div className="border-t pt-6 mt-2">
+                <h3 className="text-sm font-semibold mb-4 text-muted-foreground">Hemp / Edibles Details (Optional)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="weight">Weight (g)</Label>
+                        <Input id="weight" name="weight" type="number" step="0.1" placeholder="10" defaultValue={product?.weight || ''} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="servings">Servings</Label>
+                        <Input id="servings" name="servings" type="number" placeholder="10" defaultValue={product?.servings || ''} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="mgPerServing">mg per Serving</Label>
+                        <Input id="mgPerServing" name="mgPerServing" type="number" step="0.1" placeholder="25" defaultValue={product?.mgPerServing || ''} />
+                    </div>
+                </div>
+                <div className="flex items-center space-x-2 mt-4">
+                    <input
+                        type="checkbox"
+                        id="shippable"
+                        name="shippable"
+                        defaultChecked={product?.shippable ?? true}
+                        className="h-4 w-4 rounded border-gray-300"
+                    />
+                    <Label htmlFor="shippable" className="font-normal">Available for Shipping</Label>
+                </div>
+            </div>
+          </CardContent>
+          <CardFooter className="justify-end gap-2">
+            <Button variant="ghost" asChild>
+                <Link href="/dashboard/products">Cancel</Link>
+            </Button>
+            <SubmitButton label={product ? 'Save Changes' : 'Create Product'} />
+          </CardFooter>
+        </Card>
+      </form>
+      </>
+  );
+}

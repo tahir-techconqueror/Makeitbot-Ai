@@ -1,0 +1,10 @@
+Starting Google Maps Discovery via Apify...
+Triggering Actor nwua9Gu5YrADL7ZDj...
+Run started: 13U2aeD8YZb8ebzmt
+Status: RUNNING
+Status: RUNNING
+Status: SUCCEEDED
+Run Succeeded. Fetching dataset...
+Found 20 dispensaries.
+Saved to C:\Users\marte\Baked for Brands\markitbot-for-brands\dev\discovered_dispensaries.json
+

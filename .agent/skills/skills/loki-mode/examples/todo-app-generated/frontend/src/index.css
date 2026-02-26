@@ -1,0 +1,155 @@
+:root {
+  color: rgba(240, 240, 245, 0.92);          /* soft off-white with slight blue bias */
+  background-color: #0a0a0f;                 /* deep near-black with subtle blue undertone */
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #a78bfa;                            /* soft violet/purple */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #c4b5fd;                            /* lighter violet on hover */
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid rgba(167, 139, 250, 0.18);  /* very subtle purple border */
+  padding: 0.6em 1.3em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #111116;                 /* dark surface */
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #1a1a22;
+  border-color: #a78bfa;
+  color: #ffffff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.35);
+  border-color: #a78bfa;
+}
+
+button:active {
+  transform: translateY(1px);
+  background-color: #0f0f17;
+}
+
+/* Optional: stronger primary button variant */
+button.primary {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+}
+
+button.primary:hover {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+}
+
+/* Remove or override the light mode media query completely */
+@media (prefers-color-scheme: light) {
+  :root {
+    /* We force dark theme even in light OS preference */
+    color: rgba(240, 240, 245, 0.92);
+    background-color: #0a0a0f;
+  }
+
+  a:hover {
+    color: #c4b5fd;
+  }
+
+  button {
+    background-color: #111116;
+    border-color: rgba(167, 139, 250, 0.18);
+  }
+}
+
+/* Nice-to-have dark theme improvements */
+
+input,
+textarea,
+select {
+  background-color: #111116;
+  color: inherit;
+  border: 1px solid #2a2a38;
+  border-radius: 6px;
+  padding: 0.6em 1em;
+  font: inherit;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+}
+
+::placeholder {
+  color: rgba(200, 200, 220, 0.38);
+}
+
+/* Scrollbar (modern dark look) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a38;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a50;
+}
+@keyframes glowMove {
+  0% { transform: translate(-50%, 0px); }
+  50% { transform: translate(-50%, 40px); }
+  100% { transform: translate(-50%, 0px); }
+}
+
+@keyframes glowMoveSlow {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(-40px, -30px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.animate-glowMove {
+  animation: glowMove 10s ease-in-out infinite;
+}
+
+.animate-glowMoveSlow {
+  animation: glowMoveSlow 14s ease-in-out infinite;
+}

@@ -1,0 +1,183 @@
+
+> nextn@0.1.0 build
+> cross-env NODE_OPTIONS='--max-old-space-size=8192' npm run build:embed && npm run check:structure && npm run check:types && next build
+
+
+> nextn@0.1.0 build:embed
+> tsup
+
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Building entry: {"chatbot":"src/embed/index.tsx","locator":"src/embed/locator.tsx"}
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsconfig: tsconfig.json
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m tsup v8.5.1
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Using tsup config: C:\Users\marte\Baked for Brands\markitbot-for-brands\tsup.config.ts
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Target: es2020
+[2m[[22mCHATBOT[2m][22m [34mCLI[39m Cleaning output folder
+[2m[[22mCHATBOT[2m][22m [34mIIFE[39m Build start
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.css [22m[32m152.24 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.css [22m[32m152.24 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\locator.js  [22m[32m779.22 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m [1mpublic\embed\chatbot.js  [22m[32m599.71 KB[39m
+[2m[[22mCHATBOT[2m][22m [32mIIFE[39m GÜín+Å Build success in 7883ms
+
+> nextn@0.1.0 check:structure
+> node scripts/check-app-structure.mjs
+
+
+> nextn@0.1.0 check:types
+> node --max-old-space-size=4096 ./node_modules/typescript/bin/tsc --noEmit
+
+   Gû¦ Next.js 16.0.7 (Turbopack)
+   - Environments: .env.local, .env
+
+node.exe :  GÜá The 
+"middleware" file convention is 
+deprecated. Please use "proxy" 
+instead. Learn more: https://nex
+tjs.org/docs/messages/middleware
+-to-proxy
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo          : N 
+   otSpecified: ( GÜá The "mid  
+  dl...leware-to-proxy:String   
+ ) [], RemoteException
+    + FullyQualifiedErrorId : N 
+   ativeCommandError
+ 
+   Creating an optimized production build ...
+Turbopack build encountered 1 
+warnings:
+./node_modules/@google-cloud/sec
+ret-manager/node_modules/google-
+gax/build/src
+Package google-auth-library 
+can't be external
+The request google-auth-library 
+matches serverExternalPackages 
+(or the default list).
+The package resolves to a 
+different version when 
+requested from the project 
+directory (9.15.1) compared to 
+the package requested from the 
+importing module (10.5.0).
+Make sure to install the same 
+version of the package in both 
+locations.
+
+
+
+> Build error occurred
+Error: Turbopack build failed 
+with 2 errors:
+./src/server/integrations/gmail/
+oauth.ts:44:17
+Ecmascript file had an error
+[0m [90m 42 |[39m [90m * 
+(kept for backward 
+compatibility with existing 
+code)[39m
+ [90m 43 |[39m [90m */[39m
+[31m[1m>[22m[39m[90m 44 
+|[39m [36mexport[39m 
+[36mfunction[39m 
+getOAuth2Client() {
+ [90m    |[39m                
+ [31m[1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1m^[22m[39
+m[31m[1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[
+1m^[22m[39m
+ [90m 45 |[39m     
+[36mconst[39m clientId 
+[33m=[39m process[33m.[39men
+v[33m.[39m[33mGOOGLE_CLIENT_I
+D[39m [33m||[39m 
+[32m''[39m[33m;[39m
+ [90m 46 |[39m     
+[36mconst[39m clientSecret 
+[33m=[39m process[33m.[39men
+v[33m.[39m[33mGOOGLE_CLIENT_S
+ECRET[39m [33m||[39m 
+[32m''[39m[33m;[39m
+ [90m 47 |[39m     
+[36mreturn[39m [36mnew[39m g
+oogle[33m.[39mauth[33m.[39m
+[33mOAuth2[39m(clientId[33m,[
+39m clientSecret[33m,[39m [33
+mREDIRECT_URI[39m)[33m;[39m[
+0m
+
+Server Actions must be async 
+functions.
+
+
+Import trace:
+  App Route:
+    ./src/server/integrations/gm
+ail/oauth.ts
+    ./src/app/api/auth/google/ro
+ute.ts
+
+
+./src/server/utils/secrets.ts:94
+:17
+Ecmascript file had an error
+[0m [90m 92 |[39m [90m * 
+Clears the secret cache (useful 
+for testing or forced 
+refresh)[39m
+ [90m 93 |[39m [90m */[39m
+[31m[1m>[22m[39m[90m 94 
+|[39m [36mexport[39m 
+[36mfunction[39m 
+clearSecretCache()[33m:[39m 
+[36mvoid[39m {
+ [90m    |[39m                
+ [31m[1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1m^[22m[39
+m[31m[1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1m^[22m[39
+m
+ [90m 95 |[39m     secretCache
+[33m.[39mclear()[33m;[39m
+ [90m 96 |[39m }
+ [90m 97 |[39m[0m
+
+Server Actions must be async 
+functions.
+
+
+Import trace:
+  App Route:
+    
+./src/server/utils/secrets.ts
+    ./src/server/integrations/gm
+ail/oauth.ts
+    ./src/app/api/auth/google/ro
+ute.ts
+
+
+    at <unknown> (./src/server/i
+ntegrations/gmail/oauth.ts:44:17
+)
+    at <unknown> (./src/server/u
+tils/secrets.ts:94:17)
+
