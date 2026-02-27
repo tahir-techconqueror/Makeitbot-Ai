@@ -1,4 +1,4 @@
-// import { CategoryNav } from '@/components/dispensary/category-nav';
+// src\app\[brand]\page.tsx
 // import { DealsCarousel } from '@/components/dispensary/deals-carousel';
 import Chatbot from '@/components/chatbot';
 import { ProductGrid } from '@/components/product-grid';

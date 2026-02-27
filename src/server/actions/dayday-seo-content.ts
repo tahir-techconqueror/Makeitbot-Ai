@@ -10,6 +10,7 @@ import { createServerClient } from '@/firebase/server-client';
 import { ai } from '@/ai/genkit';
 // import { gemini20Flash } from '@genkit-ai/vertexai';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
 
 // Content templates by page type
 const CONTENT_TEMPLATES = {
@@ -79,6 +80,46 @@ interface OptimizeResult {
     metaDescription: string;
 }
 
+function isCredentialAuthError(error: unknown): boolean {
+    const message = error instanceof Error ? error.message : String(error || '');
+    const lower = message.toLowerCase();
+    return (
+        lower.includes('invalid authentication credentials') ||
+        lower.includes('expected oauth 2 access token') ||
+        lower.includes('unauthenticated') ||
+        lower.includes('could not load the default credentials')
+    );
+}
+
+async function generateTextWithFallback(prompt: string, maxOutputTokens: number): Promise<string> {
+    try {
+        const vertex = await ai.generate({
+            model: 'vertexai/gemini-3.0-flash-001',
+            prompt,
+            config: { temperature: 0.7, maxOutputTokens }
+        });
+        if (vertex?.text?.trim()) return vertex.text.trim();
+    } catch (error) {
+        if (!isCredentialAuthError(error)) {
+            throw error;
+        }
+        logger.warn('[DayDay] Vertex auth failed, falling back to Gemini API key model');
+    }
+
+    try {
+        const googleAi = await ai.generate({
+            model: 'googleai/gemini-3-flash-preview',
+            prompt,
+            config: { temperature: 0.7, maxOutputTokens }
+        });
+        if (googleAi?.text?.trim()) return googleAi.text.trim();
+    } catch (error) {
+        logger.error('[DayDay] Gemini API fallback failed', error instanceof Error ? error : new Error(String(error)));
+    }
+
+    return '';
+}
+
 /**
  * Generate unique SEO content for a single page
  */
@@ -136,12 +177,8 @@ export async function optimizePageContent(
         introPrompt = introPrompt.replace(new RegExp(`\\{${key}\\}`, 'g'), val);
     }
     
-    const introResult = await ai.generate({
-        model: 'vertexai/gemini-3.0-flash-001',
-        prompt: introPrompt,
-        config: { temperature: 0.7, maxOutputTokens: 300 }
-    });
-    const intro = introResult.text.trim();
+    const generatedIntro = await generateTextWithFallback(introPrompt, 300);
+    const intro = generatedIntro || `Discover ${vars.count} cannabis options near ${vars.zipCode} in ${vars.city}, ${vars.state}. Browse menus, compare deals, and find nearby stores quickly with up-to-date local listings.`;
     
     // 5. Generate FAQs via AI
     let faqPrompt = template.faqPrompt;
@@ -149,21 +186,33 @@ export async function optimizePageContent(
         faqPrompt = faqPrompt.replace(new RegExp(`\\{${key}\\}`, 'g'), val);
     }
     
-    const faqResult = await ai.generate({
-        model: 'vertexai/gemini-3.0-flash-001',
-        prompt: faqPrompt,
-        config: { temperature: 0.7, maxOutputTokens: 500 }
-    });
-    
+    const faqText = await generateTextWithFallback(faqPrompt, 500);
+
     let faqs: { q: string; a: string }[] = [];
     try {
-        const faqText = faqResult.text.trim();
         const jsonMatch = faqText.match(/\[[\s\S]*\]/);
         if (jsonMatch) {
             faqs = JSON.parse(jsonMatch[0]);
         }
     } catch (e) {
         console.error('Failed to parse FAQs:', e);
+    }
+    
+    if (faqs.length === 0) {
+        faqs = [
+            {
+                q: `How do I find dispensaries near ${vars.zipCode}?`,
+                a: `Use local listings for ${vars.city}, ${vars.state} to compare nearby stores, hours, and menu availability.`
+            },
+            {
+                q: 'Can I compare deals before visiting?',
+                a: 'Yes. Check current menu pricing and promotions to compare options before you go.'
+            },
+            {
+                q: 'How often is menu information updated?',
+                a: 'Menu and availability data are refreshed regularly, but inventory and pricing can change at the store level.'
+            }
+        ];
     }
     
     // 6. Generate meta description

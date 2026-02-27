@@ -415,6 +415,16 @@ function isTransientAiError(error: any): boolean {
     );
 }
 
+function isCredentialAuthError(error: any): boolean {
+    const message = (error?.message || String(error || '')).toLowerCase();
+    return (
+        message.includes('invalid authentication credentials') ||
+        message.includes('expected oauth 2 access token') ||
+        message.includes('unauthenticated') ||
+        message.includes('could not load the default credentials')
+    );
+}
+
 function buildGracefulFallbackMessage(persona?: string): string {
     const agentLabel = persona || 'assistant';
     return `The ${agentLabel} is temporarily busy due to AI provider load. I have saved your request, but couldn't complete full planning right now. Please retry in 1-2 minutes.`;
@@ -643,6 +653,18 @@ export async function runAgentChat(userMessage: string, personaId?: string, extr
                     };
                 }
 
+                if (isCredentialAuthError(syncError)) {
+                    return {
+                        content: 'Google service authentication is unavailable right now. Running in local fallback mode; limited live integrations may be temporarily skipped.',
+                        toolCalls: [],
+                        metadata: {
+                            type: 'session_context',
+                            agentName: finalPersonaId || 'Markitbot',
+                            brandId: user.brandId
+                        }
+                    };
+                }
+
                 return {
                     content: `**Error**: Agent execution failed. ${syncError.message}`,
                     toolCalls: [],
@@ -664,6 +686,13 @@ export async function runAgentChat(userMessage: string, personaId?: string, extr
     } catch (error: any) {
         // Catch-all error handler to prevent Server Components render errors
         console.error('[runAgentChat] Unexpected error:', error);
+        if (isCredentialAuthError(error)) {
+            return {
+                content: 'Google service authentication is unavailable right now. Running in local fallback mode; limited live integrations may be temporarily skipped.',
+                toolCalls: [],
+                metadata: { type: 'session_context' }
+            };
+        }
         if (isTransientAiError(error)) {
             return {
                 content: buildGracefulFallbackMessage(personaId || 'assistant'),

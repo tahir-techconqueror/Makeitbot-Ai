@@ -1,3 +1,4 @@
+// src\server\services\seo-auditor.ts
 /**
  * SEO Auditor Service (Google PageSpeed Insights)
  * 
@@ -31,18 +32,31 @@ export interface AuditResult {
 }
 
 export async function auditPage(url: string, strategy: 'mobile' | 'desktop' = 'mobile'): Promise<AuditResult | { error: string }> {
-    const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY; // Optional but recommended
+    const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
+    
+    // Check if API key is configured
+    if (!apiKey) {
+        logger.warn('[SeoAuditor] GOOGLE_PAGESPEED_API_KEY not configured. Skipping audit.');
+        return { 
+            error: 'PageSpeed Insights API key not configured. Please add GOOGLE_PAGESPEED_API_KEY to environment variables.' 
+        };
+    }
     
     // Construct URL with categories
     let apiUrl = `${PSI_API_URL}?url=${encodeURIComponent(url)}&strategy=${strategy}`;
     apiUrl += '&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO';
-    
-    if (apiKey) {
-        apiUrl += `&key=${apiKey}`;
-    }
+    apiUrl += `&key=${apiKey}`;
 
     try {
         const response = await fetch(apiUrl);
+        
+        // Handle authentication errors specifically
+        if (response.status === 401 || response.status === 403) {
+            const errorText = await response.text();
+            logger.error(`[SeoAuditor] Authentication error for PageSpeed API: ${response.status}`, { errorText });
+            return { error: `PageSpeed API authentication failed (${response.status}). Please check your API key.` };
+        }
+        
         if (!response.ok) {
             throw new Error(`PSI API error: ${response.status}`);
         }

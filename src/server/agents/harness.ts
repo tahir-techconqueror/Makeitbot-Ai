@@ -149,6 +149,15 @@ import { persistWorkflowFromHarness } from '@/server/services/letta/procedural-m
 import { sleepTimeService } from '@/server/services/letta/sleeptime-agent';
 import { sanitizeForPrompt, wrapUserData, embedCanaryToken, validateOutputWithCanary } from '@/server/security';
 
+function isClaudeAuthError(error: any): boolean {
+    const msg = (error?.message || String(error || '')).toLowerCase();
+    return (
+        msg.includes('invalid x-api-key') ||
+        msg.includes('authentication_error') ||
+        msg.includes('401')
+    );
+}
+
 // ============================================================================
 // VALIDATION HOOK TYPES
 // ============================================================================
@@ -577,14 +586,27 @@ export async function runMultiStepTask(context: MultiStepContext): Promise<{
             return result;
         };
 
-        const result = await executeWithTools(
-            `${systemInstructions}\n\n${wrapUserData(sanitizedQuery, 'user_request', false)}`,
-            claudeTools,
-            executor,
-            { maxIterations }
-        );
+        try {
+            const result = await executeWithTools(
+                `${systemInstructions}\n\n${wrapUserData(sanitizedQuery, 'user_request', false)}`,
+                claudeTools,
+                executor,
+                { maxIterations }
+            );
 
-        return { finalResult: result.content, steps };
+            return { finalResult: result.content, steps };
+        } catch (error: any) {
+            if (isClaudeAuthError(error)) {
+                logger.warn('[Harness] Claude auth failed, falling back to Gemini execution path', {
+                    error: error?.message || String(error),
+                });
+                return runMultiStepTask({
+                    ...context,
+                    model: 'gemini',
+                });
+            }
+            throw error;
+        }
     }
 
     // === GEMINI EXECUTION PATH (DEFAULT) ===
@@ -792,4 +814,3 @@ export interface MultiStepContextExtended extends MultiStepContext {
     onReplanRequired?: (failedTool: string, error: string) => Promise<void>;
     onDriftDetected?: (pei: PEI) => Promise<void>;
 }
-

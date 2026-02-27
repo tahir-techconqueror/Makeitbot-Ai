@@ -7,26 +7,113 @@ import {
   cert,
   applicationDefault,
 } from "firebase-admin/app";
+import { config } from 'dotenv';
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth, DecodedIdToken } from "firebase-admin/auth";
 import { DomainUserProfile } from "@/types/domain";
 
+// Ensure local/dev scripts and server runtimes can read both env files.
+config({ path: '.env.local' });
+config({ path: '.env' });
+
 let app: App;
 
-function getProjectId() {
+function isAuthCredentialError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error || '');
+  const lower = message.toLowerCase();
   return (
-    process.env.FIREBASE_PROJECT_ID ||
-    process.env.GOOGLE_CLOUD_PROJECT ||
-    process.env.GCLOUD_PROJECT
+    lower.includes('invalid authentication credentials') ||
+    lower.includes('expected oauth 2 access token') ||
+    lower.includes('unauthenticated') ||
+    lower.includes('could not load the default credentials')
   );
 }
 
+function createStubServerClient() {
+  const authStub: any = {
+    verifyIdToken: async (_token: string) => ({ uid: 'dev-user', email: 'dev@localhost', email_verified: true }),
+    getUser: async (uid: string) => ({ uid, customClaims: {}, email: 'dev@localhost' }),
+    setCustomUserClaims: async (_uid: string, _claims: any) => { return; },
+    createUser: async (_params: any) => ({ uid: 'dev-user' }),
+    deleteUser: async (_uid: string) => { return; }
+  };
+
+  const makeDoc = (id?: string) => ({
+    id: id || 'dev-doc',
+    async get() { return { exists: false, id: id || 'dev-doc', data: () => null, ref: {} as any }; },
+    async set(_data: any, _opts?: any) { return; },
+    async update(_data: any) { return; },
+    async delete() { return; },
+    collection: () => makeCollection()
+  });
+
+  const makeCollection = () => ({
+    doc: (docId?: string) => makeDoc(docId),
+    where: () => makeCollection(),
+    orderBy: () => makeCollection(),
+    limit: () => makeCollection(),
+    offset: () => makeCollection(),
+    async get() { return { empty: true, docs: [], forEach: (_cb: any) => {}, size: 0 }; },
+    async add(_data: any) { return { id: `dev-${Date.now()}` }; },
+    count: () => ({ get: async () => ({ data: () => ({ count: 0 }) }) })
+  });
+
+  const firestoreStub: any = {
+    collection: (_path: string) => makeCollection(),
+    doc: (_path: string) => makeDoc(),
+    runTransaction: async (fn: any) => {
+      return fn({
+        get: async () => ({ exists: false }),
+        set: async () => {},
+        update: async () => {},
+        delete: async () => {}
+      });
+    },
+    batch: () => ({ set: () => {}, update: () => {}, delete: () => {}, commit: async () => {} }),
+    settings: () => {}
+  };
+
+  return { auth: authStub, firestore: firestoreStub };
+}
+
+function getProjectId(serviceAccountObj?: any) {
+  // First try explicit env vars
+  if (process.env.FIREBASE_PROJECT_ID) return process.env.FIREBASE_PROJECT_ID;
+  if (process.env.GOOGLE_CLOUD_PROJECT) return process.env.GOOGLE_CLOUD_PROJECT;
+  if (process.env.GCLOUD_PROJECT) return process.env.GCLOUD_PROJECT;
+  
+  // Try to extract from service account if provided
+  if (serviceAccountObj?.project_id) {
+    console.log('[server-client] Using project_id from service account');
+    return serviceAccountObj.project_id;
+  }
+  
+  return undefined;
+}
+
 function getServiceAccount() {
+  // Check which env var has valid data - prioritize ones that actually contain data
+  // FIREBASE_SERVICE_ACCOUNT_KEY often gets set to file paths accidentally
   let serviceAccountKey =
-    process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
     process.env.FIREBASE_ADMIN_BASE64 ||
-    process.env.FIREBASE_ADMIN_JSON;
+    process.env.FIREBASE_ADMIN_JSON ||
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+    
   console.log('Initializing Firebase Admin. Key present:', !!serviceAccountKey);
+  
+  // Debug: show which env var is being used
+  if (process.env.FIREBASE_ADMIN_BASE64) {
+    console.log('[server-client] Using FIREBASE_ADMIN_BASE64');
+  } else if (process.env.FIREBASE_ADMIN_JSON) {
+    console.log('[server-client] Using FIREBASE_ADMIN_JSON');
+  } else if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+    console.log('[server-client] Using FIREBASE_SERVICE_ACCOUNT_KEY');
+    // Validate it looks like JSON or base64, not a file path
+    const val = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+    if (val && val.length < 100 && !val.includes('{')) {
+      console.warn('[server-client] WARNING: FIREBASE_SERVICE_ACCOUNT_KEY looks like a file path, not credentials!');
+    }
+  }
 
   if (!serviceAccountKey && process.env.NODE_ENV !== 'production') {
     try {
@@ -78,40 +165,11 @@ function getServiceAccount() {
     }
   }
 
-  // Sanitize private_key to prevent "Unparsed DER bytes" errors
-  // Sanitize private_key to prevent "Unparsed DER bytes" errors
+  // Keep private key handling conservative: only normalize escaped newlines.
+  // Over-aggressive body rewriting can corrupt valid keys.
   if (serviceAccount && typeof serviceAccount.private_key === 'string') {
     const rawKey = serviceAccount.private_key;
-
-    // Pattern to capture Header (group 1), Body (group 2), Footer (group 3)
-    const pemPattern = /(-+BEGIN\s+.*PRIVATE\s+KEY-+)([\s\S]+?)(-+END\s+.*PRIVATE\s+KEY-+)/;
-    const match = rawKey.match(pemPattern);
-
-    if (match) {
-      const header = "-----BEGIN PRIVATE KEY-----";
-      const footer = "-----END PRIVATE KEY-----";
-      const bodyRaw = match[2];
-      let bodyClean = bodyRaw.replace(/[^a-zA-Z0-9+/=]/g, '');
-
-      // 4n+1 length invalid. Try 1 byte (xx==).
-      if (bodyClean.length % 4 === 1) {
-        console.log(`[src/firebase/server-client.ts] Truncating 4n+1 and forcing double padding: ${bodyClean.length} -> 1628 (xx==)`);
-        bodyClean = bodyClean.slice(0, -1);
-        bodyClean = bodyClean.slice(0, -2) + '==';
-      }
-
-      // Fix Padding
-      while (bodyClean.length % 4 !== 0) {
-        bodyClean += '=';
-      }
-
-      const bodyFormatted = bodyClean.match(/.{1,64}/g)?.join('\n') || bodyClean;
-      serviceAccount.private_key = `${header}\n${bodyFormatted}\n${footer}\n`;
-
-      console.log(`[src/firebase/server-client.ts] Key Normalized. BodyLen: ${bodyClean.length}`);
-    } else {
-      serviceAccount.private_key = rawKey.trim().replace(/\\n/g, '\n');
-    }
+    serviceAccount.private_key = rawKey.trim().replace(/\\n/g, '\n');
   }
 
   return serviceAccount;
@@ -172,7 +230,8 @@ export async function createServerClient() {
   const appName = 'server-client-app';
   const existingApps = getApps().filter(a => a.name === appName);
 
-  if (existingApps.length === 0) {
+  try {
+    if (existingApps.length === 0) {
     // USE THE ROBUST HELPER FUNCTION
     const serviceAccountObj = getServiceAccount();
 
@@ -187,7 +246,7 @@ export async function createServerClient() {
         console.log('Using Application Default Credentials (isolated app)');
         app = initializeApp({
           credential: applicationDefault(),
-          projectId: getProjectId()
+          projectId: getProjectId(serviceAccountObj)
         }, appName);
       } catch (initError: any) {
         // If Application Default Credentials fail, provide a clear error message
@@ -204,18 +263,25 @@ export async function createServerClient() {
         throw initError;
       }
     }
-  } else {
-    app = existingApps[0]!;
-  }
+    } else {
+      app = existingApps[0]!;
+    }
 
-  const auth = getAuth(app);
-  const firestore = getFirestore(app);
-  try {
-    firestore.settings({ ignoreUndefinedProperties: true, preferRest: true });
-  } catch (e) {
-    // Ignore if settings already applied
+    const auth = getAuth(app);
+    const firestore = getFirestore(app);
+    try {
+      firestore.settings({ ignoreUndefinedProperties: true, preferRest: true });
+    } catch (e) {
+      // Ignore if settings already applied
+    }
+    return { auth, firestore };
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production' && isAuthCredentialError(error)) {
+      console.warn('[createServerClient] Credential auth failed, using local dev stubs.');
+      return createStubServerClient();
+    }
+    throw error;
   }
-  return { auth, firestore };
 }
 
 /**
@@ -275,4 +341,3 @@ export async function setUserRole(
   };
   await setUserClaims(uid, claims);
 }
-

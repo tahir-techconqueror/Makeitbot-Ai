@@ -25,6 +25,15 @@ function isRetryableOverloadError(error: any): boolean {
   );
 }
 
+function isClaudeAuthError(error: any): boolean {
+  const msg = (error?.message || String(error || '')).toLowerCase();
+  return (
+    msg.includes('invalid x-api-key') ||
+    msg.includes('authentication_error') ||
+    msg.includes('401')
+  );
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -257,6 +266,7 @@ export const craigAgent: AgentImplementation<CraigMemory, CraigTools> = {
             const maxAttempts = 3;
             let result: Awaited<ReturnType<typeof runMultiStepTask>> | null = null;
             let lastError: any = null;
+            let usedGeminiFallback = false;
 
             for (let attempt = 1; attempt <= maxAttempts; attempt++) {
                 try {
@@ -270,6 +280,27 @@ export const craigAgent: AgentImplementation<CraigMemory, CraigTools> = {
                     });
                     break;
                 } catch (err: any) {
+                    if (!usedGeminiFallback && isClaudeAuthError(err)) {
+                        logger.warn('[Drip] Claude auth failed, switching to Gemini fallback', {
+                            error: err?.message || String(err),
+                        });
+                        usedGeminiFallback = true;
+                        try {
+                            result = await runMultiStepTask({
+                                userQuery,
+                                systemInstructions: (agentMemory.system_instructions as string) || '',
+                                toolsDef,
+                                tools,
+                                model: 'gemini',
+                                maxIterations: 5
+                            });
+                            break;
+                        } catch (geminiErr: any) {
+                            lastError = geminiErr;
+                            throw geminiErr;
+                        }
+                    }
+
                     lastError = err;
                     const retryable = isRetryableOverloadError(err);
                     const canRetry = retryable && attempt < maxAttempts;

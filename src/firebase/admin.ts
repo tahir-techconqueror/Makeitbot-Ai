@@ -1,15 +1,100 @@
 // src\firebase\admin.ts
 import 'server-only';
+import { config } from 'dotenv';
 import { getApps, initializeApp, cert, applicationDefault } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 import { getStorage } from 'firebase-admin/storage';
 
+// Ensure local/dev scripts and server runtimes can read both env files.
+config({ path: '.env.local' });
+config({ path: '.env' });
+
+function isAuthCredentialError(error: unknown): boolean {
+    const message = error instanceof Error ? error.message : String(error || '');
+    const lower = message.toLowerCase();
+    return (
+        lower.includes('invalid authentication credentials') ||
+        lower.includes('expected oauth 2 access token') ||
+        lower.includes('unauthenticated') ||
+        lower.includes('could not load the default credentials')
+    );
+}
+
+function createFirestoreStub() {
+    const makeDoc = (id?: string) => ({
+        id: id || 'dev-doc',
+        async get() { return { exists: false, id: id || 'dev-doc', data: () => null, ref: {} as any }; },
+        async set(_data: any, _opts?: any) { return; },
+        async update(_data: any) { return; },
+        async delete() { return; },
+        collection: () => makeCollection()
+    });
+
+    const makeCollection = () => ({
+        doc: (docId?: string) => makeDoc(docId),
+        where: () => makeCollection(),
+        orderBy: () => makeCollection(),
+        limit: () => makeCollection(),
+        offset: () => makeCollection(),
+        count: () => ({ get: async () => ({ data: () => ({ count: 0 }) }) }),
+        async add(_data: any) { return { id: `dev-${Date.now()}` }; },
+        async get() { return { empty: true, docs: [], forEach: (_cb: any) => {}, size: 0 }; }
+    });
+
+    return {
+        collection: (_path: string) => makeCollection(),
+        doc: (_path: string) => makeDoc(),
+        runTransaction: async (fn: any) => {
+            return fn({
+                get: async () => ({ exists: false }),
+                set: async () => {},
+                update: async () => {},
+                delete: async () => {}
+            });
+        },
+        batch: () => ({ set: () => {}, update: () => {}, delete: () => {}, commit: async () => {} }),
+        settings: () => {}
+    } as any;
+}
+
+function createAuthStub() {
+    return {
+        verifyIdToken: async (_token: string) => ({ uid: 'dev-user', email: 'dev@localhost', email_verified: true }),
+        getUser: async (uid: string) => ({ uid, customClaims: {}, email: 'dev@localhost' }),
+        setCustomUserClaims: async (_uid: string, _claims: any) => { return; },
+        createUser: async (_params: any) => ({ uid: 'dev-user' }),
+        deleteUser: async (_uid: string) => { return; }
+    } as any;
+}
+
+function shouldUseLocalCredentialFallback(error: unknown): boolean {
+    return process.env.NODE_ENV !== 'production' && isAuthCredentialError(error);
+}
+
 function getServiceAccount() {
+    // Check which env var has valid data - prioritize ones that actually contain data
+    // FIREBASE_SERVICE_ACCOUNT_KEY often gets set to file paths accidentally
     let serviceAccountKey =
-        process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
         process.env.FIREBASE_ADMIN_BASE64 ||
-        process.env.FIREBASE_ADMIN_JSON;
+        process.env.FIREBASE_ADMIN_JSON ||
+        process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+        
+    console.log('[Firebase Admin] Key present:', !!serviceAccountKey);
+    
+    // Debug: show which env var is being used
+    if (process.env.FIREBASE_ADMIN_BASE64) {
+        console.log('[Firebase Admin] Using FIREBASE_ADMIN_BASE64');
+    } else if (process.env.FIREBASE_ADMIN_JSON) {
+        console.log('[Firebase Admin] Using FIREBASE_ADMIN_JSON');
+    } else if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+        console.log('[Firebase Admin] Using FIREBASE_SERVICE_ACCOUNT_KEY');
+        // Validate it looks like JSON or base64, not a file path
+        const val = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+        if (val && val.length < 100 && !val.includes('{')) {
+            console.warn('[Firebase Admin] WARNING: FIREBASE_SERVICE_ACCOUNT_KEY looks like a file path, not credentials!');
+        }
+    }
 
     // Local file fallback for non-production environments
     if (!serviceAccountKey && process.env.NODE_ENV !== 'production') {
@@ -45,37 +130,11 @@ function getServiceAccount() {
         }
     }
 
-    // Sanitize private_key to prevent "Unparsed DER bytes" errors
+    // Keep private key handling conservative: only normalize escaped newlines.
+    // Over-aggressive body rewriting can corrupt valid keys.
     if (serviceAccount && typeof serviceAccount.private_key === 'string') {
         const rawKey = serviceAccount.private_key;
-
-        // Pattern to capture Header (group 1), Body (group 2), Footer (group 3)
-        const pemPattern = /(-+BEGIN\s+.*PRIVATE\s+KEY-+)([\s\S]+?)(-+END\s+.*PRIVATE\s+KEY-+)/;
-        const match = rawKey.match(pemPattern);
-
-        if (match) {
-            const header = "-----BEGIN PRIVATE KEY-----";
-            const footer = "-----END PRIVATE KEY-----";
-            const bodyRaw = match[2];
-            let bodyClean = bodyRaw.replace(/[^a-zA-Z0-9+/=]/g, '');
-
-            // 4n+1 length invalid. Try 1 byte (xx==).
-            if (bodyClean.length % 4 === 1) {
-                // console.log(`[src/firebase/admin.ts] Truncating 4n+1...`); // reduced log noise
-                bodyClean = bodyClean.slice(0, -1);
-                bodyClean = bodyClean.slice(0, -2) + '==';
-            }
-
-            // Fix Padding
-            while (bodyClean.length % 4 !== 0) {
-                bodyClean += '=';
-            }
-
-            const bodyFormatted = bodyClean.match(/.{1,64}/g)?.join('\n') || bodyClean;
-            serviceAccount.private_key = `${header}\n${bodyFormatted}\n${footer}\n`;
-        } else {
-            serviceAccount.private_key = rawKey.trim().replace(/\\n/g, '\n');
-        }
+        serviceAccount.private_key = rawKey.trim().replace(/\\n/g, '\n');
     }
 
     return serviceAccount;
@@ -118,6 +177,10 @@ export function getAdminFirestore() {
         }
         return firestore;
     } catch (error) {
+        if (shouldUseLocalCredentialFallback(error)) {
+            console.warn('[Firebase Admin] Falling back to local Firestore stub due to credential error.');
+            return createFirestoreStub();
+        }
         console.error('[Firebase Admin] Error in getAdminFirestore:', error);
         throw error;
     }
@@ -128,6 +191,10 @@ export function getAdminAuth() {
         const app = getOrInitAdminApp();
         return getAuth(app);
     } catch (error) {
+        if (shouldUseLocalCredentialFallback(error)) {
+            console.warn('[Firebase Admin] Falling back to local Auth stub due to credential error.');
+            return createAuthStub();
+        }
         console.error('[Firebase Admin] Error in getAdminAuth:', error);
         throw error;
     }
@@ -142,5 +209,3 @@ export function getAdminStorage() {
         throw error;
     }
 }
-
-
