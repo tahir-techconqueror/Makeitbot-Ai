@@ -21,7 +21,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle, PartyPopper, X, Mail, Sparkles, Gift } from 'lucide-react';
+import { AlertCircle, PartyPopper, X, Mail, Sparkles } from 'lucide-react';
 import { captureEmailLead } from '@/server/actions/email-capture';
 import { checkFirstOrderEligibility } from '@/lib/checkout/first-order-discount';
 import { createFirstOrderCoupon } from '@/app/actions/first-order-coupon';
@@ -169,22 +169,22 @@ export function AgeGateSimpleWithEmail({
     // Underage screen
     if (step === 'underage') {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4">
-                <Card className="w-full max-w-md mx-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4">
+                <Card className="w-full max-w-md mx-4 border border-blue-500/35 bg-black text-blue-200">
                     <CardHeader className="text-center">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/15 border border-blue-500/35">
                             <X className="h-6 w-6 text-destructive" />
                         </div>
-                        <CardTitle className="text-2xl">Access Restricted</CardTitle>
-                        <CardDescription>
+                        <CardTitle className="text-2xl text-blue-300">Access Restricted</CardTitle>
+                        <CardDescription className="text-blue-200/80">
                             You must be 21 or older to access this site
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="text-center">
-                        <p className="text-sm text-muted-foreground mb-4">
+                        <p className="text-sm text-blue-200/80 mb-4">
                             We appreciate your honesty. Please come back when you're of legal age.
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-blue-200/65">
                             By law, cannabis products are only available to adults 21 and older.
                         </p>
                     </CardContent>
@@ -196,14 +196,14 @@ export function AgeGateSimpleWithEmail({
     // Email capture screen
     if (step === 'email-capture') {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4">
-                <Card className="w-full max-w-md mx-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4">
+                <Card className="w-full max-w-md mx-4 border border-blue-500/35 bg-black text-blue-200">
                     <CardHeader className="text-center">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                            <Sparkles className="h-6 w-6 text-primary" />
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/15 border border-blue-500/35">
+                            <Sparkles className="h-6 w-6 text-blue-400" />
                         </div>
-                        <CardTitle className="text-2xl">Get 20% Off Your First Order!</CardTitle>
-                        <CardDescription>
+                        <CardTitle className="text-2xl text-blue-300">Get 20% Off Your First Order!</CardTitle>
+                        <CardDescription className="text-blue-200/80">
                             Enter your email to receive your exclusive discount code
                         </CardDescription>
                     </CardHeader>
@@ -211,8 +211,8 @@ export function AgeGateSimpleWithEmail({
                         <div className="space-y-4">
                             {/* First Name */}
                             <div className="space-y-2">
-                                <Label htmlFor="firstName" className="text-sm">
-                                    First Name <span className="text-xs text-muted-foreground">(Optional)</span>
+                                <Label htmlFor="firstName" className="text-sm text-blue-200">
+                                    First Name <span className="text-xs text-blue-200/70">(Optional)</span>
                                 </Label>
                                 <Input
                                     id="firstName"
@@ -220,14 +220,15 @@ export function AgeGateSimpleWithEmail({
                                     placeholder="Your name"
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
+                                    className="border-blue-500/35 bg-blue-950/25 text-blue-100 placeholder:text-blue-200/50"
                                 />
                             </div>
 
                             {/* Email */}
                             <div className="space-y-2">
-                                <Label htmlFor="email" className="text-sm flex items-center gap-2">
+                                <Label htmlFor="email" className="text-sm flex items-center gap-2 text-blue-200">
                                     <Mail className="h-3.5 w-3.5" />
-                                    Email <span className="text-xs text-muted-foreground">(Optional)</span>
+                                    Email <span className="text-xs text-blue-200/70">(Optional)</span>
                                 </Label>
                                 <Input
                                     id="email"
@@ -235,6 +236,7 @@ export function AgeGateSimpleWithEmail({
                                     placeholder="you@example.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    className="border-blue-500/35 bg-blue-950/25 text-blue-100 placeholder:text-blue-200/50"
                                 />
                                 {email && (
                                     <div className="flex items-start space-x-2 pt-1">
@@ -245,7 +247,7 @@ export function AgeGateSimpleWithEmail({
                                         />
                                         <label
                                             htmlFor="emailConsent"
-                                            className="text-xs text-muted-foreground leading-tight cursor-pointer"
+                                            className="text-xs text-blue-200/70 leading-tight cursor-pointer"
                                         >
                                             I agree to receive promotional emails and my 20% discount code. You can unsubscribe anytime.
                                         </label>
@@ -253,8 +255,8 @@ export function AgeGateSimpleWithEmail({
                                 )}
                             </div>
 
-                            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-                                <p className="text-xs text-emerald-800 flex items-center gap-2">
+                            <div className="bg-blue-950/40 border border-blue-500/35 rounded-lg p-3">
+                                <p className="text-xs text-blue-200/90 flex items-center gap-2">
                                     <Sparkles className="h-4 w-4" />
                                     Be the first to know about new drops, exclusive deals, and special events
                                 </p>
@@ -269,7 +271,7 @@ export function AgeGateSimpleWithEmail({
                             <div className="flex gap-2">
                                 <Button
                                     onClick={handleSubmitEmail}
-                                    className="flex-1"
+                                    className="flex-1 bg-blue-600 hover:bg-blue-500 text-white"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? 'Submitting...' : 'Get My Discount'}
@@ -277,14 +279,14 @@ export function AgeGateSimpleWithEmail({
                                 <Button
                                     onClick={handleSkip}
                                     variant="ghost"
-                                    className="flex-1"
+                                    className="flex-1 border border-blue-500/30 text-blue-200 hover:bg-blue-950/35 hover:text-blue-100"
                                     disabled={isSubmitting}
                                 >
                                     Skip
                                 </Button>
                             </div>
 
-                            <p className="text-xs text-center text-muted-foreground">
+                            <p className="text-xs text-center text-blue-200/65">
                                 By entering this site, you agree to our Terms of Service and Privacy Policy
                             </p>
                         </div>
@@ -296,25 +298,25 @@ export function AgeGateSimpleWithEmail({
 
     // Age check screen (initial)
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4">
-            <Card className="w-full max-w-md mx-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4">
+            <Card className="w-full max-w-md mx-4 border border-blue-500/35 bg-black text-blue-200">
                 <CardHeader className="text-center">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                        <AlertCircle className="h-6 w-6 text-primary" />
+                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/15 border border-blue-500/35">
+                        <AlertCircle className="h-6 w-6 text-blue-400" />
                     </div>
-                    <CardTitle className="text-2xl">Age Verification Required</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-2xl text-blue-300">Age Verification Required</CardTitle>
+                    <CardDescription className="text-blue-200/80">
                         You must be 21 or older to access this site
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                    <p className="text-center text-sm font-semibold mb-4">
+                    <p className="text-center text-sm font-semibold mb-4 text-blue-200">
                         Are you 21 years of age or older?
                     </p>
 
                     <Button
                         onClick={handleYes}
-                        className="w-full h-14 text-lg font-semibold"
+                        className="w-full h-14 text-lg font-semibold bg-blue-600 hover:bg-blue-500 text-white"
                         size="lg"
                     >
                         <PartyPopper className="mr-2 h-5 w-5" />
@@ -324,14 +326,14 @@ export function AgeGateSimpleWithEmail({
                     <Button
                         onClick={handleNo}
                         variant="outline"
-                        className="w-full h-14 text-lg"
+                        className="w-full h-14 text-lg border-blue-500/35 bg-transparent text-blue-200 hover:bg-blue-950/35 hover:text-blue-100"
                         size="lg"
                     >
                         <X className="mr-2 h-5 w-5" />
                         No, I'm under 21
                     </Button>
 
-                    <p className="text-xs text-center text-muted-foreground pt-4">
+                    <p className="text-xs text-center text-blue-200/65 pt-4">
                         By entering this site, you agree to our Terms of Service and Privacy Policy
                     </p>
                 </CardContent>

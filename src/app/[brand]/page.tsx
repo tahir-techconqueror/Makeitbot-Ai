@@ -62,19 +62,19 @@ export default async function BrandPage({ params }: { params: Promise<{ brand: s
         // Show a friendly "brand not found" page instead of hard 404
         // This helps users who haven't completed setup yet
         return (
-            <main className="min-h-screen flex items-center justify-center bg-gray-50">
+            <main className="min-h-screen flex items-center justify-center bg-black text-blue-200">
                 <div className="text-center max-w-md mx-auto p-8">
-                    <div className="text-6xl mb-4">🌿</div>
-                    <h1 className="text-2xl font-bold mb-2">Brand Not Found</h1>
-                    <p className="text-gray-600 mb-6">
+                    <div className="text-6xl mb-4 text-blue-400">🌿</div>
+                    <h1 className="text-2xl font-bold mb-2 text-blue-300">Brand Not Found</h1>
+                    <p className="text-blue-200/85 mb-6">
                         The brand page &quot;{brandParam}&quot; hasn&apos;t been set up yet.
                     </p>
-                    <p className="text-sm text-gray-500 mb-6">
+                    <p className="text-sm text-blue-200/70 mb-6">
                         If you own this brand, please complete your setup in the dashboard.
                     </p>
                     <a
                         href="/dashboard/brand-page"
-                        className="inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                        className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition"
                     >
                         Set Up Your Brand Page
                     </a>
