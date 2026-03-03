@@ -81,6 +81,7 @@ export async function proxy(request: NextRequest) {
     const isCustomDomain =
         !hostname.includes('markitbot.com') &&
         !hostname.includes('makeitbot.com') &&
+        !hostname.includes('tcqstaging.space') &&
         !hostname.includes('localhost') &&
         !hostname.includes('127.0.0.1') &&
         !hostname.includes('firebaseapp.com') &&

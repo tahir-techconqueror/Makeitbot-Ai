@@ -21,6 +21,7 @@ export default async function BrandPage({ params }: { params: Promise<{ brand: s
 
     // Reserved paths that should not be treated as brand slugs
     const RESERVED_PATHS = [
+        '404',
         'help',
         'dashboard',
         'api',
