@@ -37,6 +37,50 @@ const OnboardingSchema = z.object({
   selectedCompetitors: z.string().optional() // JSON array of competitor objects
 });
 
+function isTransientFirestoreNetworkError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error || '');
+  const upper = message.toUpperCase();
+  const lower = message.toLowerCase();
+
+  return (
+    upper.includes('EAI_AGAIN') ||
+    upper.includes('ENOTFOUND') ||
+    upper.includes('ETIMEDOUT') ||
+    upper.includes('ECONNRESET') ||
+    upper.includes('ECONNREFUSED') ||
+    upper.includes('EHOSTUNREACH') ||
+    upper.includes('ENETUNREACH') ||
+    (lower.includes('getaddrinfo') && lower.includes('firestore.googleapis.com'))
+  );
+}
+
+async function withFirestoreRetry<T>(label: string, operation: () => Promise<T>, maxAttempts = 3): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (!isTransientFirestoreNetworkError(error) || attempt === maxAttempts) {
+        throw error;
+      }
+
+      const backoffMs = Math.min(4000, 250 * (2 ** (attempt - 1)));
+      logger.warn('Transient Firestore network error, retrying onboarding operation', {
+        label,
+        attempt,
+        maxAttempts,
+        backoffMs,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      await new Promise((resolve) => setTimeout(resolve, backoffMs));
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error(String(lastError || 'Unknown Firestore operation failure'));
+}
+
 export async function completeOnboarding(prevState: any, formData: FormData) {
   
   try {
@@ -180,7 +224,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
       const newBrandId = `brand_${uid.substring(0, 8)}`; // Generate ID
       if (!useLocalFallback) {
         const brandRepo = makeBrandRepo(firestore!);
-        await brandRepo.create(newBrandId, { name: manualBrandName });
+        await withFirestoreRetry('brandRepo.create', () => brandRepo.create(newBrandId, { name: manualBrandName }));
       } else {
         localBackup.brands.push({ id: newBrandId, name: manualBrandName });
       }
@@ -189,7 +233,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
 
       // Queue background data discovery job for manual entries
       if (!useLocalFallback) {
-        await firestore!.collection('data_jobs').add({
+        await withFirestoreRetry('data_jobs.add.brand_discovery', () => firestore!.collection('data_jobs').add({
           type: 'brand_discovery',
           entityId: newBrandId,
           entityName: manualBrandName,
@@ -202,7 +246,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
           createdAt: FieldValue.serverTimestamp(),
           updatedAt: FieldValue.serverTimestamp(),
           attempts: 0
-        });
+        }));
       } else {
         localBackup.dataJobs.push({ type: 'brand_discovery', entityId: newBrandId, entityName: manualBrandName, userId: uid, status: 'pending' });
       }
@@ -233,10 +277,10 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
 
       const orgRef = firestore!.collection('organizations').doc(orgId);
       if (!useLocalFallback) {
-        const orgSnap = await orgRef.get();
+        const orgSnap = await withFirestoreRetry('organizations.get', () => orgRef.get());
 
         if (!orgSnap.exists) {
-          await orgRef.set({
+          await withFirestoreRetry('organizations.set', () => orgRef.set({
             id: orgId,
             name: finalBrandName || manualDispensaryName || 'My Organization',
             slug: slug || null,
@@ -248,9 +292,9 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
             updatedAt: FieldValue.serverTimestamp(),
             settings: { policyPack: 'balanced', allowOverrides: true, hipaaMode: false },
             billing: { subscriptionStatus: 'trial' }
-          });
+          }));
         } else if (marketState) {
-          await orgRef.update({ marketState, updatedAt: FieldValue.serverTimestamp() });
+          await withFirestoreRetry('organizations.update', () => orgRef.update({ marketState, updatedAt: FieldValue.serverTimestamp() }));
         }
       } else {
         localBackup.orgs.push({ id: orgId, name: finalBrandName || manualDispensaryName || 'My Organization', marketState, zipCode });
@@ -267,7 +311,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
                 const compRef = firestore!.collection('organizations').doc(orgId).collection('competitors').doc(comp.id);
                 batch.set(compRef, { ...comp, source: 'onboarding', lastUpdated: FieldValue.serverTimestamp() }, { merge: true });
               }
-              await batch.commit();
+              await withFirestoreRetry('organizations.competitors.batch.commit', () => batch.commit());
               logger.info(`Saved ${comps.length} competitors during onboarding`, { orgId });
             } else {
               localBackup.dataJobs.push({ type: 'competitors', orgId, comps });
@@ -289,7 +333,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
 
       const locRef = firestore!.collection('locations').doc(locId);
       if (!useLocalFallback) {
-        await locRef.set({
+        await withFirestoreRetry('locations.set', () => locRef.set({
           id: locId,
           orgId: orgId,
           name: manualDispensaryName || 'Main Location',
@@ -300,7 +344,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
           competitorIds: competitors ? competitors.split(',') : [], // Save competitors
           createdAt: FieldValue.serverTimestamp(),
           updatedAt: FieldValue.serverTimestamp()
-        }, { merge: true });
+        }, { merge: true }));
       } else {
         localBackup.locations.push({ id: locId, orgId, name: manualDispensaryName || 'Main Location', slug: slug || null, zipCode: zipCode || null, posConfig: userProfileData.posConfig || { provider: 'none', status: 'inactive' }, cannMenusId: locationId, competitorIds: competitors ? competitors.split(',') : [] });
       }
@@ -331,7 +375,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
 
     if (!useLocalFallback) {
       const userDocRef = firestore!.collection('users').doc(uid);
-      await userDocRef.set(finalProfile, { merge: true });
+      await withFirestoreRetry('users.set', () => userDocRef.set(finalProfile, { merge: true }));
       // await auth!.setCustomUserClaims(uid, finalClaims);
     } else {
       localBackup.users.push({ uid, profile: finalProfile });
@@ -345,7 +389,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
     if (finalRole === 'brand' && finalBrandId) {
       // Queue product sync job (don't execute here)
       if (!useLocalFallback) {
-        const syncJobRef = await firestore!.collection('data_jobs').add({
+        const syncJobRef = await withFirestoreRetry('data_jobs.add.product_sync.brand', () => firestore!.collection('data_jobs').add({
           type: 'product_sync',
           entityId: finalBrandId,
           entityName: finalBrandName || 'Brand',
@@ -364,12 +408,12 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
             marketState: marketState || null,
             isCannMenus: finalBrandId.startsWith('cm_')
           }
-        });
+        }));
         productSyncJobId = syncJobRef.id;
         logger.info('Queued product sync job', { jobId: productSyncJobId, brandId: finalBrandId });
 
         // Queue dispensary import job (find retailers carrying this brand)
-        await firestore!.collection('data_jobs').add({
+        await withFirestoreRetry('data_jobs.add.dispensary_import.brand', () => firestore!.collection('data_jobs').add({
           type: 'dispensary_import',
           entityId: finalBrandId,
           entityName: finalBrandName || 'Brand',
@@ -386,7 +430,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
             brandId: finalBrandId,
             marketState: marketState || null
           }
-        });
+        }));
         logger.info('Queued dispensary import job', { brandId: finalBrandId });
       } else {
         const pid = `local-job-${localBackup.dataJobs.length + 1}`;
@@ -398,7 +442,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
     } else if (finalRole === 'dispensary' && locationId) {
       // Queue dispensary sync job
       if (!useLocalFallback) {
-        const syncJobRef = await firestore!.collection('data_jobs').add({
+        const syncJobRef = await withFirestoreRetry('data_jobs.add.product_sync.dispensary', () => firestore!.collection('data_jobs').add({
           type: 'product_sync',
           entityId: locationId,
           entityName: manualDispensaryName || 'Dispensary',
@@ -412,11 +456,11 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
           updatedAt: FieldValue.serverTimestamp(),
           attempts: 0,
           metadata: { locationId: locationId, isCannMenus: locationId.startsWith('cm_') }
-        });
+        }));
         logger.info('Queued dispensary sync job', { jobId: syncJobRef.id, locationId });
 
         // Queue competitor discovery
-        await firestore!.collection('data_jobs').add({
+        await withFirestoreRetry('data_jobs.add.competitor_discovery.dispensary', () => firestore!.collection('data_jobs').add({
           type: 'competitor_discovery',
           entityId: locationId,
           entityName: manualDispensaryName || 'Dispensary',
@@ -427,7 +471,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
           createdAt: FieldValue.serverTimestamp(),
           updatedAt: FieldValue.serverTimestamp(),
           metadata: { locationId: locationId, marketState: marketState }
-        });
+        }));
         logger.info('Queued competitor discovery job', { locationId });
       } else {
         localBackup.dataJobs.push({ id: `local-job-${localBackup.dataJobs.length + 1}`, type: 'product_sync', entityId: locationId, entityName: manualDispensaryName || 'Dispensary', entityType: 'dispensary', orgId, userId: uid, status: 'pending', metadata: { locationId, isCannMenus: locationId.startsWith('cm_') } });
@@ -439,7 +483,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
     // --- QUEUE SEO PAGE GENERATION (NON-BLOCKING) ---
     if ((finalRole === 'brand' || finalRole === 'dispensary') && orgId) {
       if (!useLocalFallback) {
-        await firestore!.collection('data_jobs').add({
+        await withFirestoreRetry('data_jobs.add.seo_page_generation', () => firestore!.collection('data_jobs').add({
           type: 'seo_page_generation',
           entityId: orgId,
           entityName: finalBrandName || manualDispensaryName || 'Partner',
@@ -453,7 +497,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
           updatedAt: FieldValue.serverTimestamp(),
           attempts: 0,
           metadata: { role: finalRole, locationId: locationId || null }
-        });
+        }));
         logger.info('Queued SEO page generation job', { orgId, role: finalRole });
       } else {
         localBackup.dataJobs.push({ id: `local-job-${localBackup.dataJobs.length + 1}`, type: 'seo_page_generation', entityId: orgId, entityName: finalBrandName || manualDispensaryName || 'Partner', entityType: finalRole, orgId, userId: uid, status: 'pending', metadata: { role: finalRole, locationId: locationId || null } });
@@ -463,7 +507,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
     // --- QUEUE COMPETITOR DISCOVERY (NON-BLOCKING) ---
     if ((finalRole === 'brand' || finalRole === 'dispensary') && orgId && marketState) {
       if (!useLocalFallback) {
-        await firestore!.collection('data_jobs').add({
+        await withFirestoreRetry('data_jobs.add.competitor_discovery.org', () => firestore!.collection('data_jobs').add({
           type: 'competitor_discovery',
           entityId: orgId,
           entityName: finalBrandName || manualDispensaryName || 'Partner',
@@ -477,7 +521,7 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
           updatedAt: FieldValue.serverTimestamp(),
           attempts: 0,
           metadata: { marketState: marketState }
-        });
+        }));
         logger.info('Queued competitor discovery job', { orgId, marketState });
       } else {
         localBackup.dataJobs.push({ id: `local-job-${localBackup.dataJobs.length + 1}`, type: 'competitor_discovery', entityId: orgId, entityName: finalBrandName || manualDispensaryName || 'Partner', entityType: finalRole, orgId, userId: uid, status: 'pending', metadata: { marketState } });
@@ -550,6 +594,13 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
       return {
         message: 'Welcome! Your workspace is being prepared (local dev mode). Data import is running in the background.',
         error: false
+      };
+    }
+    if (isTransientFirestoreNetworkError(error)) {
+      logger.warn('Onboarding failed due to transient Firestore network/DNS error', { error: errorMessage });
+      return {
+        message: 'Temporary network issue while saving profile. Please retry in a few seconds.',
+        error: true
       };
     }
     logger.error('Onboarding server action failed:', { error: errorMessage });
