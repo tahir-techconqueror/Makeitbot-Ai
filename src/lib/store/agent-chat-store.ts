@@ -136,14 +136,53 @@ export const useAgentChatStore = create<AgentChatState>()(
 
             addMessage: (message) => {
                 set((state) => {
+                    const hasValidActiveSession =
+                        !!state.activeSessionId &&
+                        state.sessions.some((s) => s.id === state.activeSessionId);
+
+                    // Auto-create a session on the first message so history appears immediately.
+                    if (!hasValidActiveSession && state.currentMessages.length === 0) {
+                        const titleSource = message.content?.trim();
+                        const sessionTitle =
+                            titleSource?.slice(0, 30) || 'New Chat';
+                        const sessionPreview =
+                            titleSource?.slice(0, 50) || '';
+                        const now = new Date();
+                        const newSessionId = `session-${Date.now()}`;
+
+                        const newSession: ChatSession = {
+                            id: newSessionId,
+                            title: sessionTitle,
+                            preview: sessionPreview,
+                            timestamp: now,
+                            messages: [message],
+                            role: state.currentRole || undefined,
+                            projectId: state.currentProjectId || undefined,
+                            artifacts: state.currentArtifacts || [],
+                        };
+
+                        return {
+                            activeSessionId: newSessionId,
+                            currentMessages: [message],
+                            sessions: [newSession, ...state.sessions],
+                        };
+                    }
+
                     const newMessages = [...state.currentMessages, message];
 
                     // If we have an active session, update it in the sessions list too
                     let newSessions = state.sessions;
-                    if (state.activeSessionId) {
+                    if (hasValidActiveSession && state.activeSessionId) {
                         newSessions = state.sessions.map(s =>
                             s.id === state.activeSessionId
-                                ? { ...s, messages: newMessages, preview: message.content.slice(0, 50) }
+                                ? {
+                                    ...s,
+                                    messages: newMessages,
+                                    preview: message.content?.trim()
+                                        ? message.content.slice(0, 50)
+                                        : s.preview,
+                                    timestamp: new Date(),
+                                  }
                                 : s
                         );
                     }

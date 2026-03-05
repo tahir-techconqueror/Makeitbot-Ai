@@ -8,7 +8,7 @@
  */
 
 import { useMemo, useState, useCallback } from 'react';
-import { useAgentChatStore, ChatSession } from '@/lib/store/agent-chat-store';
+import { useAgentChatStore } from '@/lib/store/agent-chat-store';
 import { useInboxStore } from '@/lib/store/inbox-store';
 import type { InboxThread } from '@/types/inbox';
 
@@ -43,24 +43,8 @@ interface UseUnifiedHistoryReturn {
     };
 }
 
-/**
- * Check if a role is a business role (brand or dispensary)
- */
-function isBusinessRole(role: string | null): boolean {
-    if (!role) return false;
-    return [
-        'brand',
-        'brand_admin',
-        'brand_member',
-        'dispensary',
-        'dispensary_admin',
-        'dispensary_staff',
-        'budtender',
-    ].includes(role);
-}
-
 export function useUnifiedHistory({
-    role,
+    role: _role,
     maxItems = 10,
 }: UseUnifiedHistoryOptions): UseUnifiedHistoryReturn {
     const [filter, setFilter] = useState<HistorySource>('all');
@@ -72,8 +56,6 @@ export function useUnifiedHistory({
 
     // Transform and merge items
     const allItems = useMemo(() => {
-        if (!role) return [];
-
         const items: UnifiedHistoryItem[] = [];
 
         // Add inbox threads (non-archived)
@@ -94,14 +76,6 @@ export function useUnifiedHistory({
 
         // Add agent-chat sessions (filtered by role for super_user)
         agentSessions
-            .filter((s) => {
-                // For business roles, still include their playbook sessions if any
-                // For super_user, filter by role
-                if (isBusinessRole(role)) {
-                    return s.role === role;
-                }
-                return s.role === role;
-            })
             .forEach((session) => {
                 items.push({
                     id: `session-${session.id}`,
@@ -118,7 +92,7 @@ export function useUnifiedHistory({
         items.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
         return items;
-    }, [role, agentSessions, inboxThreads]);
+    }, [agentSessions, inboxThreads]);
 
     // Calculate counts
     const counts = useMemo(() => {
@@ -146,8 +120,6 @@ export function useUnifiedHistory({
 
     // Determine active item
     const activeItemId = useMemo(() => {
-        if (!role) return null;
-
         if (activeThreadId) {
             return `inbox-${activeThreadId}`;
         }
@@ -155,7 +127,7 @@ export function useUnifiedHistory({
             return `session-${activeSessionId}`;
         }
         return null;
-    }, [role, activeThreadId, activeSessionId]);
+    }, [activeThreadId, activeSessionId]);
 
     const handleSetFilter = useCallback((newFilter: HistorySource) => {
         setFilter(newFilter);
