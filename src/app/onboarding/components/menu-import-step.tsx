@@ -1,3 +1,4 @@
+// src\app\onboarding\components\menu-import-step.tsx
 'use client';
 
 import { useState } from 'react';
@@ -27,6 +28,23 @@ export function MenuImportStep({ onComplete, onSkip }: MenuImportStepProps) {
             toast({ title: 'URL Required', description: 'Please enter your menu URL.', variant: 'destructive' });
             return;
         }
+        const normalizedUrl = /^https?:\/\//i.test(url.trim()) ? url.trim() : `https://${url.trim()}`;
+        let parsedUrl: URL | null = null;
+        try {
+            parsedUrl = new URL(normalizedUrl);
+        } catch {
+            toast({ title: 'Invalid URL', description: 'Please enter a valid public URL (example: https://yourstore.com/menu).', variant: 'destructive' });
+            return;
+        }
+        const host = parsedUrl.hostname.toLowerCase();
+        if (host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '::1' || host.endsWith('.local')) {
+            toast({
+                title: 'Public URL Required',
+                description: 'Quick Setup cannot access localhost/private URLs. Use your public menu URL.',
+                variant: 'destructive'
+            });
+            return;
+        }
         if (!zip || zip.length < 5) {
             toast({ title: 'ZIP Code Required', description: 'Please enter a valid ZIP code for competitor analysis.', variant: 'destructive' });
             return;
@@ -39,7 +57,7 @@ export function MenuImportStep({ onComplete, onSkip }: MenuImportStepProps) {
             // 1. Start Menu Import
             setStatus('Extracting menu data (this may take a moment)...');
             // We don't await the full import here if it's long, but startMenuImport waits for extraction
-            const importResult = await startMenuImport(url);
+            const importResult = await startMenuImport(normalizedUrl);
 
             if (!importResult.success) {
                 throw new Error(importResult.error || 'Failed to import menu');
@@ -142,6 +160,9 @@ export function MenuImportStep({ onComplete, onSkip }: MenuImportStepProps) {
                             disabled={loading}
                         />
                     </div>
+                    <p className="text-xs text-muted-foreground">
+                        Use a public menu page URL (not localhost/private links).
+                    </p>
                 </div>
 
                 <div className="space-y-2">

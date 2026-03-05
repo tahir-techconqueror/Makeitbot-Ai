@@ -1,3 +1,4 @@
+// src\app\dashboard\actions\setup-actions.ts
 'use server';
 
 import { requireUser } from '@/server/auth/auth';
@@ -59,8 +60,62 @@ export async function startMenuImport(menuUrl: string) {
         return { success: false, error: 'Menu URL is required' };
     }
 
+    const normalizeUrl = (input: string): string => {
+        const trimmed = input.trim();
+        if (!trimmed) return '';
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+        return `https://${trimmed}`;
+    };
+
+    const isBlockedHost = (hostname: string): boolean => {
+        const host = hostname.toLowerCase();
+        if (
+            host === 'localhost' ||
+            host === '127.0.0.1' ||
+            host === '0.0.0.0' ||
+            host === '::1' ||
+            host.endsWith('.local')
+        ) {
+            return true;
+        }
+
+        // Block private IPv4 ranges
+        if (/^\d+\.\d+\.\d+\.\d+$/.test(host)) {
+            const [a, b] = host.split('.').map(n => parseInt(n, 10));
+            if (
+                a === 10 ||
+                (a === 172 && b >= 16 && b <= 31) ||
+                (a === 192 && b === 168) ||
+                (a === 169 && b === 254)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    const resolvedUrl = normalizeUrl(menuUrl);
+    let parsedUrl: URL;
     try {
-        logger.info('[Quick Setup] Starting menu import', { tenantId, menuUrl });
+        parsedUrl = new URL(resolvedUrl);
+    } catch {
+        return { success: false, error: 'Please enter a valid public URL (for example: https://yourstore.com/menu).' };
+    }
+
+    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+        return { success: false, error: 'Only HTTP(S) URLs are supported.' };
+    }
+
+    if (isBlockedHost(parsedUrl.hostname)) {
+        return {
+            success: false,
+            error: 'Local/private URLs are not reachable by Quick Setup. Use your public website menu URL.'
+        };
+    }
+
+    try {
+        logger.info('[Quick Setup] Starting menu import', { tenantId, menuUrl: resolvedUrl });
 
         // 1. Extract Data using Firecrawl (Reusing schema from demo API)
         const extractionSchema = z.object({
@@ -84,7 +139,7 @@ export async function startMenuImport(menuUrl: string) {
             }).optional()
         });
 
-        const extractedData = await discovery.extractData(menuUrl, extractionSchema);
+        const extractedData = await discovery.extractData(resolvedUrl, extractionSchema);
 
         if (!extractedData || !extractedData.products) {
             return { success: false, error: 'Failed to extract menu data' };
@@ -134,6 +189,10 @@ export async function startMenuImport(menuUrl: string) {
 
     } catch (error) {
         logger.error('[Quick Setup] Menu import failed', error instanceof Error ? error : new Error(String(error)));
-        return { success: false, error: 'Failed to start menu import' };
+        const message = error instanceof Error ? error.message : String(error);
+        if (message.includes('Discovery not configured')) {
+            return { success: false, error: 'Menu import is not configured on the server (missing Firecrawl API key).' };
+        }
+        return { success: false, error: message || 'Failed to start menu import' };
     }
 }
